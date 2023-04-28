@@ -17,6 +17,9 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.mouse = "a"
 
+opt.termguicolors = true
+opt.confirm = true
+
 -- Numbers
 opt.number = true
 opt.numberwidth = 2
@@ -46,7 +49,7 @@ for _, provider in ipairs { "node", "perl", "python3", "ruby" } do
   vim.g["loaded_" .. provider .. "_provider"] = 0
 end
 
-vim.cmd [[set confirm]]
+-- vim.cmd [[set confirm]]
 
 -------------------------------------- autocmds ------------------------------------------
 local augroup = vim.api.nvim_create_augroup

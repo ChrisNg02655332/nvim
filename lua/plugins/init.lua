@@ -1,7 +1,7 @@
 local default_plugins = {
   "nvim-lua/plenary.nvim",
-  "catppuccin/nvim",
-
+   "catppuccin/nvim",
+ 
   {
     "nvim-tree/nvim-web-devicons",
     config = function(_, opts)
@@ -150,6 +150,39 @@ local default_plugins = {
     end,
     config = function()
       require("Comment").setup()
+    end,
+  },
+
+  {
+    'akinsho/bufferline.nvim', 
+    version = "v3.*", 
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    init = function()
+      require("core.utils").load_mappings "bufferline"
+      require("core.utils").lazy_load "bufferline.nvim"
+    end,
+    opts = function()
+      return require "plugins.configs.bufferline"
+    end,
+    config = function(_, opts)
+      vim.opt.termguicolors = true
+      require("bufferline").setup(opts)
+    end
+  },
+
+  -- file managing , picker etc
+  {
+    "nvim-tree/nvim-tree.lua",
+    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+    init = function()
+      require("core.utils").load_mappings "nvimtree"
+    end,
+    opts = function()
+      return require "plugins.configs.nvimtree"
+    end,
+    config = function(_, opts)
+      require("nvim-tree").setup(opts)
+      vim.g.nvimtree_side = opts.view.side
     end,
   },
 

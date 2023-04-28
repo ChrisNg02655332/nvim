@@ -204,6 +204,28 @@ M.lspconfig = {
   },
 }
 
+M.nvimtree = {
+  plugin = true,
+
+  n = {
+    -- toggle
+    ["<C-n>"] = { "<cmd> NvimTreeToggle <CR>", "toggle nvimtree" },
+
+    -- focus
+    ["<leader>e"] = { "<cmd> NvimTreeFocus <CR>", "focus nvimtree" },
+  },
+}
+
+M.bufferline = {
+  plugin = true,
+
+  n = {
+    ["<tab>"] = { "<cmd> BufferLineCycleNext <CR>", "Cycle Next Tab" },
+    ["<S-tab>"] = { "<cmd> BufferLineCyclePrev <CR>", "Cycle Prev Tab" }
+  }
+}
+
+
 M.telescope = {
   plugin = true,
 
