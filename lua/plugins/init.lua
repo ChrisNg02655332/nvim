@@ -99,6 +99,7 @@ local default_plugins = {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {
+      "onsails/lspkind.nvim",
       {
         -- snippet plugin
         "L3MON4D3/LuaSnip",
@@ -170,6 +171,13 @@ local default_plugins = {
     end
   },
 
+   {
+    "nvim-lualine/lualine.nvim",
+    config = function(_, opts)
+      require('lualine').setup({})
+    end   
+  },
+
   -- file managing , picker etc
   {
     "nvim-tree/nvim-tree.lua",
@@ -208,6 +216,35 @@ local default_plugins = {
     end,
   },
 
+  {
+    "anuvyklack/fold-preview.nvim",
+    dependencies = "anuvyklack/keymap-amend.nvim",
+    requires = "anuvyklack/keymap-amend.nvim",
+    config = function()
+      local fp = require('fold-preview')
+      local map = require('fold-preview').mapping
+      local keymap = vim.keymap
+      keymap.amend = require('keymap-amend')
+
+      fp.setup({ 
+        default_keybindings = false,
+        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+        winhighlight = 'NormalFloat:NormalFloat,FloatBorder:FloatBorder'
+      })
+
+      keymap.amend('n', 'K', function(original)
+         if not fp.toggle_preview() then original() end
+      end)
+      keymap.amend('n', 'h',  map.close_preview_open_fold)
+      keymap.amend('n', 'l',  map.close_preview_open_fold)
+      keymap.amend('n', 'zo', map.close_preview)
+      keymap.amend('n', 'zO', map.close_preview)
+      keymap.amend('n', 'zc', map.close_preview_without_defer)
+      keymap.amend('n', 'zR', map.close_preview)
+      keymap.amend('n', 'zM', map.close_preview_without_defer)
+    end
+  },
+
   -- Only load whichkey after all the gui
   {
     "folke/which-key.nvim",
@@ -221,7 +258,7 @@ local default_plugins = {
     config = function(_, opts)
       require("which-key").setup(opts)
     end,
-  },
+  }
 }
 
 local config = require("core.utils").load_config()

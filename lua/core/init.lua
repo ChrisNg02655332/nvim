@@ -69,6 +69,7 @@ autocmd("FileType", {
   end,
 })
 
+vim.schedule(function()
 autocmd({"BufEnter", "FileReadPost"}, { 
   group = augroup("fold"),
   pattern = "*", 
@@ -80,4 +81,7 @@ autocmd("BufWritePre", {
   pattern = "*.ex,*.exs,*.heex",
   command = "lua vim.lsp.buf.format()"
 })
+end)
+
+
 

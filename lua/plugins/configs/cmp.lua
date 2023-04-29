@@ -1,4 +1,8 @@
 local cmp = require "cmp"
+local lspkind = require 'lspkind'
+
+local cmp_ui = require("core.utils").load_config().ui.cmp
+local cmp_style = cmp_ui.style
 
 local field_arrangement = {
   atom = { "kind", "abbr", "menu" },
@@ -8,6 +12,17 @@ local field_arrangement = {
 local formatting_style = {
   -- default fields order i.e completion word + item.kind + item.kind icons
   fields = field_arrangement[cmp_style] or { "abbr", "kind", "menu" },
+
+  format = function(_, item)
+    local icons = lspkind.symbol_map
+    local icon = (cmp_ui.icons and icons[item.kind]) or ""
+
+    icon = " " .. icon .. " "
+    item.menu = cmp_ui.lspkind_text and item.kind or ""
+    item.kind = icon
+
+    return item
+  end,
 }
 
 local function border(hl_name)
@@ -31,7 +46,7 @@ local options = {
   window = {
     completion = {
       side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
-      winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
+      -- winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
       scrollbar = false,
     },
     documentation = {
