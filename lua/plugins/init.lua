@@ -216,35 +216,6 @@ local default_plugins = {
     end,
   },
 
-  {
-    "anuvyklack/fold-preview.nvim",
-    dependencies = "anuvyklack/keymap-amend.nvim",
-    requires = "anuvyklack/keymap-amend.nvim",
-    config = function()
-      local fp = require('fold-preview')
-      local map = require('fold-preview').mapping
-      local keymap = vim.keymap
-      keymap.amend = require('keymap-amend')
-
-      fp.setup({ 
-        default_keybindings = false,
-        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-        winhighlight = 'NormalFloat:NormalFloat,FloatBorder:FloatBorder'
-      })
-
-      keymap.amend('n', 'K', function(original)
-         if not fp.toggle_preview() then original() end
-      end)
-      keymap.amend('n', 'h',  map.close_preview_open_fold)
-      keymap.amend('n', 'l',  map.close_preview_open_fold)
-      keymap.amend('n', 'zo', map.close_preview)
-      keymap.amend('n', 'zO', map.close_preview)
-      keymap.amend('n', 'zc', map.close_preview_without_defer)
-      keymap.amend('n', 'zR', map.close_preview)
-      keymap.amend('n', 'zM', map.close_preview_without_defer)
-    end
-  },
-
   -- Only load whichkey after all the gui
   {
     "folke/which-key.nvim",
@@ -258,7 +229,49 @@ local default_plugins = {
     config = function(_, opts)
       require("which-key").setup(opts)
     end,
-  }
+  },
+
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = {
+      "kevinhwang91/promise-async",
+      {
+        "luukvbaal/statuscol.nvim",
+        config = function()
+          local builtin = require("statuscol.builtin")
+          require("statuscol").setup({
+            relculright = true,
+            segments = {
+              { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+              { text = { "%s" }, click = "v:lua.ScSa" },
+              { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+            },
+          })
+        end,
+      },
+    },
+    event = "BufReadPost",
+    opts = {
+      provider_selector = function()
+        return { "treesitter", "indent" }
+      end,
+    },
+
+    init = function()
+      vim.keymap.set("n", "zR", function()
+        require("ufo").openAllFolds()
+      end)
+      vim.keymap.set("n", "zM", function()
+        require("ufo").closeAllFolds()
+      end)
+    end,
+  },
+
+  { 
+    "anuvyklack/fold-preview.nvim", 
+    dependencies = "anuvyklack/keymap-amend.nvim", 
+    config = true 
+  },
 }
 
 local config = require("core.utils").load_config()
