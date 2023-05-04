@@ -15,7 +15,7 @@ M.capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local lspconfig = require "lspconfig"
 
-local servers = { "tsserver" }
+local servers = { "tsserver", "tailwindcss" }
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -34,6 +34,8 @@ lspconfig.eslint.setup {
 }
 
 lspconfig.elixirls.setup{
+  on_attach = M.on_attach,
+  capabilities = M.capabilities,
   cmd = { "/Users/chrisnguyen/.local/share/nvim/mason/packages/elixir-ls/language_server.sh" };
 }
 
