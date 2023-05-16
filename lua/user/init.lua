@@ -2,7 +2,7 @@ return {
   lsp = {
     formatting = {
       format_on_save = true, -- enable or disable automatic formatting on save
-      disabled = { "lua_ls" },
+      disabled = { "lua_ls", "tsserver", "eslint" },
     },
     tsserver = function(opts)
       opts.root_dir = require("lspconfig.util").root_pattern("package.json")
