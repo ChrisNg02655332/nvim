@@ -1,42 +1,41 @@
-local M = {}
-local utils = require "core.utils"
+return function(_, _)
+  local lsp = require "astronvim.utils.lsp"
+  local get_icon = require("astronvim.utils").get_icon
+  local signs = {
+    { name = "DiagnosticSignError", text = get_icon "DiagnosticError", texthl = "DiagnosticSignError" },
+    { name = "DiagnosticSignWarn", text = get_icon "DiagnosticWarn", texthl = "DiagnosticSignWarn" },
+    { name = "DiagnosticSignHint", text = get_icon "DiagnosticHint", texthl = "DiagnosticSignHint" },
+    { name = "DiagnosticSignInfo", text = get_icon "DiagnosticInfo", texthl = "DiagnosticSignInfo" },
+    { name = "DapStopped", text = get_icon "DapStopped", texthl = "DiagnosticWarn" },
+    { name = "DapBreakpoint", text = get_icon "DapBreakpoint", texthl = "DiagnosticInfo" },
+    { name = "DapBreakpointRejected", text = get_icon "DapBreakpointRejected", texthl = "DiagnosticError" },
+    { name = "DapBreakpointCondition", text = get_icon "DapBreakpointCondition", texthl = "DiagnosticInfo" },
+    { name = "DapLogPoint", text = get_icon "DapLogPoint", texthl = "DiagnosticInfo" },
+  }
 
--- export on_attach & capabilities for custom lspconfigs
+  for _, sign in ipairs(signs) do
+    vim.fn.sign_define(sign.name, sign)
+  end
+  lsp.setup_diagnostics(signs)
 
-M.on_attach = function(client, bufnr)
-  utils.load_mappings("lspconfig", { buffer = bufnr })
-
-  if not utils.load_config().ui.lsp_semantic_tokens then
-    client.server_capabilities.semanticTokensProvider = nil
+  if vim.g.lsp_handlers_enabled then
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded", silent = true })
+    vim.lsp.handlers["textDocument/signatureHelp"] =
+      vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded", silent = true })
+  end
+  local setup_servers = function()
+    vim.tbl_map(require("astronvim.utils.lsp").setup, astronvim.user_opts "lsp.servers")
+    vim.api.nvim_exec_autocmds("FileType", {})
+    require("astronvim.utils").event "LspSetup"
+  end
+  if require("astronvim.utils").is_available "mason-lspconfig.nvim" then
+    vim.api.nvim_create_autocmd("User", {
+      desc = "set up LSP servers after mason-lspconfig",
+      pattern = "AstroMasonLspSetup",
+      once = true,
+      callback = setup_servers,
+    })
+  else
+    setup_servers()
   end
 end
-
-M.capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local lspconfig = require "lspconfig"
-
-local servers = { "tsserver", "tailwindcss" }
-
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = M.on_attach,
-    capabilities = M.capabilities,
-  }
-end
-
-lspconfig.eslint.setup {
-  on_attach = function(client, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      command = "EslintFixAll",
-    })
-  end,
-}
-
-lspconfig.elixirls.setup{
-  on_attach = M.on_attach,
-  capabilities = M.capabilities,
-  cmd = { "/Users/chrisnguyen/.local/share/nvim/mason/packages/elixir-ls/language_server.sh" };
-}
-
-return M
