@@ -37,7 +37,7 @@ return {
     {
       "williamboman/mason-lspconfig.nvim",
       opts = {
-        ensure_installed = { "tsserver", "eslint", "elixirls" }, -- automatically install lsp
+        ensure_installed = { "tsserver", "eslint", "elixirls", "jsonls" }, -- automatically install lsp
       },
     },
   },

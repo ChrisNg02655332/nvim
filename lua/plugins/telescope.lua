@@ -9,6 +9,7 @@ return {
     local get_icon = require("astronvim.utils").get_icon
     return {
       defaults = {
+        file_ignore_patterns = { "node_modules", "assets/vendor", "deps" },
         prompt_prefix = string.format("%s ", get_icon "Search"),
         selection_caret = string.format("%s ", get_icon "Selected"),
         path_display = { "truncate" },
