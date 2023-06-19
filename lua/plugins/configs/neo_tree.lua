@@ -1,7 +1,7 @@
 local get_icon = require("core.utils").get_icon
 
 return {
-  auto_clean_after_session_restore = true,
+auto_clean_after_session_restore = true,
     close_if_last_window = true,
     sources = { "filesystem", "buffers", "git_status" },
     source_selector = {
@@ -39,7 +39,7 @@ return {
       },
     },
     commands = {
-      system_open = function(state) require("astronvim.utils").system_open(state.tree:get_node():get_id()) end,
+      system_open = function(state) require("core.utils").system_open(state.tree:get_node():get_id()) end,
       parent_or_close = function(state)
         local node = state.tree:get_node()
         if (node.type == "directory" or node:has_children()) and node:is_expanded() then
@@ -120,5 +120,4 @@ return {
         handler = function(_) vim.opt_local.signcolumn = "auto" end,
       },
     },
-  
 }

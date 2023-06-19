@@ -80,6 +80,12 @@ M.lsp_setup = function(server)
   if not setup_handler then setup_handler(server, opts) end
 end
 
+M.extend_tbl = function(default, opts)
+  opts = opts or {}
+  return default and vim.tbl_deep_extend("force", default, opts) or opts
+end
+
+
 M.get_icon = function(kind, padding, no_fallback)
   if no_fallback then return "" end
   local config = M.load_config()
@@ -101,6 +107,19 @@ M.toggle_term_cmd = function(opts)
   end
   -- toggle the terminal
   terms[opts.cmd][num]:toggle()
+end
+
+M.system_open = function(path)
+  local cmd
+  if vim.fn.has "win32" == 1 and vim.fn.executable "explorer" == 1 then
+    cmd = { "cmd.exe", "/K", "explorer" }
+  elseif vim.fn.has "unix" == 1 and vim.fn.executable "xdg-open" == 1 then
+    cmd = { "xdg-open" }
+  elseif (vim.fn.has "mac" == 1 or vim.fn.has "unix" == 1) and vim.fn.executable "open" == 1 then
+    cmd = { "open" }
+  end
+  if not cmd then M.notify("Available system opening tool not found!", vim.log.levels.ERROR) end
+  vim.fn.jobstart(vim.fn.extend(cmd, { path or vim.fn.expand "<cfile>" }), { detach = true })
 end
 
 return M

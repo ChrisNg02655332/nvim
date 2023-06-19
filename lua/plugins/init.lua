@@ -1,13 +1,25 @@
 local default_plugins = {
   "nvim-lua/plenary.nvim",
-
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+  "catppuccin/nvim",
 
   {
     "nvim-tree/nvim-web-devicons",
     config = function(_, opts)
       require("nvim-web-devicons").setup(opts)
     end,
+  },
+
+  {
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    init = function()
+      require("core.utils").lazy_load "bufferline"
+    end,
+    config = function(_, opts)
+      vim.opt.termguicolors = true
+      require("bufferline").setup(opts)
+    end
   },
 
   {
