@@ -1,3 +1,5 @@
+local utils = require "core.utils"
+
 local M = {}
 
 M.blankline = {
@@ -21,6 +23,7 @@ M.blankline = {
   show_current_context_start = true,
 }
 
+
 M.luasnip = function(opts)
   require("luasnip").config.set_config(opts)
 
@@ -39,8 +42,8 @@ M.luasnip = function(opts)
   vim.api.nvim_create_autocmd("InsertLeave", {
     callback = function()
       if
-        require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-        and not require("luasnip").session.jump_active
+          require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
+          and not require("luasnip").session.jump_active
       then
         require("luasnip").unlink_current()
       end
@@ -48,5 +51,18 @@ M.luasnip = function(opts)
   })
 end
 
+M.gitsigns = {
+  signs = {
+    add = { hl = "DiffAdd", text = "│", numhl = "GitSignsAddNr" },
+    change = { hl = "DiffChange", text = "│", numhl = "GitSignsChangeNr" },
+    delete = { hl = "DiffDelete", text = "", numhl = "GitSignsDeleteNr" },
+    topdelete = { hl = "DiffDelete", text = "‾", numhl = "GitSignsDeleteNr" },
+    changedelete = { hl = "DiffChangeDelete", text = "~", numhl = "GitSignsChangeNr" },
+    untracked = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+  },
+  on_attach = function(bufnr)
+    utils.load_mappings("gitsigns", { buffer = bufnr })
+  end,
+}
 
 return M

@@ -1,5 +1,7 @@
 local default_plugins = {
   "nvim-lua/plenary.nvim",
+
+  -- load ui
   "catppuccin/nvim",
 
   {
@@ -7,19 +9,6 @@ local default_plugins = {
     config = function(_, opts)
       require("nvim-web-devicons").setup(opts)
     end,
-  },
-
-  {
-    'akinsho/bufferline.nvim',
-    version = "*",
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    init = function()
-      require("core.utils").lazy_load "bufferline"
-    end,
-    config = function(_, opts)
-      vim.opt.termguicolors = true
-      require("bufferline").setup(opts)
-    end
   },
 
   {
@@ -37,6 +26,41 @@ local default_plugins = {
   },
 
   {
+    "kevinhwang91/nvim-ufo",
+    dependencies = {
+      "kevinhwang91/promise-async",
+      {
+        "luukvbaal/statuscol.nvim",
+        config = function()
+          local builtin = require("statuscol.builtin")
+          require("statuscol").setup({
+            relculright = true,
+            segments = {
+              { text = { builtin.foldfunc },      click = "v:lua.ScFa" },
+              { text = { "%s" },                  click = "v:lua.ScSa" },
+              { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+            },
+          })
+        end,
+      },
+    },
+    event = "BufReadPost",
+    opts = {
+      provider_selector = function()
+        return { "treesitter", "indent" }
+      end,
+    },
+  },
+
+  -- load nvim-tree
+  {
+    "nvim-tree/nvim-web-devicons",
+    config = function(_, opts)
+      require("nvim-web-devicons").setup(opts)
+    end,
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
     init = function()
       require("core.utils").lazy_load "nvim-treesitter"
@@ -49,6 +73,27 @@ local default_plugins = {
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
     end,
+  },
+
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    cmd = "Neotree",
+    init = function()
+      vim.g.neo_tree_remove_legacy_commands = true
+      require("core.utils").load_mappings "neotree"
+    end,
+    opts = function()
+      return require "plugins.configs.neo_tree"
+    end
+  },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+    config = function()
+      require("lualine").setup()
+    end
   },
 
   -- git stuff
@@ -79,6 +124,7 @@ local default_plugins = {
     end,
   },
 
+  -- load lsp-config
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -123,6 +169,19 @@ local default_plugins = {
     config = function(_, opts)
       require("lspkind").init(opts)
     end
+  },
+
+  -- load formating
+  {
+    "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
+    },
+    config = function()
+      require "plugins.configs.null_ls"
+    end,
   },
 
   -- load luasnips + cmp related in insert mode only
@@ -173,40 +232,14 @@ local default_plugins = {
     end,
   },
 
-  {
-    "kevinhwang91/nvim-ufo",
-    dependencies = {
-      "kevinhwang91/promise-async",
-      {
-        "luukvbaal/statuscol.nvim",
-        config = function()
-          local builtin = require("statuscol.builtin")
-          require("statuscol").setup({
-            relculright = true,
-            segments = {
-              { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-              { text = { "%s" }, click = "v:lua.ScSa" },
-              { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
-            },
-          })
-        end,
-      },
-    },
-    event = "BufReadPost",
-    opts = {
-      provider_selector = function()
-        return { "treesitter", "indent" }
-      end,
-    },
-  },
-
+  -- load others
   {
     "numToStr/Comment.nvim",
     keys = {
       { "gcc", mode = "n" },
-      { "gc", mode = "v" },
+      { "gc",  mode = "v" },
       { "gbc", mode = "n" },
-      { "gb", mode = "v" },
+      { "gb",  mode = "v" },
     },
     init = function()
       require("core.utils").load_mappings "comment"
@@ -214,19 +247,6 @@ local default_plugins = {
     config = function(_, opts)
       require("Comment").setup(opts)
     end,
-  },
-
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    cmd = "Neotree",
-    init = function()
-      vim.g.neo_tree_remove_legacy_commands = true
-      require("core.utils").load_mappings "neotree"
-    end,
-    opts = function()
-      return require "plugins.configs.neo_tree"
-    end
   },
 
   {
@@ -272,12 +292,10 @@ local default_plugins = {
       require("which-key").setup(opts)
     end,
   },
+
+
 }
 
 local config = require("core.utils").load_config()
-
-if #config.plugins > 0 then
-  table.insert(default_plugins, { import = config.plugins })
-end
 
 require("lazy").setup(default_plugins, config.lazy_nvim)

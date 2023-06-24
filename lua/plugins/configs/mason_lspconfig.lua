@@ -1,5 +1,5 @@
 local opts = {
-  ensure_installed = { "lua_ls", "tsserver" },
+  ensure_installed = { "lua_ls", "tsserver", "elixirls" },
   automatic_installation = true
 }
 
