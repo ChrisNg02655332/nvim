@@ -1,5 +1,5 @@
 local opts = {
-  ensure_installed = { "lua_ls", "tsserver", "elixirls" },
+  ensure_installed = { "lua_ls", "html", "graphql", "tailwindcss", "tsserver", "elixirls", "yamlls", "eslint" },
   automatic_installation = true
 }
 
@@ -8,15 +8,15 @@ local lspconfig = require("lspconfig")
 require("mason").setup()
 require("mason-lspconfig").setup(opts)
 require("mason-lspconfig").setup_handlers {
-  function (server_name)
+  function(server_name)
     lspconfig[server_name].setup {}
   end,
-  
+
   -- Next, you can provide a dedicated handler for specific servers.
   -- For example, a handler override for the `rust_analyzer`:
   -- ["rust_analyzer"] = function ()
-    -- require("rust-tools").setup {}
-    -- end
+  -- require("rust-tools").setup {}
+  -- end
   --
 
   ["lua_ls"] = function()
@@ -41,4 +41,3 @@ require("mason-lspconfig").setup_handlers {
     }
   end
 }
-
