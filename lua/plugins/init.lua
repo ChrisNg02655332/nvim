@@ -91,8 +91,11 @@ local default_plugins = {
 	{
 		"nvim-lualine/lualine.nvim",
 		requires = { "nvim-tree/nvim-web-devicons", opt = true },
-		config = function()
-			require("lualine").setup()
+		opts = function()
+			return require("plugins.configs.lualine")
+		end,
+		config = function(_, opts)
+			require("lualine").setup(opts)
 		end,
 	},
 
