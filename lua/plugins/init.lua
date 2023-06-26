@@ -185,19 +185,6 @@ local default_plugins = {
 		end,
 	},
 
-	-- load formating
-	-- {
-	--   "jay-babu/mason-null-ls.nvim",
-	--   event = { "BufReadPre", "BufNewFile" },
-	--   dependencies = {
-	--     "williamboman/mason.nvim",
-	--     "jose-elias-alvarez/null-ls.nvim",
-	--   },
-	--   config = function()
-	--     require "plugins.configs.null_ls"
-	--   end,
-	-- },
-
 	-- load luasnips + cmp related in insert mode only
 	{
 		"hrsh7th/nvim-cmp",
@@ -233,9 +220,9 @@ local default_plugins = {
 			{
 				"saadparwaiz1/cmp_luasnip",
 				"hrsh7th/cmp-nvim-lua",
-				"hrsh7th/cmp-nvim-lsp",
 				"hrsh7th/cmp-buffer",
 				"hrsh7th/cmp-path",
+				"hrsh7th/cmp-nvim-lsp",
 			},
 		},
 		opts = function()

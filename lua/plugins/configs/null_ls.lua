@@ -1,7 +1,7 @@
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 require("mason-null-ls").setup({
-	ensure_installed = { "stylua", "prettierd", "eslint" },
+	ensure_installed = { "stylua", "eslint" },
 	handlers = {},
 })
 
@@ -26,8 +26,6 @@ null_ls.setup({
 
 	sources = {
 		formatting.stylua,
-		formatting.prettier,
-
 		diagnostics.eslint,
 		completion.spell,
 	},
