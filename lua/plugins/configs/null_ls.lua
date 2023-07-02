@@ -26,6 +26,7 @@ null_ls.setup({
 
 	sources = {
 		formatting.stylua,
+		formatting.eslint,
 		diagnostics.eslint,
 		completion.spell,
 	},
