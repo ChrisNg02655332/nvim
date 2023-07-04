@@ -15,7 +15,7 @@ return {
         path_display = { "truncate" },
         sorting_strategy = "ascending",
         layout_config = {
-          horizontal = { prompt_position = "top", preview_width = 0.55 },
+          horizontal = { prompt_position = "bottom", preview_width = 0.55 },
           vertical = { mirror = false },
           width = 0.87,
           height = 0.80,
