@@ -1,18 +1,10 @@
 return {
+  colorscheme = "nightfox",
   lsp = {
     formatting = {
       format_on_save = true, -- enable or disable automatic formatting on save
       disabled = { "lua_ls", "tsserver", "eslint" },
     },
-    tsserver = function(opts)
-      opts.root_dir = require("lspconfig.util").root_pattern("package.json")
-      return opts
-    end,
-    -- For eslint:
-    eslint = function(opts)
-      opts.root_dir = require("lspconfig.util").root_pattern("package.json", ".eslintrc.json", ".eslintrc.js", ".eslintrc")
-      return opts
-    end, 
     setup_handlers = {
       eslint = function(_, opts)
         require("lspconfig").eslint.setup { 
@@ -28,6 +20,7 @@ return {
   },
   plugins = {
     "jose-elias-alvarez/typescript.nvim", -- add lsp plugin
+    "EdenEast/nightfox.nvim",
     {
       "nvim-treesitter/nvim-treesitter",
       opts = {
