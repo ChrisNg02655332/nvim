@@ -34,7 +34,7 @@ local options = {
   window = {
     completion = {
       side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
-      winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
+      winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
       scrollbar = false,
     },
     documentation = {
@@ -43,9 +43,7 @@ local options = {
     },
   },
   snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body)
-    end,
+    expand = function(args) require("luasnip").lsp_expand(args.body) end,
   },
 
   formatting = formatting_style,
@@ -89,14 +87,12 @@ local options = {
 
   sources = {
     { name = "nvim_lsp", priority = 1000 },
-    { name = "luasnip",  priority = 750 },
-    { name = "buffer",   priority = 500 },
-    { name = "path",     priority = 250 },
+    { name = "luasnip", priority = 750 },
+    { name = "buffer", priority = 500 },
+    { name = "path", priority = 250 },
   },
 }
 
-if cmp_style ~= "atom" and cmp_style ~= "atom_colored" then
-  options.window.completion.border = border "CmpBorder"
-end
+if cmp_style ~= "atom" and cmp_style ~= "atom_colored" then options.window.completion.border = border "CmpBorder" end
 
 return options

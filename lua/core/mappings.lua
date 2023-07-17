@@ -18,9 +18,7 @@ M.general = {
   n = {
     -- lazy git
     ["<leader>gg"] = {
-      function()
-        require("core.utils").toggle_term_cmd("lazygit")
-      end,
+      function() require("core.utils").toggle_term_cmd "lazygit" end,
       "ToggleTerm lazygit",
     },
 
@@ -47,7 +45,48 @@ M.general = {
     -- Don't copy the replaced text after pasting in visual mode
     -- https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text#Alternative_mapping_for_paste
     ["p"] = { 'p:let @+=@0<CR>:let @"=@0<CR>', "Dont copy replaced text", opts = { silent = true } },
-  }
+  },
+}
+
+M.blankline = {
+  plugin = true,
+
+  n = {
+    ["<leader>cc"] = {
+      function()
+        local ok, start = require("indent_blankline.utils").get_current_context(
+          vim.g.indent_blankline_context_patterns,
+          vim.g.indent_blankline_use_treesitter_scope
+        )
+
+        if ok then
+          vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
+          vim.cmd [[normal! _]]
+        end
+      end,
+
+      "Jump to current context",
+    },
+  },
+}
+
+M.comment = {
+  plugin = true,
+
+  -- toggle comment in both modes
+  n = {
+    ["<leader>/"] = {
+      function() require("Comment.api").toggle.linewise.current() end,
+      "toggle comment",
+    },
+  },
+
+  v = {
+    ["<leader>/"] = {
+      "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+      "toggle comment",
+    },
+  },
 }
 
 M.gitsigns = {
@@ -57,12 +96,8 @@ M.gitsigns = {
     -- Navigation through hunks
     ["]c"] = {
       function()
-        if vim.wo.diff then
-          return "]c"
-        end
-        vim.schedule(function()
-          require("gitsigns").next_hunk()
-        end)
+        if vim.wo.diff then return "]c" end
+        vim.schedule(function() require("gitsigns").next_hunk() end)
         return "<Ignore>"
       end,
       "Jump to next hunk",
@@ -71,12 +106,8 @@ M.gitsigns = {
 
     ["[c"] = {
       function()
-        if vim.wo.diff then
-          return "[c"
-        end
-        vim.schedule(function()
-          require("gitsigns").prev_hunk()
-        end)
+        if vim.wo.diff then return "[c" end
+        vim.schedule(function() require("gitsigns").prev_hunk() end)
         return "<Ignore>"
       end,
       "Jump to prev hunk",
@@ -85,74 +116,41 @@ M.gitsigns = {
 
     -- Actions
     ["<leader>rh"] = {
-      function()
-        require("gitsigns").reset_hunk()
-      end,
+      function() require("gitsigns").reset_hunk() end,
       "Reset hunk",
     },
 
     ["<leader>ph"] = {
-      function()
-        require("gitsigns").preview_hunk()
-      end,
+      function() require("gitsigns").preview_hunk() end,
       "Preview hunk",
     },
 
     ["<leader>gb"] = {
-      function()
-        package.loaded.gitsigns.blame_line()
-      end,
+      function() package.loaded.gitsigns.blame_line() end,
       "Blame line",
     },
 
     ["<leader>td"] = {
-      function()
-        require("gitsigns").toggle_deleted()
-      end,
+      function() require("gitsigns").toggle_deleted() end,
       "Toggle deleted",
     },
   },
 }
 
-M.blankline = {
-	plugin = true,
-
-	n = {
-		["<leader>cc"] = {
-			function()
-				local ok, start = require("indent_blankline.utils").get_current_context(
-					vim.g.indent_blankline_context_patterns,
-					vim.g.indent_blankline_use_treesitter_scope
-				)
-
-				if ok then
-					vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
-					vim.cmd([[normal! _]])
-				end
-			end,
-
-			"Jump to current context",
-		},
-	},
-}
-
-M.comment = {
+M.neotree = {
   plugin = true,
 
-  -- toggle comment in both modes
   n = {
-    ["<leader>/"] = {
+    ["<leader>e"] = { "<cmd>Neotree toggle<cr>", "Toggle Explorer" },
+    ["<leader>o"] = {
       function()
-        require("Comment.api").toggle.linewise.current()
+        if vim.bo.filetype == "neo-tree" then
+          vim.cmd.wincmd "p"
+        else
+          vim.cmd.Neotree "focus"
+        end
       end,
-      "toggle comment",
-    },
-  },
-
-  v = {
-    ["<leader>/"] = {
-      "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
-      "toggle comment",
+      "Toggle Explorer Focus",
     },
   },
 }
@@ -196,9 +194,7 @@ M.whichkey = {
 
   n = {
     ["<leader>wK"] = {
-      function()
-        vim.cmd "WhichKey"
-      end,
+      function() vim.cmd "WhichKey" end,
       "Which-key all keymaps",
     },
     ["<leader>wk"] = {

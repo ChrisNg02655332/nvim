@@ -1,6 +1,6 @@
 return function()
   local opts = {
-    ensure_installed = { "lua_ls", "html", "graphql", "tailwindcss", "tsserver", "elixirls", "yamlls", "eslint" },
+    ensure_installed = { "lua_ls", "html", "graphql", "tailwindcss", "tsserver", "elixirls", "eslint" },
     automatic_installation = true,
   }
 
