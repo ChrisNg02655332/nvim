@@ -2,7 +2,21 @@ local default_plugins = {
   "nvim-lua/plenary.nvim",
   "EdenEast/nightfox.nvim",
   "nvim-tree/nvim-web-devicons",
-  "lukas-reineke/indent-blankline.nvim",
+
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    init = function()
+      require("core.utils").load_mappings("blankline")
+      require("core.utils").lazy_load("indent-blankline.nvim")
+    end,
+    opts = function()
+      return require("plugins.configs.others").blankline
+    end,
+    config = function(_, opts)
+      require("indent_blankline").setup(opts)
+    end,
+
+  },
 
   {
     "nvim-treesitter/nvim-treesitter",
@@ -30,20 +44,9 @@ local default_plugins = {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     requires = { "nvim-tree/nvim-web-devicons", opt = true },
-    opts = {
-      options = {
-        theme = "nightfox",
-      },
-      sections = {
-        lualine_c = {
-          {
-            "filename",
-            file_status = true, -- displays file status (readonly status, modified status)
-            path = 1,           -- 0 = just filename, 1 = relative path, 2 = absolute path
-          },
-        },
-      },
-    }
+    opts = function()
+      return require "plugins.configs.lualine"
+    end
   },
 
   {
@@ -96,6 +99,20 @@ local default_plugins = {
     end,
   },
 
+
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = { store_selection_keys = "<C-x>" },
+    config = function(_, opts)
+      require("luasnip").config.setup(opts)
+      vim.tbl_map(function(type)
+          require("luasnip.loaders.from_" .. type).lazy_load()
+        end,
+        { "vscode", "snipmate", "lua" })
+    end
+  },
+
   {
     "numToStr/Comment.nvim",
     keys = {
@@ -109,6 +126,48 @@ local default_plugins = {
     end,
     config = function(_, opts)
       require("Comment").setup(opts)
+    end,
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      {
+        -- snippet plugin
+        "L3MON4D3/LuaSnip",
+        dependencies = "rafamadriz/friendly-snippets",
+        opts = { history = true, updateevents = "TextChanged,TextChangedI" },
+        config = function(_, opts)
+          require("plugins.configs.others").luasnip(opts)
+        end,
+      },
+
+      {
+        "windwp/nvim-autopairs",
+        opts = {
+          fast_wrap = {},
+          disable_filetype = { "TelescopePrompt", "vim" },
+        },
+        config = function(_, opts)
+          require("nvim-autopairs").setup(opts)
+
+          -- setup cmp for autopairs
+          local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+          require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+        end
+      },
+
+      "saadparwaiz1/cmp_luasnip",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-nvim-lsp",
+    },
+    event = "InsertEnter",
+    opts = function()
+      return require("plugins.configs.cmp")
+    end,
+    config = function(_, opts)
+      require("cmp").setup(opts)
     end,
   },
 
