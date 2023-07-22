@@ -1,7 +1,9 @@
 local default_plugins = {
   "nvim-lua/plenary.nvim",
   "EdenEast/nightfox.nvim",
+  "lifepillar/vim-solarized8",
   "nvim-tree/nvim-web-devicons",
+  "jose-elias-alvarez/typescript.nvim",
 
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -46,8 +48,6 @@ local default_plugins = {
       "MasonUninstall",
       "MasonUninstallAll",
       "MasonLog",
-      "MasonUpdate",
-      "MasonUpdateAll",
     },
     opts = {
       ui = {
@@ -59,12 +59,13 @@ local default_plugins = {
       },
     },
     build = ":MasonUpdate",
-    config = require "plugins.configs.mason",
+    config = function(_, opts) require("mason").setup(opts) end,
   },
 
   {
     "neovim/nvim-lspconfig",
     dependencies = {
+      "williamboman/mason.nvim",
       {
         "williamboman/mason-lspconfig.nvim",
         cmd = { "LspInstall", "LspUninstall" },
@@ -121,8 +122,8 @@ local default_plugins = {
           require("statuscol").setup {
             relculright = true,
             segments = {
-              { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-              { text = { "%s" }, click = "v:lua.ScSa" },
+              { text = { builtin.foldfunc },      click = "v:lua.ScFa" },
+              { text = { "%s" },                  click = "v:lua.ScSa" },
               { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
             },
           }
@@ -173,9 +174,9 @@ local default_plugins = {
     "numToStr/Comment.nvim",
     keys = {
       { "gcc", mode = "n" },
-      { "gc", mode = "v" },
+      { "gc",  mode = "v" },
       { "gbc", mode = "n" },
-      { "gb", mode = "v" },
+      { "gb",  mode = "v" },
     },
     init = function() require("core.utils").load_mappings "comment" end,
     config = function(_, opts) require("Comment").setup(opts) end,

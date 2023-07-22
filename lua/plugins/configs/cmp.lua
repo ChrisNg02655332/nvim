@@ -34,7 +34,7 @@ local options = {
   window = {
     completion = {
       side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
-      winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+      -- winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
       scrollbar = false,
     },
     documentation = {
@@ -86,10 +86,18 @@ local options = {
   },
 
   sources = {
-    { name = "nvim_lsp", priority = 1000 },
+    {
+      name = "nvim_lsp",
+      priority = 1000,
+      entry_filter = function(entry, _) return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text" end,
+    },
     { name = "luasnip", priority = 750 },
-    { name = "buffer", priority = 500 },
-    { name = "path", priority = 250 },
+    {
+      name = "buffer",
+      priority = 500,
+      entry_filter = function(entry, _) return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text" end,
+    },
+    { name = "path",    priority = 250 },
   },
 }
 

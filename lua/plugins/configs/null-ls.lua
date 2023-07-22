@@ -1,6 +1,6 @@
 return function()
   require("mason-null-ls").setup {
-    ensure_installed = { "stylua", "eslint" },
+    ensure_installed = { "stylua", "tsserver", "eslint" },
     handlers = {},
   }
 
