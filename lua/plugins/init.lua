@@ -1,7 +1,8 @@
 local default_plugins = {
   "nvim-lua/plenary.nvim",
-  "EdenEast/nightfox.nvim",
-  "lifepillar/vim-solarized8",
+  -- "EdenEast/nightfox.nvim",
+  -- "lifepillar/vim-solarized8",
+  "joshdick/onedark.vim",
   "nvim-tree/nvim-web-devicons",
   "jose-elias-alvarez/typescript.nvim",
 
@@ -227,6 +228,17 @@ local default_plugins = {
       require("core.utils").load_mappings "neotree"
     end,
     opts = function() return require "plugins.configs.neo-tree" end,
+  },
+
+  {
+    "willothy/nvim-cokeline",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = function() return require "plugins.configs.cokeline" end,
+    config = function(_, opts) require("cokeline").setup(opts) end,
   },
 
   {
