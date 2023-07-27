@@ -1,8 +1,14 @@
-return {
+local telescope = require "telescope"
+local actions = require "telescope.actions"
+local pickers = require "telescope.pickers"
+local finders = require "telescope.finders"
+local sorters = require "telescope.sorters"
+
+local opts = {
   defaults = {
-    file_sorter = require("telescope.sorters").get_fuzzy_file,
+    file_sorter = sorters.get_fuzzy_file,
     file_ignore_patterns = { "node_modules", "assets/vendor" },
-    generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+    generic_sorter = sorters.get_generic_fuzzy_sorter,
     path_display = { "truncate" },
     winblend = 0,
     initial_mode = "insert",
@@ -23,7 +29,26 @@ return {
       preview_cutoff = 120,
     },
     mappings = {
-      n = { ["q"] = require("telescope.actions").close },
+      n = { ["q"] = actions.close },
+    },
+  },
+
+  pickers = {
+    colorscheme = {
+      enable_preview = true,
+      finder = finders.new_table { "onedark", "nightfox", "solarized8_flat" },
+      --     -- on_cancel = function()
+      --     --   local mytheme = require "plugins.mytheme"
+      --     --   -- runs theme setup logic for M.chosen
+      --     --   mytheme.setup()
+      --     -- end,
+      --     on_hover = function(colorscheme)
+      --       -- local config = require "core.default_config"
+      --       require("lazy.core.util").try(function() vim.cmd.colorscheme(colorscheme) end)
+      --     end,
+      on_change = function(colorscheme)
+        require("lazy.core.util").try(function() vim.cmd.colorscheme(colorscheme) end)
+      end,
     },
   },
 
@@ -33,5 +58,6 @@ return {
       hijack_netrw = true,
     },
   },
-  extensions_list = {},
 }
+
+telescope.setup(opts)

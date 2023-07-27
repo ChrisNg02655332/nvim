@@ -2,8 +2,8 @@ local M = {}
 
 M.ui = {
   -- theme = "nightfox",
-  -- theme = "solarized8_flat",
-  theme = "onedark",
+  -- theme = "onedark",
+  theme = "solarized8_flat",
 
   icons = {
     ActiveLSP = "",

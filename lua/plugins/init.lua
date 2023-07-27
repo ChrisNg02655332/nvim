@@ -1,7 +1,7 @@
 local default_plugins = {
   "nvim-lua/plenary.nvim",
-  -- "EdenEast/nightfox.nvim",
-  -- "lifepillar/vim-solarized8",
+  "EdenEast/nightfox.nvim",
+  "lifepillar/vim-solarized8",
   "joshdick/onedark.vim",
   "nvim-tree/nvim-web-devicons",
   "jose-elias-alvarez/typescript.nvim",
@@ -253,16 +253,7 @@ local default_plugins = {
     dependencies = "nvim-treesitter/nvim-treesitter",
     cmd = "Telescope",
     init = function() require("core.utils").load_mappings "telescope" end,
-    opts = function() return require "plugins.configs.telescope" end,
-    config = function(_, opts)
-      local telescope = require "telescope"
-      telescope.setup(opts)
-
-      -- load extensions
-      for _, ext in ipairs(opts.extensions_list) do
-        telescope.load_extension(ext)
-      end
-    end,
+    config = function() require "plugins.configs.telescope" end,
   },
 
   -- Only load whichkey after all the gui
