@@ -59,9 +59,7 @@ M.gitsigns = {
     changedelete = { hl = "DiffChangeDelete", text = "~", numhl = "GitSignsChangeNr" },
     untracked = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
   },
-  on_attach = function(bufnr)
-    utils.load_mappings("gitsigns", { buffer = bufnr })
-  end,
+  on_attach = function(bufnr) utils.load_mappings("gitsigns", { buffer = bufnr }) end,
 }
 
 return M
