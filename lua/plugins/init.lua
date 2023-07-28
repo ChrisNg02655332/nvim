@@ -1,5 +1,6 @@
 local default_plugins = {
   "nvim-lua/plenary.nvim",
+  "echasnovski/mini.bufremove",
   "EdenEast/nightfox.nvim",
   "lifepillar/vim-solarized8",
   "joshdick/onedark.vim",
@@ -231,14 +232,13 @@ local default_plugins = {
   },
 
   {
-    "willothy/nvim-cokeline",
+    "akinsho/bufferline.nvim",
     event = "VeryLazy",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
-    opts = function() return require "plugins.configs.cokeline" end,
-    config = function(_, opts) require("cokeline").setup(opts) end,
+    version = "*",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    init = function() require("core.utils").load_mappings "bufferline" end,
+    opts = function() return require "plugins.configs.bufferline" end,
+    config = function(_, opts) require("bufferline").setup(opts) end,
   },
 
   {

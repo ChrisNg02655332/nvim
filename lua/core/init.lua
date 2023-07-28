@@ -1,5 +1,6 @@
 local opt = vim.opt
 local g = vim.g
+local t = vim.t
 
 -------------------------------------- options ------------------------------------------
 opt.laststatus = 3 -- global statusline
@@ -56,4 +57,12 @@ for _, provider in ipairs { "node", "perl", "python3", "ruby" } do
   vim.g["loaded_" .. provider .. "_provider"] = 0
 end
 
-vim.cmd [[set confirm]]
+local autocmd = vim.api.nvim_create_autocmd
+
+-- dont list quickfix buffers
+autocmd("FileType", {
+  pattern = "qf",
+  callback = function() vim.opt_local.buflisted = false end,
+})
+
+-- vim.cmd [[set confirm]]

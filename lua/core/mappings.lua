@@ -29,7 +29,7 @@ M.general = {
 
     -- new buffer
     ["<leader>n"] = { "<cmd> enew <CR>", "New buffer" },
-    ["<leader>c"] = { "<cmd> bd <CR>", "Close buffer" },
+    -- ["<leader>c"] = { "<cmd> bd <CR>", "Close buffer" },
 
     ["<tab>"] = { "<cmd> bnext <CR>", "Next buffer" },
     ["<S-tab>"] = { "<cmd> bprevious <CR>", "Prev buffer" },
@@ -137,6 +137,15 @@ M.gitsigns = {
       function() require("gitsigns").toggle_deleted() end,
       "Toggle deleted",
     },
+  },
+}
+
+M.bufferline = {
+  plugin = true,
+
+  n = {
+    ["<leader>c"] = { function() require("core.utils.buffer").close() end, "Close buffer" },
+    ["<leader>C"] = { function() require("core.utils.buffer").close(0, true) end, "Force close buffer" },
   },
 }
 

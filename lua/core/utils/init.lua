@@ -1,6 +1,10 @@
 local M = {}
 local merge_tb = vim.tbl_deep_extend
 
+M.event = function(event)
+  vim.schedule(function() vim.api.nvim_exec_autocmds("User", { pattern = event, modeline = false }) end)
+end
+
 M.load_config = function()
   local config = require "core.default_config"
   return config
