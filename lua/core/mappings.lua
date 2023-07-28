@@ -29,7 +29,6 @@ M.general = {
 
     -- new buffer
     ["<leader>n"] = { "<cmd> enew <CR>", "New buffer" },
-    -- ["<leader>c"] = { "<cmd> bd <CR>", "Close buffer" },
 
     ["<tab>"] = { "<cmd> bnext <CR>", "Next buffer" },
     ["<S-tab>"] = { "<cmd> bprevious <CR>", "Prev buffer" },
