@@ -29,6 +29,7 @@ return function()
     end,
 
     sources = {
+      formatting.htmlbeautifier,
       formatting.stylua,
       formatting.mix,
       diagnostics.eslint,
