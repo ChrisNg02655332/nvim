@@ -1,6 +1,5 @@
 local default_plugins = {
   "nvim-lua/plenary.nvim",
-  "echasnovski/mini.bufremove",
   "EdenEast/nightfox.nvim",
   "lifepillar/vim-solarized8",
   "joshdick/onedark.vim",

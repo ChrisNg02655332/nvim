@@ -18,7 +18,9 @@ M.general = {
   n = {
     -- lazy git
     ["<leader>gg"] = {
-      function() require("core.utils").toggle_term_cmd "lazygit" end,
+      function()
+        require("core.utils").toggle_term_cmd("lazygit")
+      end,
       "ToggleTerm lazygit",
     },
 
@@ -72,13 +74,24 @@ M.general = {
 --   },
 -- }
 
+M.bufferline = {
+  plugin = true,
+
+  n = {
+    ["<leader>c"] = { "<cmd> bp<BAR>bd# <cr>", "Close buffer" },
+    --[[ ["<leader>C"] = { function() require("core.utils.buffer").close(0, true) end, "Force close buffer" }, ]]
+  },
+}
+
 M.comment = {
   plugin = true,
 
   -- toggle comment in both modes
   n = {
     ["<leader>/"] = {
-      function() require("Comment.api").toggle.linewise.current() end,
+      function()
+        require("Comment.api").toggle.linewise.current()
+      end,
       "toggle comment",
     },
   },
@@ -98,8 +111,12 @@ M.gitsigns = {
     -- Navigation through hunks
     ["]c"] = {
       function()
-        if vim.wo.diff then return "]c" end
-        vim.schedule(function() require("gitsigns").next_hunk() end)
+        if vim.wo.diff then
+          return "]c"
+        end
+        vim.schedule(function()
+          require("gitsigns").next_hunk()
+        end)
         return "<Ignore>"
       end,
       "Jump to next hunk",
@@ -108,8 +125,12 @@ M.gitsigns = {
 
     ["[c"] = {
       function()
-        if vim.wo.diff then return "[c" end
-        vim.schedule(function() require("gitsigns").prev_hunk() end)
+        if vim.wo.diff then
+          return "[c"
+        end
+        vim.schedule(function()
+          require("gitsigns").prev_hunk()
+        end)
         return "<Ignore>"
       end,
       "Jump to prev hunk",
@@ -118,33 +139,32 @@ M.gitsigns = {
 
     -- Actions
     ["<leader>rh"] = {
-      function() require("gitsigns").reset_hunk() end,
+      function()
+        require("gitsigns").reset_hunk()
+      end,
       "Reset hunk",
     },
 
     ["<leader>ph"] = {
-      function() require("gitsigns").preview_hunk() end,
+      function()
+        require("gitsigns").preview_hunk()
+      end,
       "Preview hunk",
     },
 
     ["<leader>gb"] = {
-      function() package.loaded.gitsigns.blame_line() end,
+      function()
+        package.loaded.gitsigns.blame_line()
+      end,
       "Blame line",
     },
 
     ["<leader>td"] = {
-      function() require("gitsigns").toggle_deleted() end,
+      function()
+        require("gitsigns").toggle_deleted()
+      end,
       "Toggle deleted",
     },
-  },
-}
-
-M.bufferline = {
-  plugin = true,
-
-  n = {
-    ["<leader>c"] = { function() require("core.utils.buffer").close() end, "Close buffer" },
-    ["<leader>C"] = { function() require("core.utils.buffer").close(0, true) end, "Force close buffer" },
   },
 }
 
@@ -156,9 +176,9 @@ M.neotree = {
     ["<leader>o"] = {
       function()
         if vim.bo.filetype == "neo-tree" then
-          vim.cmd.wincmd "p"
+          vim.cmd.wincmd("p")
         else
-          vim.cmd.Neotree "focus"
+          vim.cmd.Neotree("focus")
         end
       end,
       "Toggle Explorer Focus",
@@ -205,12 +225,14 @@ M.whichkey = {
 
   n = {
     ["<leader>wK"] = {
-      function() vim.cmd "WhichKey" end,
+      function()
+        vim.cmd("WhichKey")
+      end,
       "Which-key all keymaps",
     },
     ["<leader>wk"] = {
       function()
-        local input = vim.fn.input "WhichKey: "
+        local input = vim.fn.input("WhichKey: ")
         vim.cmd("WhichKey " .. input)
       end,
       "Which-key query lookup",

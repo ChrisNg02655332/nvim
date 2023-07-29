@@ -1,5 +1,6 @@
 return {
   options = {
+    close_command = "bd %d",
     offsets = {
       {
         filetype = "neo-tree",
