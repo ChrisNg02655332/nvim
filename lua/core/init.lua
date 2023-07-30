@@ -1,6 +1,5 @@
 local opt = vim.opt
 local g = vim.g
-local t = vim.t
 
 -------------------------------------- options ------------------------------------------
 opt.laststatus = 3 -- global statusline
@@ -27,7 +26,7 @@ opt.numberwidth = 2
 opt.ruler = false
 
 -- disable nvim intro
-opt.shortmess:append "sI"
+opt.shortmess:append("sI")
 
 opt.signcolumn = "yes"
 opt.splitbelow = true
@@ -48,12 +47,12 @@ opt.updatetime = 250
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-opt.whichwrap:append "<>[]hl"
+opt.whichwrap:append("<>[]hl")
 
 g.mapleader = " "
 
 -- disable some default providers
-for _, provider in ipairs { "node", "perl", "python3", "ruby" } do
+for _, provider in ipairs({ "node", "perl", "python3", "ruby" }) do
   vim.g["loaded_" .. provider .. "_provider"] = 0
 end
 
@@ -62,7 +61,9 @@ local autocmd = vim.api.nvim_create_autocmd
 -- dont list quickfix buffers
 autocmd("FileType", {
   pattern = "qf",
-  callback = function() vim.opt_local.buflisted = false end,
+  callback = function()
+    vim.opt_local.buflisted = false
+  end,
 })
 
 -- vim.cmd [[set confirm]]
