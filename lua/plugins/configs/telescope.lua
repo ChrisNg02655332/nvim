@@ -1,8 +1,8 @@
-local telescope = require "telescope"
-local actions = require "telescope.actions"
-local pickers = require "telescope.pickers"
-local finders = require "telescope.finders"
-local sorters = require "telescope.sorters"
+local telescope = require("telescope")
+local actions = require("telescope.actions")
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local sorters = require("telescope.sorters")
 
 local opts = {
   defaults = {
@@ -36,7 +36,7 @@ local opts = {
   pickers = {
     colorscheme = {
       enable_preview = true,
-      finder = finders.new_table { "onedark", "nightfox", "solarized8_flat" },
+      finder = finders.new_table({ "onedark", "nightfox", "solarized8_flat", "gruvbox" }),
       --     -- on_cancel = function()
       --     --   local mytheme = require "plugins.mytheme"
       --     --   -- runs theme setup logic for M.chosen
@@ -47,7 +47,10 @@ local opts = {
       --       require("lazy.core.util").try(function() vim.cmd.colorscheme(colorscheme) end)
       --     end,
       on_change = function(colorscheme)
-        require("lazy.core.util").try(function() vim.cmd.colorscheme(colorscheme) end)
+        print(colorscheme)
+        livevim.default_colorscheme = livevim.user_opts("colorscheme", colorscheme, false)
+
+        --   -- require("lazy.core.util").try(function() vim.cmd.colorscheme(colorscheme) end)
       end,
     },
   },

@@ -10,6 +10,7 @@ neoconf.json
 plugin
 queries
 spell
+user/*
 
 # Global gitignore
 # ----------------

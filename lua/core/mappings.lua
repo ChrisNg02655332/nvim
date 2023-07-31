@@ -79,7 +79,7 @@ M.bufferline = {
 
   n = {
     ["<leader>c"] = { "<cmd> bp<BAR>bd# <cr>", "Close buffer" },
-    --[[ ["<leader>C"] = { function() require("core.utils.buffer").close(0, true) end, "Force close buffer" }, ]]
+    ["<leader>C"] = { "<cmd> xa <cr>", "Force close buffer" },
   },
 }
 
