@@ -251,6 +251,7 @@ return {
 
   {
     "nvim-neo-tree/neo-tree.nvim",
+    branch = "main",
     dependencies = { "MunifTanjim/nui.nvim" },
     cmd = "Neotree",
     init = function()
@@ -269,9 +270,6 @@ return {
     dependencies = "nvim-tree/nvim-web-devicons",
     init = function()
       require("core.utils").load_mappings("bufferline")
-    end,
-    opts = function()
-      return require("plugins.configs.bufferline")
     end,
     config = function(_, opts)
       require("bufferline").setup(opts)
