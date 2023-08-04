@@ -40,15 +40,6 @@ return {
   },
 
   {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    requires = { "nvim-tree/nvim-web-devicons", opt = true },
-    opts = function()
-      return require("plugins.configs.lualine")
-    end,
-  },
-
-  {
     "williamboman/mason.nvim",
     cmd = {
       "Mason",
@@ -264,12 +255,21 @@ return {
   },
 
   {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    requires = { "nvim-tree/nvim-web-devicons", opt = true },
+    opts = function()
+      return require("plugins.configs.lualine")
+    end,
+  },
+
+  {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
-    init = function()
-      require("core.utils").load_mappings("bufferline")
+    opts = function()
+      return require("plugins.configs.bufferline")
     end,
     config = function(_, opts)
       require("bufferline").setup(opts)
@@ -311,7 +311,3 @@ return {
     end,
   },
 }
-
--- local config = require("core.utils").load_config()
---
--- require("lazy").setup(default_plugins, config.lazy_nvim)

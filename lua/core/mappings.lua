@@ -34,6 +34,9 @@ M.general = {
 
     ["<tab>"] = { "<cmd> bnext <CR>", "Next buffer" },
     ["<S-tab>"] = { "<cmd> bprevious <CR>", "Prev buffer" },
+
+    ["<leader>c"] = { "<cmd> bd <cr>", "Close buffer" },
+    ["<leader>C"] = { "<cmd> xa <cr>", "Force close buffer" },
   },
 
   t = {},
@@ -73,15 +76,6 @@ M.general = {
 --     },
 --   },
 -- }
-
-M.bufferline = {
-  plugin = true,
-
-  n = {
-    ["<leader>c"] = { "<cmd> bp<BAR>bd# <cr>", "Close buffer" },
-    ["<leader>C"] = { "<cmd> xa <cr>", "Force close buffer" },
-  },
-}
 
 M.comment = {
   plugin = true,

@@ -49,7 +49,3 @@ require("lazy").setup(livevim.user_opts("lazy", {
   },
   lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json",
 }))
-
--- require("lazy.core.util").try(function()
---   vim.cmd.colorscheme(config.ui.theme)
--- end)
