@@ -12,7 +12,7 @@ end
 ---@param opts? table The nvim-notify options to use (:help notify-options)
 M.notify = function(msg, type, opts)
 	vim.schedule(function()
-		vim.notify(msg, type, M.extend_tbl({ title = "AstroNvim" }, opts))
+		vim.notify(msg, type, M.extend_tbl({ title = "LiveVim" }, opts))
 	end)
 end
 
