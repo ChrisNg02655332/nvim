@@ -69,8 +69,7 @@ autocmd("FileType", {
 	end,
 })
 
--- vim.cmd [[set confirm]]
---
+vim.cmd([[set confirm]])
 
 local options = livevim.user_opts("options", { opt = opt, g = g, t = t })
 

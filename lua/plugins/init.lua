@@ -1,10 +1,147 @@
 return {
 	"nvim-lua/plenary.nvim",
-	-- "echasnovski/mini.bufremove",
 	"famiu/bufdelete.nvim",
 	"morhetz/gruvbox",
 	"nvim-tree/nvim-web-devicons",
 	"jose-elias-alvarez/typescript.nvim",
+
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		init = function()
+			require("core.utils").lazy_load("indent-blankline.nvim")
+		end,
+		opts = {
+			indentLine_enabled = 1,
+			filetype_exclude = {
+				"help",
+				"terminal",
+				"lazy",
+				"lspinfo",
+				"TelescopePrompt",
+				"TelescopeResults",
+				"mason",
+				"nvdash",
+				"nvcheatsheet",
+				"",
+			},
+			buftype_exclude = { "terminal" },
+			show_trailing_blankline_indent = false,
+			show_first_indent_level = false,
+			show_current_context = true,
+			show_current_context_start = true,
+		},
+		config = function(_, opts)
+			require("indent_blankline").setup(opts)
+		end,
+	},
+
+	{
+		"williamboman/mason.nvim",
+		cmd = {
+			"Mason",
+			"MasonInstall",
+			"MasonUninstall",
+			"MasonUninstallAll",
+			"MasonLog",
+		},
+		opts = function()
+			return require("plugins.configs.mason")
+		end,
+		build = ":MasonUpdate",
+		config = function(_, opts)
+			require("mason").setup(opts)
+		end,
+	},
+
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"williamboman/mason.nvim",
+			{
+				"williamboman/mason-lspconfig.nvim",
+				cmd = { "LspInstall", "LspUninstall" },
+				config = require("plugins.configs.mason-lspconfig"),
+			},
+			{
+				"jay-babu/mason-null-ls.nvim",
+				cmd = { "NullLsInstall", "NullLsUninstall" },
+				event = { "BufReadPre", "BufNewFile" },
+				dependencies = {
+					"jose-elias-alvarez/null-ls.nvim",
+				},
+				config = require("plugins.configs.null-ls"),
+			},
+		},
+		init = function()
+			require("core.utils").load_mappings("lsp")
+			require("core.utils").lazy_load("nvim-lspconfig")
+		end,
+	},
+
+	{
+		"onsails/lspkind.nvim",
+		opts = {
+			mode = "symbol",
+			symbol_map = {
+				Array = "󰅪",
+				Boolean = "⊨",
+				Class = "󰌗",
+				Constructor = "",
+				Key = "󰌆",
+				Namespace = "󰅪",
+				Null = "NULL",
+				Number = "#",
+				Object = "󰀚",
+				Package = "󰏗",
+				Property = "",
+				Reference = "",
+				Snippet = "",
+				String = "󰀬",
+				TypeParameter = "󰊄",
+				Unit = "",
+			},
+			menu = {},
+		},
+		config = function(_, opts)
+			require("lspkind").init(opts)
+		end,
+	},
+
+	{
+		"lewis6991/gitsigns.nvim",
+		ft = { "gitcommit", "diff" },
+		init = function()
+			-- load gitsigns only when a git file is opened
+			vim.api.nvim_create_autocmd({ "BufRead" }, {
+				group = vim.api.nvim_create_augroup("GitSignsLazyLoad", { clear = true }),
+				callback = function()
+					vim.fn.system("git -C " .. '"' .. vim.fn.expand("%:p:h") .. '"' .. " rev-parse")
+					if vim.v.shell_error == 0 then
+						vim.api.nvim_del_augroup_by_name("GitSignsLazyLoad")
+						vim.schedule(function()
+							require("lazy").load({ plugins = { "gitsigns.nvim" } })
+						end)
+					end
+				end,
+			})
+		end,
+		opts = {
+			signs = {
+				add = { hl = "DiffAdd", text = "│", numhl = "GitSignsAddNr" },
+				change = { hl = "DiffChange", text = "│", numhl = "GitSignsChangeNr" },
+				delete = { hl = "DiffDelete", text = "", numhl = "GitSignsDeleteNr" },
+				topdelete = { hl = "DiffDelete", text = "‾", numhl = "GitSignsDeleteNr" },
+				changedelete = { hl = "DiffChangeDelete", text = "~", numhl = "GitSignsChangeNr" },
+				untracked = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+			},
+			on_attach = function(bufnr)
+				require("core.utils").load_mappings("gitsigns", { buffer = bufnr })
+			end,
+		},
+		config = function(_, opts)
+			require("gitsigns").setup(opts)
+		end,
+	},
 
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -98,83 +235,6 @@ return {
 	},
 
 	{
-		"williamboman/mason.nvim",
-		cmd = {
-			"Mason",
-			"MasonInstall",
-			"MasonUninstall",
-			"MasonUninstallAll",
-			"MasonLog",
-		},
-		opts = {
-			ui = {
-				icons = {
-					package_installed = "✓",
-					package_uninstalled = "✗",
-					package_pending = "⟳",
-				},
-			},
-		},
-		build = ":MasonUpdate",
-		config = function(_, opts)
-			require("mason").setup(opts)
-		end,
-	},
-
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = {
-			"williamboman/mason.nvim",
-			{
-				"williamboman/mason-lspconfig.nvim",
-				cmd = { "LspInstall", "LspUninstall" },
-				config = require("plugins.configs.mason-lspconfig"),
-			},
-			{
-				"jay-babu/mason-null-ls.nvim",
-				cmd = { "NullLsInstall", "NullLsUninstall" },
-				event = { "BufReadPre", "BufNewFile" },
-				dependencies = {
-					"jose-elias-alvarez/null-ls.nvim",
-				},
-				config = require("plugins.configs.null-ls"),
-			},
-		},
-		init = function()
-			require("core.utils").lazy_load("nvim-lspconfig")
-		end,
-	},
-
-	{
-		"onsails/lspkind.nvim",
-		opts = {
-			mode = "symbol",
-			symbol_map = {
-				Array = "󰅪",
-				Boolean = "⊨",
-				Class = "󰌗",
-				Constructor = "",
-				Key = "󰌆",
-				Namespace = "󰅪",
-				Null = "NULL",
-				Number = "#",
-				Object = "󰀚",
-				Package = "󰏗",
-				Property = "",
-				Reference = "",
-				Snippet = "",
-				String = "󰀬",
-				TypeParameter = "󰊄",
-				Unit = "",
-			},
-			menu = {},
-		},
-		config = function(_, opts)
-			require("lspkind").init(opts)
-		end,
-	},
-
-	{
 		"akinsho/toggleterm.nvim",
 		cmd = { "ToggleTerm", "TermExec" },
 		init = function()
@@ -263,6 +323,33 @@ return {
 	},
 
 	{
+		"kevinhwang91/nvim-ufo",
+		dependencies = {
+			"kevinhwang91/promise-async",
+			{
+				"luukvbaal/statuscol.nvim",
+				config = function()
+					local builtin = require("statuscol.builtin")
+					require("statuscol").setup({
+						relculright = true,
+						segments = {
+							{ text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+							{ text = { "%s" }, click = "v:lua.ScSa" },
+							{ text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+						},
+					})
+				end,
+			},
+		},
+		event = "BufReadPost",
+		opts = {
+			provider_selector = function()
+				return { "treesitter", "indent" }
+			end,
+		},
+	},
+
+	{
 		"numToStr/Comment.nvim",
 		keys = {
 			{ "gcc", mode = "n" },
@@ -275,6 +362,18 @@ return {
 		end,
 		config = function(_, opts)
 			require("Comment").setup(opts)
+		end,
+	},
+
+	-- Only load whichkey after all the gui
+	{
+		"folke/which-key.nvim",
+		keys = { "<leader>", '"', "'", "`", "c", "v", "g" },
+		init = function()
+			require("core.utils").load_mappings("whichkey")
+		end,
+		config = function(_, opts)
+			require("which-key").setup(opts)
 		end,
 	},
 }

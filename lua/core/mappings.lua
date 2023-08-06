@@ -37,7 +37,7 @@ M.general = {
 
 		["<leader>c"] = {
 			function()
-				require("bufdelete").bufdelete(0, true)
+				require("bufdelete").bufdelete(0, false)
 			end,
 			"Close buffer",
 		},
@@ -167,6 +167,19 @@ M.gitsigns = {
 	},
 }
 
+M.lsp = {
+	plugin = true,
+
+	n = {
+		["<leader>ld"] = {
+			function()
+				vim.diagnostic.open_float()
+			end,
+			"Hover diagnostics",
+		},
+	},
+}
+
 M.neotree = {
 	plugin = true,
 
@@ -216,6 +229,22 @@ M.telescope = {
 		["<leader>pt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
 
 		["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
+
+		-- lsp
+		["<leader>lD"] = {
+			function()
+				require("telescope.builtin").diagnostics()
+			end,
+			"Search diagnostics",
+		},
+
+		-- key map
+		["<leader>fk"] = {
+			function()
+				require("telescope.builtin").keymaps()
+			end,
+			"Find keymaps",
+		},
 	},
 }
 

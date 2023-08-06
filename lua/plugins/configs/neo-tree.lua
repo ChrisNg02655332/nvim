@@ -3,7 +3,7 @@ local get_icon = utils.get_icon
 
 return {
 	auto_clean_after_session_restore = true,
-	-- close_if_last_window = true,
+	close_if_last_window = true,
 	sources = { "filesystem", "buffers", "git_status" },
 	source_selector = {
 		winbar = true,
