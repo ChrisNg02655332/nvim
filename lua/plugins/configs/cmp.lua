@@ -1,6 +1,13 @@
-local cmp = require "cmp"
+local cmp = require("cmp")
 
-local cmp_ui = require("core.utils").load_config().ui.cmp
+local cmp_ui = {
+  icons = true,
+  lspkind_text = true,
+  style = "default",           -- default/flat_light/flat_dark/atom/atom_colored
+  border_color = "grey_fg",    -- only applicable for "default" style, use color names from base30 variables
+  selected_item_bg = "colored", --colored / simple
+}
+
 local cmp_style = cmp_ui.style
 
 local field_arrangement = {
@@ -38,12 +45,14 @@ local options = {
       scrollbar = false,
     },
     documentation = {
-      border = border "CmpDocBorder",
+      border = border("CmpDocBorder"),
       winhighlight = "Normal:CmpDoc",
     },
   },
   snippet = {
-    expand = function(args) require("luasnip").lsp_expand(args.body) end,
+    expand = function(args)
+      require("luasnip").lsp_expand(args.body)
+    end,
   },
 
   formatting = formatting_style,
@@ -55,10 +64,10 @@ local options = {
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
-    ["<CR>"] = cmp.mapping.confirm {
+    ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
-    },
+    }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -89,18 +98,24 @@ local options = {
     {
       name = "nvim_lsp",
       priority = 1000,
-      entry_filter = function(entry, _) return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text" end,
+      entry_filter = function(entry, _)
+        return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
+      end,
     },
     { name = "luasnip", priority = 750 },
     {
       name = "buffer",
       priority = 500,
-      entry_filter = function(entry, _) return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text" end,
+      entry_filter = function(entry, _)
+        return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
+      end,
     },
     { name = "path",    priority = 250 },
   },
 }
 
-if cmp_style ~= "atom" and cmp_style ~= "atom_colored" then options.window.completion.border = border "CmpBorder" end
+if cmp_style ~= "atom" and cmp_style ~= "atom_colored" then
+  options.window.completion.border = border("CmpBorder")
+end
 
 return options
