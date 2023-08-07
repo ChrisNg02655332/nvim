@@ -1,6 +1,26 @@
-return function()
+local utils = require("core.utils")
+
+local M = {}
+
+M.on_attach = function(client, bufnr)
+	client.server_capabilities.documentFormattingProvider = false
+	client.server_capabilities.documentRangeFormattingProvider = false
+
+	utils.load_mappings("lsp", { buffer = bufnr })
+end
+
+M.setup = function()
 	local opts = {
-		ensure_installed = { "lua_ls", "html", "jsonls", "graphql", "tsserver", "tailwindcss", "elixirls", "eslint" },
+		ensure_installed = {
+			"lua_ls",
+			"html",
+			"jsonls",
+			"graphql",
+			"tsserver",
+			"tailwindcss",
+			"elixirls",
+			"eslint",
+		},
 	}
 
 	local lspconfig = require("lspconfig")
@@ -52,3 +72,5 @@ return function()
 		end,
 	})
 end
+
+return M
