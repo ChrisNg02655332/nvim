@@ -2,12 +2,12 @@ local utils = require("core.utils")
 
 local M = {}
 
-M.on_attach = function(client, bufnr)
-	client.server_capabilities.documentFormattingProvider = false
-	client.server_capabilities.documentRangeFormattingProvider = false
-
-	utils.load_mappings("lsp", { buffer = bufnr })
-end
+-- M.on_attach = function(client, bufnr)
+-- 	client.server_capabilities.documentFormattingProvider = false
+-- 	client.server_capabilities.documentRangeFormattingProvider = false
+--
+-- 	utils.load_mappings("lsp", { buffer = bufnr })
+-- end
 
 M.setup = function(_, opts)
 	local lspconfig = require("lspconfig")
