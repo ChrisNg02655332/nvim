@@ -9,20 +9,7 @@ M.on_attach = function(client, bufnr)
 	utils.load_mappings("lsp", { buffer = bufnr })
 end
 
-M.setup = function()
-	local opts = {
-		ensure_installed = {
-			"lua_ls",
-			"html",
-			"jsonls",
-			"graphql",
-			"tsserver",
-			"tailwindcss",
-			"elixirls",
-			"eslint",
-		},
-	}
-
+M.setup = function(_, opts)
 	local lspconfig = require("lspconfig")
 	local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
