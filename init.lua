@@ -1,7 +1,4 @@
--- require("core.bootstrap")
 require("core.utils").load_mappings()
--- require("core.options")
--- require("core.lazy")
 
 for _, source in ipairs({
   "core.bootstrap",
@@ -19,5 +16,3 @@ if livevim.default_colorscheme then
     require("core.utils").echo(("Error setting up colorscheme: `%s`"):format(livevim.default_colorscheme))
   end
 end
-
--- print(vim.fn.expand("%"))
