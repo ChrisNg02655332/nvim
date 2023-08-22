@@ -1,9 +1,9 @@
 return {
   "nvim-lua/plenary.nvim",
-  "famiu/bufdelete.nvim",
-  "morhetz/gruvbox",
+  "lifepillar/vim-solarized8",
   "nvim-tree/nvim-web-devicons",
   "jose-elias-alvarez/typescript.nvim",
+  "famiu/bufdelete.nvim",
 
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -19,8 +19,8 @@ return {
   {
     "williamboman/mason.nvim",
     cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
-    opts = require("plugins.configs.mason"),
     build = ":MasonUpdate",
+    opts = require "plugins.configs.mason",
     config = function(_, opts)
       require("mason").setup(opts)
     end,
@@ -89,26 +89,14 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+    build = ":TSUpdate",
     init = function()
       require("core.utils").lazy_load("nvim-treesitter")
     end,
-    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
-    build = ":TSUpdate",
     opts = require("plugins.configs.others").treesitter,
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
-    end,
-  },
-
-  {
-    "L3MON4D3/LuaSnip",
-    dependencies = { "rafamadriz/friendly-snippets" },
-    opts = { store_selection_keys = "<C-x>" },
-    config = function(_, opts)
-      require("luasnip").config.setup(opts)
-      vim.tbl_map(function(type)
-        require("luasnip.loaders.from_" .. type).lazy_load()
-      end, { "vscode", "snipmate", "lua" })
     end,
   },
 
@@ -169,6 +157,7 @@ return {
     end,
   },
 
+
   {
     "akinsho/toggleterm.nvim",
     cmd = { "ToggleTerm", "TermExec" },
@@ -210,6 +199,7 @@ return {
     requires = { "nvim-tree/nvim-web-devicons", opt = true },
     opts = require("plugins.configs.others").lualine,
   },
+
 
   {
     "akinsho/bufferline.nvim",

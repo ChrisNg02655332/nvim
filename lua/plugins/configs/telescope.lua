@@ -4,6 +4,10 @@ local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local sorters = require("telescope.sorters")
 
+
+
+
+
 local opts = {
   defaults = {
     file_sorter = sorters.get_fuzzy_file,

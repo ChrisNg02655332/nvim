@@ -2,13 +2,6 @@ local opt = {}
 local g = {}
 local t = {}
 
--------------------------------------- options ------------------------------------------
-opt.laststatus = 3 -- global statusline
-opt.showmode = false
-
-opt.clipboard = "unnamedplus"
-opt.cursorline = true
-
 -- Indenting
 opt.expandtab = true
 opt.shiftwidth = 2
@@ -16,25 +9,12 @@ opt.smartindent = true
 opt.tabstop = 2
 opt.softtabstop = 2
 
-opt.fillchars = { eob = " " }
-opt.ignorecase = true
-opt.smartcase = true
-opt.mouse = "a"
-
 -- Numbers
 opt.number = true
 opt.numberwidth = 2
 opt.ruler = false
 
--- disable nvim intro
-vim.opt.shortmess:append("sI")
-
-opt.signcolumn = "yes"
-opt.splitbelow = true
-opt.splitright = true
 opt.termguicolors = true
-opt.timeoutlen = 400
-opt.undofile = true
 
 -- enable fold
 opt.foldcolumn = "1" -- '0' is not bad
@@ -42,13 +22,6 @@ opt.foldlevel = 99   -- Using ufo provider need a large value, feel free to decr
 opt.foldlevelstart = 99
 opt.foldenable = true
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-
--- interval for writing swap file to disk, also used by gitsigns
-opt.updatetime = 250
-
--- go to previous/next line with h,l,left arrow and right arrow
--- when cursor reaches end/beginning of line
-vim.opt.whichwrap:append("<>[]hl")
 
 g.mapleader = " "
 
@@ -69,8 +42,6 @@ autocmd("FileType", {
   end,
 })
 
-vim.cmd([[set confirm]])
-
 local options = livevim.user_opts("options", { opt = opt, g = g, t = t })
 
 for scope, table in pairs(options) do
@@ -78,3 +49,4 @@ for scope, table in pairs(options) do
     vim[scope][setting] = value
   end
 end
+

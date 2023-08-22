@@ -1,12 +1,8 @@
 _G.livevim = {}
 
---- installation details from external installers
 livevim.install = { home = vim.fn.stdpath("config") }
 livevim.supported_configs = { livevim.install.home }
 
---- Looks to see if a module path references a lua file in a configuration folder and tries to load it. If there is an error loading the file, write an error and continue
----@param module string The module path to try and load
----@return table|nil # The loaded module if successful or nil
 local function load_module_file(module)
   -- placeholder for final return value
   local found_file = nil
@@ -36,11 +32,23 @@ local function load_module_file(module)
   return out
 end
 
---- Main configuration engine logic for extending a default configuration table with either a function override or a table to merge into the default option
--- @param overrides the override definition, either a table or a function that takes a single parameter of the original table
--- @param default the default configuration table
--- @param extend boolean value to either extend the default or simply overwrite it if an override is provided
--- @return the new configuration table
+local user_settings = load_module_file("user.init")
+
+local function user_setting_table(module)
+  -- get the user settings table
+  local settings = user_settings or {}
+  -- iterate over the path string split by '.' to look up the table value
+  for tbl in string.gmatch(module, "([^%.]+)") do
+    settings = settings[tbl]
+    -- if key doesn't exist, keep the nil value and stop searching
+    if settings == nil then
+      break
+    end
+  end
+  -- return the found settings
+  return settings
+end
+
 local function func_or_extend(overrides, default, extend)
   -- if we want to extend the default with the provided override
   if extend then
@@ -58,27 +66,6 @@ local function func_or_extend(overrides, default, extend)
   end
   -- return the modified default table
   return default
-end
-
---- user settings from the base `user/init.lua` file
-local user_settings = load_module_file("user.init")
-
---- Search the user settings (user/init.lua table) for a table with a module like path string
--- @param module the module path like string to look up in the user settings table
--- @return the value of the table entry if exists or nil
-local function user_setting_table(module)
-  -- get the user settings table
-  local settings = user_settings or {}
-  -- iterate over the path string split by '.' to look up the table value
-  for tbl in string.gmatch(module, "([^%.]+)") do
-    settings = settings[tbl]
-    -- if key doesn't exist, keep the nil value and stop searching
-    if settings == nil then
-      break
-    end
-  end
-  -- return the found settings
-  return settings
 end
 
 function livevim.user_opts(module, default, extend)
@@ -104,4 +91,4 @@ function livevim.user_opts(module, default, extend)
   return default
 end
 
-livevim.default_colorscheme = livevim.user_opts("colorscheme", "gruvbox", false)
+livevim.default_colorscheme = livevim.user_opts("colorscheme", "solarized8_flat", false)

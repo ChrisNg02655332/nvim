@@ -1,9 +1,7 @@
--- n, v, i, t = mode names
-
 local M = {}
 
 M.general = {
-  i = {
+ i = {
     -- go to  beginning and end
     ["<C-b>"] = { "<ESC>^i", "Beginning of line" },
     ["<C-e>"] = { "<End>", "End of line" },
@@ -14,16 +12,7 @@ M.general = {
     ["<C-j>"] = { "<Down>", "Move down" },
     ["<C-k>"] = { "<Up>", "Move up" },
   },
-
   n = {
-    -- lazy git
-    ["<leader>gg"] = {
-      function()
-        require("core.utils").toggle_term_cmd("lazygit")
-      end,
-      "ToggleTerm lazygit",
-    },
-
     ["<Esc>"] = { ":noh <CR>", "Clear highlights" },
 
     -- switch between windows
@@ -34,9 +23,6 @@ M.general = {
 
     -- save
     ["<C-s>"] = { "<cmd> w <CR>", "Save file" },
-
-    -- Copy all
-    ["<C-c>"] = { "<cmd> %y+ <CR>", "Copy whole file" },
 
     -- new buffer
     ["<leader>n"] = { "<cmd> enew <CR>", "New buffer" },
@@ -51,49 +37,10 @@ M.general = {
       "Close buffer",
     },
     ["<leader>C"] = { "<cmd> xa <cr>", "Force close buffer" },
-  },
-
-  t = {},
-
-  v = {
-    ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
-    ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
-  },
-
-  x = {
-    ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
-    ["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
-    -- Don't copy the replaced text after pasting in visual mode
-    -- https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text#Alternative_mapping_for_paste
-    ["p"] = { 'p:let @+=@0<CR>:let @"=@0<CR>', "Dont copy replaced text", opts = { silent = true } },
-  },
+  }, 
 }
 
--- M.blankline = {
---   plugin = true,
---
---   n = {
---     ["<leader>cc"] = {
---       function()
---         local ok, start = require("indent_blankline.utils").get_current_context(
---           vim.g.indent_blankline_context_patterns,
---           vim.g.indent_blankline_use_treesitter_scope
---         )
---
---         if ok then
---           vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
---           vim.cmd [[normal! _]]
---         end
---       end,
---
---       "Jump to current context",
---     },
---   },
--- }
-
 M.comment = {
-  plugin = true,
-
   -- toggle comment in both modes
   n = {
     ["<leader>/"] = {
@@ -113,8 +60,6 @@ M.comment = {
 }
 
 M.gitsigns = {
-  plugin = true,
-
   n = {
     -- Navigation through hunks
     ["]c"] = {
@@ -177,8 +122,6 @@ M.gitsigns = {
 }
 
 M.lsp = {
-  plugin = true,
-
   n = {
     ["<leader>ld"] = {
       function()
@@ -190,8 +133,6 @@ M.lsp = {
 }
 
 M.neotree = {
-  plugin = true,
-
   n = {
     ["<leader>e"] = { "<cmd>Neotree toggle<cr>", "Toggle Explorer" },
     ["<leader>o"] = {
@@ -208,8 +149,6 @@ M.neotree = {
 }
 
 M.toggleterm = {
-  plugin = true,
-
   n = {
     ["<leader>tf"] = { "<cmd>ToggleTerm direction=float<cr>", "ToggleTerm float" },
     ["<leader>th"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "ToggleTerm horizontal split" },
@@ -218,8 +157,6 @@ M.toggleterm = {
 }
 
 M.telescope = {
-  plugin = true,
-
   n = {
     -- find
     ["<leader>ff"] = { "<cmd> Telescope find_files <CR>", "Find files" },
@@ -258,8 +195,6 @@ M.telescope = {
 }
 
 M.whichkey = {
-  plugin = true,
-
   n = {
     ["<leader>wK"] = {
       function()
@@ -278,3 +213,4 @@ M.whichkey = {
 }
 
 return M
+
