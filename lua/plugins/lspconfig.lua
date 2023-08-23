@@ -1,6 +1,7 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
       {
@@ -69,10 +70,10 @@ return {
         end,
       },
     },
-    -- init = function()
-    --   require("core.utils").load_mappings("lsp")
-    --   require("core.utils").lazy_load("nvim-lspconfig")
-    -- end,
+    init = function()
+      require("core.utils").load_mappings("lsp")
+      --   require("core.utils").lazy_load("nvim-lspconfig")
+    end,
     config = function()
       -- Switch for controlling whether you want autoformatting.
       local format_is_enabled = true

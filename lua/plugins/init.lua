@@ -106,4 +106,59 @@ return {
       vim.notify = notify
     end,
   },
+
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = {
+      "kevinhwang91/promise-async",
+      {
+        "luukvbaal/statuscol.nvim",
+        config = function()
+          local builtin = require("statuscol.builtin")
+          require("statuscol").setup({
+            relculright = true,
+            segments = {
+              { text = { builtin.foldfunc },      click = "v:lua.ScFa" },
+              { text = { "%s" },                  click = "v:lua.ScSa" },
+              { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+            },
+          })
+        end,
+      },
+    },
+    event = "BufReadPost",
+    opts = {
+      provider_selector = function()
+        return { "treesitter", "indent" }
+      end,
+    },
+  },
+
+  {
+    "numToStr/Comment.nvim",
+    keys = {
+      { "gcc", mode = "n" },
+      { "gc",  mode = "v" },
+      { "gbc", mode = "n" },
+      { "gb",  mode = "v" },
+    },
+    init = function()
+      require("core.utils").load_mappings("comment")
+    end,
+    config = function(_, opts)
+      require("Comment").setup(opts)
+    end,
+  },
+
+  -- Only load whichkey after all the gui
+  {
+    "folke/which-key.nvim",
+    keys = { "<leader>", '"', "'", "`", "c", "v", "g" },
+    init = function()
+      require("core.utils").load_mappings("whichkey")
+    end,
+    config = function(_, opts)
+      require("which-key").setup(opts)
+    end,
+  },
 }
