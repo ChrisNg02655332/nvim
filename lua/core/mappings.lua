@@ -1,7 +1,7 @@
 local M = {}
 
 M.general = {
- i = {
+  i = {
     -- go to  beginning and end
     ["<C-b>"] = { "<ESC>^i", "Beginning of line" },
     ["<C-e>"] = { "<End>", "End of line" },
@@ -13,6 +13,13 @@ M.general = {
     ["<C-k>"] = { "<Up>", "Move up" },
   },
   n = {
+    ["<leader>gg"] = {
+      function()
+        require("core.utils").toggle_term_cmd("lazygit")
+      end,
+      "ToggleTerm lazygit",
+    },
+
     ["<Esc>"] = { ":noh <CR>", "Clear highlights" },
 
     -- switch between windows
@@ -37,7 +44,7 @@ M.general = {
       "Close buffer",
     },
     ["<leader>C"] = { "<cmd> xa <cr>", "Force close buffer" },
-  }, 
+  },
 }
 
 M.comment = {
@@ -213,4 +220,3 @@ M.whichkey = {
 }
 
 return M
-

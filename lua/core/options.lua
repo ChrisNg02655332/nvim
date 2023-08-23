@@ -1,6 +1,12 @@
-local opt = {}
-local g = {}
-local t = {}
+local opt = vim.opt
+local g = vim.g
+
+-------------------------------------- options ------------------------------------------
+opt.laststatus = 3 -- global statusline
+opt.showmode = false
+
+opt.clipboard = "unnamedplus"
+opt.cursorline = true
 
 -- Indenting
 opt.expandtab = true
@@ -9,12 +15,25 @@ opt.smartindent = true
 opt.tabstop = 2
 opt.softtabstop = 2
 
+opt.fillchars = { eob = " " }
+opt.ignorecase = true
+opt.smartcase = true
+opt.mouse = "a"
+
 -- Numbers
 opt.number = true
 opt.numberwidth = 2
 opt.ruler = false
 
+-- disable nvim intro
+vim.opt.shortmess:append("sI")
+
+opt.signcolumn = "yes"
+opt.splitbelow = true
+opt.splitright = true
 opt.termguicolors = true
+opt.timeoutlen = 400
+opt.undofile = true
 
 -- enable fold
 opt.foldcolumn = "1" -- '0' is not bad
@@ -23,30 +42,28 @@ opt.foldlevelstart = 99
 opt.foldenable = true
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
-g.mapleader = " "
+-- interval for writing swap file to disk, also used by gitsigns
+opt.updatetime = 250
 
-t = vim.t.bufs and vim.t.bufs or { bufs = vim.api.nvim_list_bufs() }
+-- go to previous/next line with h,l,left arrow and right arrow
+-- when cursor reaches end/beginning of line
+vim.opt.whichwrap:append("<>[]hl")
+
+g.mapleader = " "
 
 -- disable some default providers
 for _, provider in ipairs({ "node", "perl", "python3", "ruby" }) do
-  vim.g["loaded_" .. provider .. "_provider"] = 0
+	vim.g["loaded_" .. provider .. "_provider"] = 0
 end
 
 local autocmd = vim.api.nvim_create_autocmd
 
 -- dont list quickfix buffers
 autocmd("FileType", {
-  pattern = "qf",
-  callback = function()
-    vim.opt_local.buflisted = false
-  end,
+	pattern = "qf",
+	callback = function()
+		vim.opt_local.buflisted = false
+	end,
 })
 
-local options = livevim.user_opts("options", { opt = opt, g = g, t = t })
-
-for scope, table in pairs(options) do
-  for setting, value in pairs(table) do
-    vim[scope][setting] = value
-  end
-end
-
+vim.cmd([[set confirm]])

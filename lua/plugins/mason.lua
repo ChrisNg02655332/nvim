@@ -1,6 +1,10 @@
 return {
-	PATH = "prepend",
-
+ {
+    "williamboman/mason.nvim",
+    cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
+    build = ":MasonUpdate",
+    opts = {
+    	PATH = "prepend",
 	ui = {
 		icons = {
 			package_pending = " ",
@@ -19,6 +23,10 @@ return {
 			cancel_installation = "<C-c>",
 		},
 	},
-
 	max_concurrent_installers = 10,
+}, 
+    config = function(_, opts)
+      require("mason").setup(opts)
+    end,
+  },
 }

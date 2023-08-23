@@ -1,0 +1,185 @@
+return { {
+  "hrsh7th/nvim-cmp",
+  dependencies = {
+    {
+      -- snippet plugin
+      "L3MON4D3/LuaSnip",
+      dependencies = "rafamadriz/friendly-snippets",
+      opts = { history = true, updateevents = "TextChanged,TextChangedI" },
+      config = function(_, opts)
+        require("luasnip").config.set_config(opts)
+
+        vim.tbl_map(function(type)
+          require("luasnip.loaders.from_" .. type).lazy_load()
+        end, { "vscode", "snipmate", "lua" })
+
+        vim.api.nvim_create_autocmd("InsertLeave", {
+          callback = function()
+            if
+                require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
+                and not require("luasnip").session.jump_active
+            then
+              require("luasnip").unlink_current()
+            end
+          end,
+        })
+      end,
+    },
+
+    {
+      "windwp/nvim-autopairs",
+      opts = {
+        fast_wrap = {},
+        disable_filetype = { "TelescopePrompt", "vim" },
+      },
+      config = function(_, opts)
+        require("nvim-autopairs").setup(opts)
+
+        -- setup cmp for autopairs
+        local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+        require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      end,
+    },
+
+    "saadparwaiz1/cmp_luasnip",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-path",
+    "hrsh7th/cmp-nvim-lsp",
+  },
+  event = "InsertEnter",
+  opts = function()
+    local cmp = require("cmp")
+
+    local cmp_ui = {
+      icons = true,
+      lspkind_text = true,
+      style = "default",         -- default/flat_light/flat_dark/atom/atom_colored
+      border_color = "grey_fg",  -- only applicable for "default" style, use color names from base30 variables
+      selected_item_bg = "colored", --colored / simple
+    }
+
+    local cmp_style = cmp_ui.style
+
+    local field_arrangement = {
+      atom = { "kind", "abbr", "menu" },
+      atom_colored = { "kind", "abbr", "menu" },
+    }
+
+    local formatting_style = {
+      -- default fields order i.e completion word + item.kind + item.kind icons
+      fields = field_arrangement[cmp_style] or { "abbr", "kind", "menu" },
+    }
+
+    local function border(hl_name)
+      return {
+        { "╭", hl_name },
+        { "─", hl_name },
+        { "╮", hl_name },
+        { "│", hl_name },
+        { "╯", hl_name },
+        { "─", hl_name },
+        { "╰", hl_name },
+        { "│", hl_name },
+      }
+    end
+
+    local options = {
+      completion = {
+        completeopt = "menu,menuone",
+      },
+
+      window = {
+        completion = {
+          side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
+          -- winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+          scrollbar = false,
+        },
+        documentation = {
+          border = border("CmpDocBorder"),
+          winhighlight = "Normal:CmpDoc",
+        },
+      },
+      snippet = {
+        expand = function(args)
+          require("luasnip").lsp_expand(args.body)
+        end,
+      },
+
+      formatting = formatting_style,
+
+      mapping = {
+        ["<C-p>"] = cmp.mapping.select_prev_item(),
+        ["<C-n>"] = cmp.mapping.select_next_item(),
+        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.close(),
+        ["<CR>"] = cmp.mapping.confirm({
+          behavior = cmp.ConfirmBehavior.Insert,
+          select = true,
+        }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif require("luasnip").expand_or_jumpable() then
+            vim.fn.feedkeys(
+              vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump",
+                true, true,
+                true), "")
+          else
+            fallback()
+          end
+        end, {
+          "i",
+          "s",
+        }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif require("luasnip").jumpable(-1) then
+            vim.fn.feedkeys(
+              vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true,
+                true,
+                true), "")
+          else
+            fallback()
+          end
+        end, {
+          "i",
+          "s",
+        }),
+      },
+
+      sources = {
+        {
+          name = "nvim_lsp",
+          priority = 1000,
+          entry_filter = function(entry, _)
+            return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~=
+                "Text"
+          end,
+        },
+        { name = "luasnip", priority = 750 },
+        {
+          name = "buffer",
+          priority = 500,
+          entry_filter = function(entry, _)
+            return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~=
+                "Text"
+          end,
+        },
+        { name = "path",    priority = 250 },
+      },
+    }
+
+    if cmp_style ~= "atom" and cmp_style ~= "atom_colored" then
+      options.window.completion.border = border("CmpBorder")
+    end
+
+    return options
+  end,
+  config = function(_, opts)
+    require("cmp").setup(opts)
+  end,
+},
+}
