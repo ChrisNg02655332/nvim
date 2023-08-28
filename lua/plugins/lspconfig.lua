@@ -75,13 +75,6 @@ return {
       --   require("core.utils").lazy_load("nvim-lspconfig")
     end,
     config = function()
-      -- Switch for controlling whether you want autoformatting.
-      local format_is_enabled = true
-      -- vim.api.nvim_create_user_command("FormatToggle", function()
-      -- 	format_is_enabled = not format_is_enabled
-      -- 	print("Setting autoformatting to: " .. tostring(format_is_enabled))
-      -- end, {})
-
       -- Create an augroup that is used for managing our formatting autocmds.
       --  We need one augroup per client to make sure that multiple clients
       --  can attach to the same buffer without interfering with each other.
@@ -112,22 +105,12 @@ return {
             return
           end
 
-          -- Tsserver usually works poorly. Sorry you work with bad languages
-          -- You can remove this line if you know what you're doing :)
-          if client.name == "tsserver" then
-            return
-          end
-
           -- Create an autocmd that will run *before* we save the buffer.
           --  Run the formatting command for the LSP that has just attached.
           vim.api.nvim_create_autocmd("BufWritePre", {
             group = get_augroup(client),
             buffer = bufnr,
             callback = function()
-              if not format_is_enabled then
-                return
-              end
-
               vim.lsp.buf.format({
                 async = false,
                 filter = function(c)
@@ -169,4 +152,27 @@ return {
       require("lspkind").init(opts)
     end,
   },
+  {
+    "lewis6991/hover.nvim",
+    config = function()
+      require("hover").setup({
+        init = function()
+          require("hover.providers.lsp")
+          require('hover.providers.gh')
+          require('hover.providers.gh_user')
+          -- require('hover.providers.jira')
+          require('hover.providers.man')
+          require('hover.providers.dictionary')
+        end,
+        -- preview_opts = {
+        --   border = nil
+        -- },
+        preview_window = false,
+        title = true
+
+      })
+      vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
+      vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
+    end
+  }
 }

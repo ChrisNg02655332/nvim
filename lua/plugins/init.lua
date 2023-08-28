@@ -1,8 +1,11 @@
 return {
   "nvim-lua/plenary.nvim",
-  "lifepillar/vim-solarized8",
+  -- "lifepillar/vim-solarized8",
+  "olimorris/onedarkpro.nvim",
   "lukas-reineke/indent-blankline.nvim",
   "jose-elias-alvarez/typescript.nvim",
+  "famiu/bufdelete.nvim",
+  { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },
 
   {
     "nvim-treesitter/nvim-treesitter",

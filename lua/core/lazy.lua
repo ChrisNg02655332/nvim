@@ -18,4 +18,5 @@ require("lazy").setup("plugins")
 local utils = require "core.utils"
 utils.load_mappings("general")
 
-pcall(vim.cmd.colorscheme, "solarized8_flat")
+-- pcall(vim.cmd.colorscheme, "solarized8_flat")
+pcall(vim.cmd.colorscheme, "onedark")
