@@ -10,6 +10,11 @@ vim.keymap.set('n', '<leader>C', "<cmd> xa <CR>", { desc = 'Force close buffer' 
 -- Lazy git
 vim.keymap.set('n', '<leader>gg', function() utils.toggle_term_cmd("lazygit") end, { desc = 'ToggleTerm lazygit' })
 
+-- Comment
+vim.keymap.set('n', '<leader>/', require("Comment.api").toggle.linewise.current, { desc = 'Toggle comment' })
+vim.keymap.set('v', '<leader>/', "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+	{ desc = 'Toggle comment' })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
