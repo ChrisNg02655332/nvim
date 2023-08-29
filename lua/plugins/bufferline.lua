@@ -1,28 +1,28 @@
 return {
-"famiu/bufdelete.nvim",
-  {
-    "akinsho/bufferline.nvim",
-    version = "*",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    event = "VeryLazy",
-    opts = {
-      options = {
-		close_command = function(bufnum)
-			require("bufdelete").bufdelete(bufnum, false)
-		end,
-		diagnostics = "nvim_lsp",
-		offsets = {
-			{
-				filetype = "neo-tree",
-				text = "",
-				highlight = "Directory",
-				text_align = "left",
+	"famiu/bufdelete.nvim",
+	{
+		"akinsho/bufferline.nvim",
+		version = "*",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		event = "VeryLazy",
+		opts = {
+			options = {
+				close_command = function(bufnum)
+					require("bufdelete").bufdelete(bufnum, false)
+				end,
+				diagnostics = "nvim_lsp",
+				offsets = {
+					{
+						filetype = "neo-tree",
+						text = "",
+						highlight = "Directory",
+						text_align = "left",
+					},
+				},
 			},
 		},
+		config = function(_, opts)
+			require("bufferline").setup(opts)
+		end,
 	},
-  },
-    config = function(_, opts)
-      require("bufferline").setup(opts)
-    end,
-  },
 }
