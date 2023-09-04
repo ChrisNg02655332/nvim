@@ -5,7 +5,33 @@ local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
+local function border(hl_name)
+  return {
+    { "╭", hl_name },
+    { "─", hl_name },
+    { "╮", hl_name },
+    { "│", hl_name },
+    { "╯", hl_name },
+    { "─", hl_name },
+    { "╰", hl_name },
+    { "│", hl_name },
+  }
+end
+
 cmp.setup {
+  completion = {
+    completeopt = "menu,menuone",
+  },
+  window = {
+    completion = {
+      side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
+      -- winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+    },
+    documentation = {
+      border = border "CmpDocBorder",
+      winhighlight = "Normal:CmpDoc",
+    },
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
