@@ -56,14 +56,14 @@ return {
 				delete = { text = '_' },
 				topdelete = { text = '‾' },
 				changedelete = { text = '~' },
+				-- ,
 			},
 			on_attach = function(bufnr)
 				vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
 					{ buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-				vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk,
-					{ buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-				vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk,
-					{ buffer = bufnr, desc = '[P]review [H]unk' })
+				vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
+				vim.keymap.set('n', '<leader>gh', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
+				vim.keymap.set('n', '<leader>gb', require('gitsigns').blame_line, { buffer = bufnr, desc = '[B]lame [L]ine' })
 			end,
 		},
 	},
@@ -142,4 +142,11 @@ return {
 			require "plugins.configs.treesitter"
 		end
 	},
+
+	{
+		"max397574/better-escape.nvim",
+		config = function()
+			require("better_escape").setup()
+		end
+	}
 }
