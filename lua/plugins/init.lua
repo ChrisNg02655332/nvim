@@ -45,6 +45,7 @@ return {
 
 	-- Useful plugin to show you pending keybinds.
 	{ 'folke/which-key.nvim', opts = {} },
+
 	{
 		-- Adds git related signs to the gutter, as well as utilities for managing changes
 		'lewis6991/gitsigns.nvim',
@@ -103,11 +104,6 @@ return {
 		},
 	},
 
-	-- "gc" to comment visual regions/lines
-	{
-		'numToStr/Comment.nvim', opts = {}
-	},
-
 	-- Fuzzy Finder (files, lsp, etc)
 	{
 		'nvim-telescope/telescope.nvim',
@@ -150,6 +146,17 @@ return {
 			require("better_escape").setup()
 		end
 	},
+
+	-- "gc" to comment visual regions/lines
+	{
+		'numToStr/Comment.nvim', opts = {}
+	},
+
+	{
+		'stevearc/dressing.nvim',
+		opts = {},
+	},
+
 	{
 		'VonHeikemen/fine-cmdline.nvim',
 		requires = {
@@ -158,5 +165,11 @@ return {
 		config = function()
 			vim.api.nvim_set_keymap('n', '<CR>', '<cmd>FineCmdline<CR>', { noremap = true })
 		end
-	}
+	},
+
+	{
+		"folke/todo-comments.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		opts = {}
+	},
 }
