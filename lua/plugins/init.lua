@@ -87,6 +87,7 @@ return {
 				theme = 'onedark',
 				component_separators = '|',
 				section_separators = '',
+				disabled_filetypes = { 'neo-tree' }
 			},
 		},
 	},
@@ -147,6 +148,15 @@ return {
 		"max397574/better-escape.nvim",
 		config = function()
 			require("better_escape").setup()
+		end
+	},
+	{
+		'VonHeikemen/fine-cmdline.nvim',
+		requires = {
+			{ 'MunifTanjim/nui.nvim' }
+		},
+		config = function()
+			vim.api.nvim_set_keymap('n', '<CR>', '<cmd>FineCmdline<CR>', { noremap = true })
 		end
 	}
 }
