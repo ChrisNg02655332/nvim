@@ -29,7 +29,7 @@ local on_attach = function(_, bufnr)
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
-  nmap('n', '<leader>q', vim.diagnostic.setloclist, 'Open diagnostics list')
+  nmap('<leader>q', vim.diagnostic.setloclist, 'Open diagnostics list')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
