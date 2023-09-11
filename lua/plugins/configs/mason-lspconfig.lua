@@ -59,6 +59,7 @@ end
 local servers = {
   elixirls = {},
   eslint = {},
+  jsonls = {},
   tsserver = {},
 
   lua_ls = {
