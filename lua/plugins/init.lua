@@ -62,9 +62,12 @@ return {
 			on_attach = function(bufnr)
 				vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
 					{ buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-				vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-				vim.keymap.set('n', '<leader>gh', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
-				vim.keymap.set('n', '<leader>gb', require('gitsigns').blame_line, { buffer = bufnr, desc = '[B]lame [L]ine' })
+				vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk,
+					{ buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
+				vim.keymap.set('n', '<leader>gh', require('gitsigns').preview_hunk,
+					{ buffer = bufnr, desc = '[P]review [H]unk' })
+				vim.keymap.set('n', '<leader>gb', require('gitsigns').blame_line,
+					{ buffer = bufnr, desc = '[B]lame [L]ine' })
 			end,
 		},
 	},
@@ -158,13 +161,45 @@ return {
 	},
 
 	{
-		'VonHeikemen/fine-cmdline.nvim',
-		requires = {
-			{ 'MunifTanjim/nui.nvim' }
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"MunifTanjim/nui.nvim",
 		},
-		config = function()
-			vim.api.nvim_set_keymap('n', '<CR>', '<cmd>FineCmdline<CR>', { noremap = true })
-		end
+		opts = {
+			cmdline = {
+				view = "cmdline_popup",
+				format = { cmdline = { pattern = "^:", icon = ">_", lang = "vim" }, }
+			},
+			lsp = {
+				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+				override = {
+					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+					["vim.lsp.util.stylize_markdown"] = true,
+					["cmp.entry.get_documentation"] = true,
+				},
+			},
+			presets = {
+				bottom_search = true, -- use a classic bottom cmdline for search
+				command_palette = {
+					views = {
+						cmdline_popup = {
+							position = {
+								row = 10,
+							},
+						},
+						cmdline_popupmenu = {
+							position = {
+								row = 13,
+							}
+						}
+					},
+				},                        -- position the cmdline and popupmenu together
+				long_message_to_split = true, -- long messages will be sent to a split
+				inc_rename = false,       -- enables an input dialog for inc-rename.nvim
+				lsp_doc_border = false,   -- add a border to hover docs and signature help
+			},
+		},
 	},
 
 	{
