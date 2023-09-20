@@ -1,5 +1,6 @@
 return {
 	"famiu/bufdelete.nvim",
+
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",

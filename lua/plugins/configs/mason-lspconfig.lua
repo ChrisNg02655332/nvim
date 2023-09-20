@@ -31,8 +31,8 @@ local on_attach = function(_, bufnr)
 
   nmap('[d', vim.diagnostic.goto_prev, 'Go to previous diagnostic message')
   nmap(']d', vim.diagnostic.goto_next, 'Go to next diagnostic message')
-  nmap('<leader>ld', vim.diagnostic.open_float, 'Open floating diagnostic message')
-  nmap('<leader>q', vim.diagnostic.setloclist, 'Open diagnostics list')
+  -- nmap('<leader>ld', vim.diagnostic.open_float, 'Open floating diagnostic message')
+  -- nmap('<leader>q', vim.diagnostic.setloclist, 'Open diagnostics list')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
