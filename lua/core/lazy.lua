@@ -12,7 +12,9 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup("plugins")
+require('lazy').setup({
+	spec = { require "plugins", { import = 'user.plugins' } }
+}, {})
 
 require "plugins.configs.mason-lspconfig"
 require "plugins.configs.cmp"
