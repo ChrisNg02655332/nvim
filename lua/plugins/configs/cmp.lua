@@ -23,10 +23,10 @@ cmp.setup {
     completeopt = "menu,menuone",
   },
   window = {
-    completion = {
-      side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
-      -- winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-    },
+    completion = cmp.config.window.bordered({
+      side_padding = 1,
+      winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
+    }),
     documentation = {
       border = border "CmpDocBorder",
       winhighlight = "Normal:CmpDoc",
