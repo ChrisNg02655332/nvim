@@ -11,6 +11,9 @@ return {
 				close_command = function(bufnum)
 					require("bufdelete").bufdelete(bufnum, false)
 				end,
+				left_trunc_marker = '',
+				right_trunc_marker = '',
+				separator_style = "thin",
 				diagnostics = "nvim_lsp",
 				offsets = {
 					{
@@ -21,9 +24,6 @@ return {
 					},
 				},
 			},
-		},
-		config = function(_, opts)
-			require("bufferline").setup(opts)
-		end,
+		}
 	},
 }
