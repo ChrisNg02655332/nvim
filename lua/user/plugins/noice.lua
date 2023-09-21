@@ -1,3 +1,5 @@
+local get_icon = require("core.utils").get_icon
+
 return {
 	{
 		"folke/noice.nvim",
@@ -8,7 +10,11 @@ return {
 		opts = {
 			cmdline = {
 				view = "cmdline_popup",
-				format = { cmdline = { pattern = "^:", icon = ">_", lang = "vim" }, }
+				format = {
+					cmdline = { pattern = "^:", icon = ">_", lang = "vim" },
+					search_down = { kind = "search", pattern = "^/", icon = get_icon("Search", 1) .. "", lang = "regex" },
+					search_up = { kind = "search", pattern = "^%?", icon = get_icon("Search", 1) .. "", lang = "regex" },
+				}
 			},
 			lsp = {
 				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
