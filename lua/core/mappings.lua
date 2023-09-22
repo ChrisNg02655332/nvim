@@ -7,6 +7,10 @@ vim.keymap.set("n", "<C-s>", "<cmd> w <CR>", { desc = "Save Buffer" })
 vim.keymap.set("n", "<leader>c", function() require("bufdelete").bufdelete(0, false) end, { desc = "Close Buffer" })
 vim.keymap.set("n", "<leader>C", "<cmd> qa <CR>", { desc = "Force Close Buffer" })
 
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window Left" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window Right" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Window Down" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Window Up" })
 -- Lazy git
 vim.keymap.set("n", "<leader>gg", function() utils.toggle_term_cmd("lazygit") end, { desc = "ToggleTerm LazyGit" })
 
