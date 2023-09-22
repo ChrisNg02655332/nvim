@@ -36,7 +36,7 @@ function make_entry.gen_from_buffer(opts)
 
 		return displayer {
 			{ entry.bufnr,     "TelescopeResultsNumber" },
-			{ entry.indicator, "TelescopePreviewDirectory" },
+			{ entry.indicator, "TelescopePreviewExecute" },
 			{ entry.devicons,  entry.devicons_highlight },
 			display_bufname,
 		}
