@@ -150,6 +150,8 @@ return {
     build = ':TSUpdate',
   },
 
+  'famiu/bufdelete.nvim',
+
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
