@@ -18,4 +18,5 @@ require('lazy').setup({
 
 require "plugins.configs.mason-lspconfig"
 require "plugins.configs.cmp"
+require "plugins.configs.telescope"
 require "plugins.configs.treesitter"

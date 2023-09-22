@@ -66,7 +66,8 @@ return {
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').preview_hunk,
+          { buffer = bufnr, desc = 'Preview Git hunk' })
         vim.keymap.set('n', '<leader>gb', require('gitsigns').blame_line, { buffer = bufnr, desc = 'Blame line' })
 
         -- don't override the built-in and fugitive keymaps
@@ -140,9 +141,6 @@ return {
         end,
       },
     },
-    config = function()
-      require "plugins.configs.telescope"
-    end
   },
 
   {
