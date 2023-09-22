@@ -13,7 +13,7 @@ return {
 				end,
 				left_trunc_marker = '',
 				right_trunc_marker = '',
-				separator_style = "thin",
+				-- separator_style = "thin",
 				diagnostics = "nvim_lsp",
 				offsets = {
 					{
