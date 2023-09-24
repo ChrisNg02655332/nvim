@@ -93,6 +93,29 @@ return {
     end,
   },
 
+  -- {
+  --   "rebelot/kanagawa.nvim",
+  --   priority = 1000,
+  --   opts = {
+  --     colors = {
+  --       theme = {
+  --         all = {
+  --           ui = {
+  --             float = {
+  --               bg = "none",
+  --             },
+  --           }
+  --         }
+  --       }
+  --     }
+  --   },
+  --   config = function(_, opts)
+  --     -- vim.cmd.colorscheme 'onedark'
+  --     vim.cmd.colorscheme 'kanagawa'
+  --     require('kanagawa').setup(opts)
+  --   end,
+  -- },
+
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
