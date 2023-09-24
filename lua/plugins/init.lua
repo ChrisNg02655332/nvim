@@ -99,10 +99,21 @@ return {
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
         component_separators = '|',
         section_separators = '',
       },
+      sections = {
+        lualine_x = {
+          {
+            'fileformat',
+            symbols = {
+              unix = vim.fn.has('macunix') == 1 and '' or '', -- e712
+              dos = '', -- e70f
+              mac = '', -- e711
+            }
+          }
+        }
+      }
     },
   },
 
