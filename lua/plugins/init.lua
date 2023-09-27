@@ -95,9 +95,10 @@ return {
 
   {
     "ChrisNg02655332/kanagawa-nvim",
+    -- dir = "~/Documents/projects/nvim/kanagawa",
     priority = 1000,
     config = function()
-      require("kanagawa").setup()
+      vim.cmd.colorscheme 'kanagawa'
     end
   },
 
