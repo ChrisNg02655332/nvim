@@ -7,15 +7,6 @@ return {
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},
-		-- init = function()
-		-- 	vim.api.nvim_set_hl(0, 'NoiceCmdlineIcon', { link = 'Normal' })
-		-- 	vim.api.nvim_set_hl(0, 'NoiceCmdlinePopupTitle', { link = 'Normal' })
-		-- 	vim.api.nvim_set_hl(0, 'NoiceCmdlinePopupBorder', { link = 'Normal' })
-		-- 	vim.api.nvim_set_hl(0, 'NoiceCompletionItemMenu', { link = 'Normal' })
-		-- 	vim.api.nvim_set_hl(0, 'NoiceFormatConfirmDefault', { link = 'Normal' })
-		-- 	vim.api.nvim_set_hl(0, 'NoiceConfirmPopupTitle', { link = 'Normal' })
-		-- 	vim.api.nvim_set_hl(0, 'NoiceConfirmBorder', { link = 'Normal' })
-		-- end,
 		opts = {
 			cmdline = {
 				view = "cmdline_popup",

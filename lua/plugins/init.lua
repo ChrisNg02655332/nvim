@@ -84,37 +84,22 @@ return {
     },
   },
 
-  {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
-  },
-
   -- {
-  --   "rebelot/kanagawa.nvim",
+  --   -- Theme inspired by Atom
+  --   'navarasu/onedark.nvim',
   --   priority = 1000,
-  --   opts = {
-  --     colors = {
-  --       theme = {
-  --         all = {
-  --           ui = {
-  --             float = {
-  --               bg = "none",
-  --             },
-  --           }
-  --         }
-  --       }
-  --     }
-  --   },
-  --   config = function(_, opts)
-  --     -- vim.cmd.colorscheme 'onedark'
-  --     vim.cmd.colorscheme 'kanagawa'
-  --     require('kanagawa').setup(opts)
+  --   config = function()
+  --     vim.cmd.colorscheme 'onedark'
   --   end,
   -- },
+
+  {
+    "ChrisNg02655332/kanagawa-nvim",
+    priority = 1000,
+    config = function()
+      require("kanagawa").setup()
+    end
+  },
 
   {
     -- Set lualine as statusline
@@ -192,4 +177,15 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {},
   },
+
+  {
+    "utilyre/barbecue.nvim",
+    event = "VeryLazy",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    opts = {},
+  }
 }
