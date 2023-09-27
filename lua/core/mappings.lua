@@ -27,3 +27,7 @@ vim.keymap.set("n", "<leader>lD", function() require("trouble").open() end, { de
 -- vim.keymap.set("n", "<leader>ll", function() require("trouble").open("loclist") end, { desc = "Open [T]rouble loclist" })
 vim.keymap.set("n", "lr", function() require("trouble").open("lsp_references") end,
 	{ desc = "Open Trouble LSP Refer" })
+
+-- Navbuddy
+vim.keymap.set("n", "<leader>dd", function() require("nvim-navbuddy").open() end,
+	{ desc = "Popup Display Breadcrumbs" })

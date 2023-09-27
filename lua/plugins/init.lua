@@ -179,13 +179,11 @@ return {
   },
 
   {
-    "utilyre/barbecue.nvim",
-    event = "VeryLazy",
-    version = "*",
+    "SmiteshP/nvim-navbuddy",
     dependencies = {
       "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons", -- optional dependency
+      "MunifTanjim/nui.nvim"
     },
-    opts = {},
+    opts = { lsp = { auto_attach = true } }
   }
 }
