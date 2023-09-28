@@ -54,13 +54,24 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-------------------------------------- autocmds ------------------------------------------
+local autocmd = vim.api.nvim_create_autocmd
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
+autocmd('TextYankPost', {
 	callback = function()
 		vim.highlight.on_yank()
 	end,
 	group = highlight_group,
 	pattern = '*',
+})
+
+autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		vim.keymap.set('n', "<Esc>", require("core.utils").close_qf, { desc = "Close qf" })
+		vim.keymap.set('n', "q", require("core.utils").close_qf, { desc = "Close qf" })
+	end,
 })
