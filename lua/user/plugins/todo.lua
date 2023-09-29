@@ -7,7 +7,6 @@ return {
     keys = {
       { "<leader>ss", "<cmd>TodoTelescope<cr>", desc = "Todo Telescope" },
       { "<leader>sq", "<cmd>TodoQuickFix<cr>",  desc = "Todo Quick Fix" },
-
     },
   },
 }

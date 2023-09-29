@@ -132,9 +132,14 @@ return {
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
     opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
+      indent = {
+        char = '┊',
+        show_current_context = true
+      },
     },
+    config = function(_, opts)
+      require("ibl").setup(opts)
+    end
   },
 
   -- "gc" to comment visual regions/lines
@@ -179,12 +184,4 @@ return {
     opts = {},
   },
 
-  {
-    "SmiteshP/nvim-navbuddy",
-    dependencies = {
-      "SmiteshP/nvim-navic",
-      "MunifTanjim/nui.nvim"
-    },
-    opts = { lsp = { auto_attach = true } }
-  }
 }
