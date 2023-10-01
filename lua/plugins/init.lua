@@ -134,7 +134,6 @@ return {
     opts = {
       indent = {
         char = '┊',
-        show_current_context = true
       },
     },
     config = function(_, opts)
