@@ -26,6 +26,7 @@ cmp.setup {
     completion = cmp.config.window.bordered({
       side_padding = 1,
       winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
+      scrollbar = false,
     }),
     documentation = {
       border = border "CmpDocBorder",

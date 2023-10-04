@@ -94,6 +94,10 @@ mason_lspconfig.setup_handlers {
     }
   end,
 
+  ["tsserver"] = function(_, opts)
+    require("typescript").setup { server = opts }
+  end,
+
   ["eslint"] = function()
     lspconfig.eslint.setup {
       on_attach = function(_, bufnr)
