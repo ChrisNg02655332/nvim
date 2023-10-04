@@ -7,7 +7,7 @@ return {
     },
     opts = { lsp = { auto_attach = true } },
     keys = {
-      { "<leader>dd", "<cmd> Navbuddy open <CR>", { desc = "Popup Display Breadcrumbs" } }
+      { "<leader>dd", "<cmd> Navbuddy <CR>", { desc = "Popup Display Breadcrumbs" } }
     },
   }
 }
