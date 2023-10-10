@@ -32,11 +32,11 @@ return {
 
       -- You can provide additional configuration to the handlers,
       -- see mason-nvim-dap README for more information
-      handlers = {
-        function(config)
-          require("mason-nvim-dap").default_setup(config)
-        end,
-      },
+      -- handlers = {
+      --   function(config)
+      --     require("mason-nvim-dap").default_setup(config)
+      --   end,
+      -- },
 
       -- You"ll need to check that you have the required things installed
       ensure_installed = {

@@ -110,8 +110,15 @@ return {
       options = {
         component_separators = '|',
         section_separators = '',
+        disabled_filetypes = { 'toggleterm' }
       },
       sections = {
+        lualine_c = { {
+          'filename',
+          cond = function()
+            return vim.bo.filetype ~= 'neo-tree'
+          end
+        } },
         lualine_x = {
           {
             'fileformat',

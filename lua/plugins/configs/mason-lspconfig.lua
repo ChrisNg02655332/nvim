@@ -58,6 +58,7 @@ local servers = {
   eslint = {},
   jsonls = {},
   tsserver = {},
+  graphql = {},
 
   lua_ls = {
     Lua = {
