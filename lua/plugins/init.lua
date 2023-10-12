@@ -113,12 +113,14 @@ return {
         disabled_filetypes = { 'toggleterm' }
       },
       sections = {
-        lualine_c = { {
-          'filename',
-          cond = function()
-            return vim.bo.filetype ~= 'neo-tree'
-          end
-        } },
+        lualine_c = {
+          {
+            'filename',
+            cond = function()
+              return vim.bo.filetype ~= 'neo-tree'
+            end
+          }
+        },
         lualine_x = {
           {
             'fileformat',
@@ -127,8 +129,8 @@ return {
               dos = '', -- e70f
               mac = '', -- e711
             }
-          }
-        }
+          },
+        },
       }
     },
   },
