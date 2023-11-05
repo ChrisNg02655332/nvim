@@ -13,10 +13,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-	spec = { require "plugins", { import = 'user.plugins' } }
+	spec = {
+		{ import = "plugins" },
+		{ import = 'user.plugins' }
+	}
 }, {})
-
-require "plugins.configs.mason-lspconfig"
-require "plugins.configs.cmp"
-require "plugins.configs.telescope"
-require "plugins.configs.treesitter"
