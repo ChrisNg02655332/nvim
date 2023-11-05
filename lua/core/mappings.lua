@@ -20,8 +20,9 @@ vim.keymap.set("v", "<leader>/", "<ESC><cmd>lua require('Comment.api').toggle.li
 
 -- Trouble
 vim.keymap.set("n", "<leader>lD", function() require("trouble").open() end, { desc = "Open Trouble" })
+vim.keymap.set("n", "<leader>ld", function() require("trouble").open("document_diagnostics") end,
+	{ desc = "Open Document Diagnostics" })
 -- vim.keymap.set("n", "<leader>lw", function() require("trouble").open("workspace_diagnostics") end)
--- vim.keymap.set("n", "<leader>ld", function() require("trouble").open("document_diagnostics") end)
 -- vim.keymap.set("n", "<leader>xq", function() require("trouble").open("quickfix") end)
 -- vim.keymap.set("n", "<leader>ll", function() require("trouble").open("loclist") end, { desc = "Open [T]rouble loclist" })
 vim.keymap.set("n", "lr", function() require("trouble").open("lsp_references") end,

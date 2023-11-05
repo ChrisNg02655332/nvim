@@ -5,15 +5,17 @@ return {
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
+  'famiu/bufdelete.nvim',
 
-  {
-    "max397574/better-escape.nvim",
-    config = function()
-      require("better_escape").setup()
-    end
-  },
+  { "max397574/better-escape.nvim", opts = {} },
+  { 'stevearc/dressing.nvim',       opts = {} },
 
-  { 'stevearc/dressing.nvim', opts = {} },
+  -- "gc" to comment visual regions/lines
+  { 'numToStr/Comment.nvim',        opts = {} },
+
+  -- Useful plugin to show you pending keybinds.
+  { 'folke/which-key.nvim',         opts = {} },
+
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -50,9 +52,6 @@ return {
     },
   },
 
-  -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',   opts = {} },
-
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -84,18 +83,10 @@ return {
     },
   },
 
-  -- {
-  --   -- Theme inspired by Atom
-  --   'navarasu/onedark.nvim',
-  --   priority = 1000,
-  --   config = function()
-  --     vim.cmd.colorscheme 'onedark'
-  --   end,
-  -- },
-
   {
-    "ChrisNg02655332/kanagawa-nvim",
-    -- dir = "~/Documents/projects/nvim/kanagawa",
+    -- "ChrisNg02655332/kanagawa-nvim",
+    "rebelot/kanagawa.nvim",
+    -- dir = "~/Documents/projects/packages/nvim/midnight",
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'kanagawa'
@@ -103,9 +94,7 @@ return {
   },
 
   {
-    -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
     opts = {
       options = {
         component_separators = '|',
@@ -136,22 +125,12 @@ return {
   },
 
   {
-    -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    opts = {
-      indent = {
-        char = '┊',
-      },
-    },
+    opts = { indent = { char = '┊' } },
     config = function(_, opts)
       require("ibl").setup(opts)
     end
   },
-
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -183,8 +162,6 @@ return {
     },
     build = ':TSUpdate',
   },
-
-  'famiu/bufdelete.nvim',
 
   {
     "folke/trouble.nvim",
