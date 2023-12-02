@@ -284,7 +284,6 @@ return {
 		end,
 		options = function() require("plugins.configs.ufo") end,
 		config = function(_, opts)
-			opts["fold_virt_text_handler"] = handler
 			require("ufo").setup(opts)
 
 			vim.keymap.set("n", "f", function()

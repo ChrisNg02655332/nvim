@@ -19,6 +19,9 @@ local function border(hl_name)
 end
 
 cmp.setup {
+	completion = {
+		completeopt = "menu,menuone",
+	},
 	window = {
 		completion = cmp.config.window.bordered({
 			side_padding = 1,

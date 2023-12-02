@@ -1,5 +1,6 @@
 _G.antbase = {
 	plugins = {},
+	treesitter = {},
 	lsp = {
 		servers = {},
 		setup_handlers = {}

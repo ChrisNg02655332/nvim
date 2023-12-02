@@ -1,5 +1,7 @@
+local ensure_installed = require("core.utils").extend_tbl({ 'lua' }, antbase.treesitter)
+
 require('nvim-treesitter.configs').setup({
-	ensure_installed = { 'lua', 'tsx', 'typescript', 'elixir', 'graphql', 'heex' },
+	ensure_installed = ensure_installed,
 	auto_install = true,
 	sync_install = true,
 	modules = {},

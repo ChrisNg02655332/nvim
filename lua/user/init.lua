@@ -2,6 +2,9 @@ return {
 	plugins = {
 		'jose-elias-alvarez/typescript.nvim',
 	},
+	treesitter = {
+		ensure_installed = { 'tsx', 'typescript', 'elixir', 'heex' }
+	},
 	lsp = {
 		servers = {
 			elixirls = {},
