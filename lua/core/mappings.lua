@@ -36,7 +36,15 @@ M.Comment = {
 
 M.Lsp = {
 	n = {
-		['gd'] = { vim.lsp.buf.definition, { desc = 'Goto Definition' } }
+		["gd"] = { vim.lsp.buf.definition, { desc = "Goto Definition" } },
+		["gr"] = { function() require('telescope.builtin').lsp_references() end, { desc = "Goto References" } },
+		["gI"] = { vim.lsp.buf.implementation, desc = "Goto Implementation" },
+		["<leader>D"] = { vim.lsp.buf.type_definition, { desc = "Type Definition" } },
+		["<leader>ds"] = { function() require('telescope.builtin').lsp_document_symbols() end, { desc = "Document Symbols" } },
+		["<leader>ws"] = { function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, { desc = "Workspace Symbols" } },
+		["K"] = { vim.lsp.buf.hover, { desc = "Hover Documentation" } },
+		["[d"] = { vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" } },
+		["]d"] = { vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" } },
 	}
 }
 
