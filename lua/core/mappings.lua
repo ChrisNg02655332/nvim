@@ -40,6 +40,21 @@ M.Lsp = {
 	}
 }
 
+M.Neotree = {
+	n = {
+		["<leader>e"] = { "<cmd> Neotree toggle <cr>", { desc = 'Toggle Explorer' } },
+		["<leader>o"] = {
+			function()
+				if vim.bo.filetype == "neo-tree" then
+					vim.cmd.wincmd("p")
+				else
+					vim.cmd.Neotree("focus")
+				end
+			end,
+			{ desc = "Toggle Explorer" } }
+	}
+}
+
 M.Term = {
 	n = {
 		["<leader>gg"] = {

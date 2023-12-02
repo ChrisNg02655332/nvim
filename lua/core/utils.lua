@@ -1,8 +1,13 @@
-local mappings = require "core.mappings"
+local mappings    = require "core.mappings"
 
-local M = {}
+local M           = {}
 
-M.load_mappings = function(section)
+M.get_icon        = function(kind, padding)
+	local icon = require("core.icons")[kind]
+	return icon and icon .. string.rep(" ", padding or 0) or ""
+end
+
+M.load_mappings   = function(section)
 	vim.schedule(function()
 		local function set_section_map(section_values)
 			for mode, mode_values in pairs(section_values) do
@@ -45,7 +50,7 @@ M.toggle_term_cmd = function(opts)
 	terms[opts.cmd][num]:toggle()
 end
 
-M.close_qf = function()
+M.close_qf        = function()
 	local qf_exists = false
 	for _, win in pairs(vim.fn.getwininfo()) do
 		if win["quickfix"] == 1 then

@@ -122,7 +122,10 @@ return {
 	},
 
 
-	"famiu/bufdelete.nvim",
+	{
+		"famiu/bufdelete.nvim",
+		init = function() utils.load_mappings("BDelete") end
+	},
 
 	{
 		'numToStr/Comment.nvim',
@@ -178,6 +181,22 @@ return {
 				},
 			}
 		},
+	},
+
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+		},
+		init = function() utils.load_mappings("Neotree") end,
+		opts = require("plugins.configs.neotree"),
+		config = function(_, opts)
+			vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
+			require("neo-tree").setup(opts)
+		end
 	},
 
 	{
