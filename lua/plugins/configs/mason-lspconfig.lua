@@ -1,3 +1,4 @@
+local utils = require "core.utils"
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
@@ -43,12 +44,7 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
-local servers = {
-  elixirls = {},
-  eslint = {},
-  jsonls = {},
-  -- tsserver = {},
-
+local _servers = {
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -56,6 +52,8 @@ local servers = {
     },
   },
 }
+
+local servers = utils.extend_tbl(_servers, antbase.lsp.servers)
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -83,20 +81,7 @@ mason_lspconfig.setup_handlers {
     }
   end,
 
-  -- ["tsserver"] = function(_, opts)
-  --   require("typescript").setup { server = opts }
-  -- end,
-
-  ["eslint"] = function()
-    lspconfig.eslint.setup {
-      on_attach = function(_, bufnr)
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          buffer = bufnr,
-          command = "EslintFixAll",
-        })
-      end,
-    }
-  end,
+  antbase.lsp.setup_handlers,
 }
 
 -- autoformat

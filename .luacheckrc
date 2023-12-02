@@ -1,3 +1,3 @@
 globals = {
-	"_NVIM",
+	"antbase",
 }

@@ -4,6 +4,15 @@ return {
 	"tpope/vim-sleuth",
 
 	{
+		"EdenEast/nightfox.nvim",
+		priority = 1000,
+		config = function()
+			-- load the colorscheme here
+			vim.cmd([[colorscheme nightfox]])
+		end,
+	},
+
+	{
 		-- LSP Configuration & Plugins
 		'neovim/nvim-lspconfig',
 		dependencies = {
@@ -121,6 +130,21 @@ return {
 		},
 	},
 
+	{
+		"windwp/nvim-autopairs",
+		-- Optional dependency
+		dependencies = { 'hrsh7th/nvim-cmp' },
+		config = function()
+			require("nvim-autopairs").setup {}
+			-- If you want to automatically add `(` after selecting a function or method
+			local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+			local cmp = require('cmp')
+			cmp.event:on(
+				'confirm_done',
+				cmp_autopairs.on_confirm_done()
+			)
+		end,
+	},
 
 	{
 		"famiu/bufdelete.nvim",
@@ -200,6 +224,17 @@ return {
 	},
 
 	{
+		"folke/todo-comments.nvim",
+		event = "BufEnter",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		opts = {},
+		keys = {
+			{ "<leader>ss", "<cmd>TodoTelescope<cr>", desc = "Todo Telescope" },
+			{ "<leader>sq", "<cmd>TodoQuickFix<cr>",  desc = "Todo Quick Fix" },
+		},
+	},
+
+	{
 		"akinsho/toggleterm.nvim",
 		cmd = { "ToggleTerm", "TermExec" },
 		opts = {
@@ -218,6 +253,48 @@ return {
 		init = utils.load_mappings("Term")
 	},
 
+	{
+		"kevinhwang91/nvim-ufo",
+		event = "VeryLazy",
+		dependencies = {
+			"kevinhwang91/promise-async",
+			{
+				"luukvbaal/statuscol.nvim",
+				config = function()
+					local builtin = require("statuscol.builtin")
+					require("statuscol").setup(
+						{
+							relculright = true,
+							segments = {
+								{ text = { builtin.foldfunc },      click = "v:lua.ScFa" },
+								{ text = { "%s" },                  click = "v:lua.ScSa" },
+								{ text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" }
+							}
+						}
+					)
+				end
+			}
+		},
+		init = function()
+			-- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+			vim.o.foldcolumn = "0" -- '0' is not bad
+			vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+			vim.o.foldlevelstart = 99
+			vim.o.foldenable = true
+		end,
+		options = function() require("plugins.configs.ufo") end,
+		config = function(_, opts)
+			opts["fold_virt_text_handler"] = handler
+			require("ufo").setup(opts)
+
+			vim.keymap.set("n", "f", function()
+				local winid = require("ufo").peekFoldedLinesUnderCursor()
+				if not winid then
+					vim.lsp.buf.hover()
+				end
+			end)
+		end
+	},
 
 	{ 'folke/which-key.nvim',   opts = {} },
 }
