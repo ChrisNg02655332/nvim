@@ -1,4 +1,4 @@
-local ensure_installed = require("core.utils").extend_tbl({ 'lua' }, antbase.treesitter)
+local ensure_installed = require("core.utils").extend_tbl({ 'lua' }, antbase.treesitter.ensure_installed)
 
 require('nvim-treesitter.configs').setup({
 	ensure_installed = ensure_installed,

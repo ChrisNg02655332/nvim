@@ -3,7 +3,7 @@ return {
 		'jose-elias-alvarez/typescript.nvim',
 	},
 	treesitter = {
-		ensure_installed = { 'tsx', 'typescript', 'elixir', 'heex' }
+		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
 	},
 	lsp = {
 		servers = {
