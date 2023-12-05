@@ -1,5 +1,14 @@
 return {
 	plugins = {
+		{
+			"EdenEast/nightfox.nvim",
+			priority = 1000,
+			config = function()
+				-- load the colorscheme here
+				vim.cmd([[colorscheme nightfox]])
+			end,
+		},
+
 		'jose-elias-alvarez/typescript.nvim',
 	},
 	treesitter = {
@@ -27,7 +36,6 @@ return {
 					end,
 				}
 			end,
-
 		}
 	}
 }

@@ -1,4 +1,11 @@
-local mappings    = require "core.mappings"
+local mappings = require "core.mappings"
+local user_mappings = {}
+
+local status_ok, loaded_module = pcall(require, "user.mappings")
+if status_ok then
+	user_mappings = loaded_module
+end
+
 
 local M           = {}
 
@@ -12,14 +19,13 @@ M.load_mappings   = function(section)
 		local function set_section_map(section_values)
 			for mode, mode_values in pairs(section_values) do
 				for keybind, mapping_info in pairs(mode_values) do
-					local opts = mapping_info.opts or {}
-					opts.desc = mapping_info[2]
-					vim.keymap.set(mode, keybind, mapping_info[1], opts)
+					vim.keymap.set(mode, keybind, mapping_info[1], mapping_info[2])
 				end
 			end
 		end
 
-		set_section_map(mappings[section])
+		local merge_mappings = M.extend_tbl(mappings, user_mappings)
+		set_section_map(merge_mappings[section])
 	end)
 end
 
