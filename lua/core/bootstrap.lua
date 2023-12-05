@@ -25,6 +25,10 @@ vim.opt.rtp:prepend(lazypath)
 local status_ok, loaded_module = pcall(require, "user.init")
 if status_ok then
 	antbase = loaded_module
+	if type(antbase.init) == "function" then
+						antbase.init()
+
+	end
 else
 	vim.notify("No user_config found!")
 end
