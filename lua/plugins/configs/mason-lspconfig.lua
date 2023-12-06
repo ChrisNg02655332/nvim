@@ -54,10 +54,9 @@ mason_lspconfig.setup_handlers {
 
 -- Switch for controlling whether you want autoformatting.
 --  Use :KickstartFormatToggle to toggle autoformatting on or off
-local format_is_enabled = true
-vim.api.nvim_create_user_command('KickstartFormatToggle', function()
-  format_is_enabled = not format_is_enabled
-  print('Setting autoformatting to: ' .. tostring(format_is_enabled))
+vim.api.nvim_create_user_command('AntbaseFormatToggle', function()
+  antbase.lsp.formatting.format_on_save = not antbase.lsp.formatting.format_on_save
+  print('Setting autoformatting to: ' .. tostring(antbase.lsp.formatting.format_on_save))
 end, {})
 
 -- Create an augroup that is used for managing our formatting autocmds.
@@ -66,7 +65,7 @@ end, {})
 local _augroups = {}
 local get_augroup = function(client)
   if not _augroups[client.id] then
-    local group_name = 'kickstart-lsp-format-' .. client.name
+    local group_name = 'antbase-lsp-format-' .. client.name
     local id = vim.api.nvim_create_augroup(group_name, { clear = true })
     _augroups[client.id] = id
   end
@@ -78,7 +77,7 @@ end
 --
 -- See `:help LspAttach` for more information about this autocmd event.
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('kickstart-lsp-attach-format', { clear = true }),
+  group = vim.api.nvim_create_augroup('antbase-lsp-attach-format', { clear = true }),
   -- This is where we attach the autoformatting for reasonable clients
   callback = function(args)
     local client_id = args.data.client_id
@@ -90,10 +89,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
       return
     end
 
-    -- Tsserver usually works poorly. Sorry you work with bad languages
-    -- You can remove this line if you know what you're doing :)
-    if client.name == 'tsserver' then
-      return
+    if type(antbase.lsp.formatting.filter) == "function" then
+      antbase.lsp.formatting.filter(client, bufnr)
     end
 
     -- Create an autocmd that will run *before* we save the buffer.
@@ -102,7 +99,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       group = get_augroup(client),
       buffer = bufnr,
       callback = function()
-        if not format_is_enabled then
+        if not antbase.lsp.formatting.format_on_save then
           return
         end
 
