@@ -2,6 +2,14 @@ local M = {}
 
 M.General = {
 	n = {
+		-- See `:help vim.keymap.set()`
+		["<Space>"] = { "<Nop>", { silent = true } },
+
+		-- Remap for dealing with word wrap
+		["k"] = { "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true } },
+		["j"] = { "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true } },
+
+
 		["<leader>n"] = { "<cmd> enew <cr>", { desc = "New Buffer" } },
 
 		["<tab>"] = { "<cmd> bnex <cr>", { desc = "Next Buffer" } },
@@ -11,7 +19,13 @@ M.General = {
 
 		["<C-k>"] = { "<cmd> move -2 <cr>", { desc = "Move line up" } },
 		["<C-j>"] = { "<cmd> move +1 <cr>", { desc = "Move line down" } },
-	}
+
+	},
+
+	v = {
+		-- See `:help vim.keymap.set()`
+		["<Space>"] = { "<Nop>", { silent = true } },
+	},
 }
 
 M.BDelete = {
