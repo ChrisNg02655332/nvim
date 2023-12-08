@@ -24,6 +24,11 @@ return {
 				end
 			end
 		},
+
+		unsupported = function()
+			require 'lspconfig'.sourcekit.setup {}
+		end,
+
 		servers = {
 			elixirls = {},
 			eslint = {},

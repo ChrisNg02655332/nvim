@@ -50,6 +50,11 @@ mason_lspconfig.setup_handlers {
   antbase.lsp.setup_handlers,
 }
 
+-- use this func to call setup lspconfig that not support mason-lspconfig
+if type(antbase.lsp.unsupported) == "function" then
+  antbase.lsp.unsupported()
+end
+
 -- autoformat
 
 -- Switch for controlling whether you want autoformatting.
