@@ -23,7 +23,6 @@ return {
 		end
 	},
 
-
 	{
 		-- Autocompletion
 		'hrsh7th/nvim-cmp',
@@ -273,9 +272,9 @@ return {
 			vim.o.foldlevelstart = 99
 			vim.o.foldenable = true
 		end,
-		options = function() require("plugins.configs.ufo") end,
-		config = function(_, opts)
-			require("ufo").setup(opts)
+		config = function()
+			local options = require("plugins.configs.ufo")
+			require("ufo").setup(options)
 
 			vim.keymap.set("n", "f", function()
 				local winid = require("ufo").peekFoldedLinesUnderCursor()

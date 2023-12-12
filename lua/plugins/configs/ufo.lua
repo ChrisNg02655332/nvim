@@ -31,7 +31,6 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
 	return newVirtText
 end
 
-
 return {
 	fold_virt_text_handler = handler,
 	open_fold_hl_timeout = 400,
