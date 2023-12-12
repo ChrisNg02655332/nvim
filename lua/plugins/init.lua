@@ -161,9 +161,7 @@ return {
 	{
 		'lukas-reineke/indent-blankline.nvim',
 		opts = { indent = { char = '┊' } },
-		config = function(_, opts)
-			require("ibl").setup(opts)
-		end
+		main = 'ibl',
 	},
 
 	{

@@ -1,11 +1,11 @@
 return {
 	plugins = {
 		{
-			"EdenEast/nightfox.nvim",
+			"ayu-theme/ayu-vim",
 			priority = 1000,
 			config = function()
 				-- load the colorscheme here
-				vim.cmd([[colorscheme nightfox]])
+				vim.cmd.colorscheme("ayu")
 			end,
 		},
 
