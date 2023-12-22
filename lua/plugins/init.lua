@@ -168,9 +168,10 @@ return {
 		'nvim-lualine/lualine.nvim',
 		opts = {
 			options = {
+				theme                = require("themes.lualine"),
 				component_separators = '|',
-				section_separators = '',
-				disabled_filetypes = { 'toggleterm' }
+				section_separators   = '',
+				disabled_filetypes   = { 'toggleterm' }
 			},
 			sections = {
 				lualine_c = {
