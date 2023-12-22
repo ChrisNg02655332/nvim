@@ -96,7 +96,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     if type(antbase.lsp.formatting.filter) == "function" then
-      antbase.lsp.formatting.filter(client, bufnr)
+      return antbase.lsp.formatting.filter(client, bufnr)
     end
 
     -- Create an autocmd that will run *before* we save the buffer.
