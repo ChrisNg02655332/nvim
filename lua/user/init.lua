@@ -11,6 +11,17 @@ return {
 
 		'jose-elias-alvarez/typescript.nvim',
 
+		{
+			"elixir-tools/elixir-tools.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+			},
+			version = "*",
+			event = { "BufReadPre", "BufNewFile" },
+			config = function()
+				require("elixir").setup()
+			end,
+		}
 	},
 	treesitter = {
 		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
