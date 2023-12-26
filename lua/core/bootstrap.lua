@@ -1,7 +1,7 @@
 _G.antbase = {
 	plugins = {},
 	treesitter = {},
-	lsp = {
+	lspconfig = {
 		formatting = {
 			format_on_save = true
 		},
@@ -27,7 +27,7 @@ vim.opt.rtp:prepend(lazypath)
 
 local status_ok, loaded_module = pcall(require, "user.init")
 if status_ok then
-	antbase = require("core.utils").extend_tbl(antbase, loaded_module)
+	_G.antbase = require("core.utils").extend_tbl(antbase, loaded_module)
 	if type(antbase.init) == "function" then
 		antbase.init()
 	end

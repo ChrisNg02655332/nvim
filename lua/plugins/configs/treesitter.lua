@@ -1,4 +1,9 @@
-local ensure_installed = require("core.utils").extend_tbl({ 'lua' }, antbase.treesitter.ensure_installed)
+local ensure_installed = { 'lua', 'vim', 'vimdoc' }
+local user_installed = antbase.treesitter.ensure_installed
+
+for _, v in pairs(user_installed) do
+	table.insert(ensure_installed, v)
+end
 
 require('nvim-treesitter.configs').setup({
 	ensure_installed = ensure_installed,

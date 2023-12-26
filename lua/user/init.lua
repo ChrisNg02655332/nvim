@@ -11,35 +11,24 @@ return {
 
 		'jose-elias-alvarez/typescript.nvim',
 
-		{
-		 	"elixir-tools/elixir-tools.nvim",
-		 	dependencies = {
-		 		"nvim-lua/plenary.nvim",
-		 	},
-		 	version = "*",
-		 	event = { "BufReadPre", "BufNewFile" },
-		 	config = function()
-		 		require("elixir").setup()
-		 	end,
-	   }
 	},
 	treesitter = {
 		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
 	},
-	lsp = {
+	lspconfig = {
+		servers = {
+			eslint = {},
+			jsonls = {},
+			tsserver = {},
+		},
 		formatting = {
 			filter = function(client, _bufnr)
 				-- Tsserver usually works poorly. Sorry you work with bad languages
 				-- You can remove this line if you know what you're doing :)
 				if client.name == 'tsserver' then
-					return
+					return true
 				end
 			end
-		},
-		servers = {
-			eslint = {},
-			jsonls = {},
-			tsserver = {},
 		},
 		setup_handlers = {
 			["tsserver"] = function(_, opts)

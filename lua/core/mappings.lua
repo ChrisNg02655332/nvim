@@ -1,10 +1,7 @@
 local M = {}
 
-M.General = {
+M.general = {
 	n = {
-		-- See `:help vim.keymap.set()`
-		["<Space>"] = { "<Nop>", { silent = true } },
-
 		-- Remap for dealing with word wrap
 		["k"] = { "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true } },
 		["j"] = { "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true } },
@@ -21,20 +18,15 @@ M.General = {
 		["<C-j>"] = { "<cmd> move +1 <cr>", { desc = "Move line down" } },
 
 	},
-
-	v = {
-		-- See `:help vim.keymap.set()`
-		["<Space>"] = { "<Nop>", { silent = true } },
-	},
 }
 
-M.BDelete = {
+M.bdelete = {
 	n = {
 		["<leader>c"] = { function() require("bufdelete").bufdelete(0, false) end, { desc = "Close Buffer" } }
 	}
 }
 
-M.Comment = {
+M.comment = {
 	n = {
 		["<leader>/"] = {
 			function() require('Comment.api').toggle.linewise.current() end,
@@ -43,12 +35,19 @@ M.Comment = {
 
 	v = {
 		["<leader>/"] = {
-			"<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", { desc = 'Toggle Comment' }
+			"<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", { desc = 'Toggle Comment' }
 		}
 	}
 }
 
-M.Lsp = {
+M.gitsigns = {
+	n = {
+		["<leader>gb"] = { "<cmd> Gitsigns blame_line<cr>", { desc = "Blame line" } },
+		["<leader>gh"] = { "<cmd> Gitsigns preview_hunk <cr>", { desc = "Preview hunk" } },
+	}
+}
+
+M.lspconfig = {
 	n = {
 		["gd"] = { vim.lsp.buf.definition, { desc = "Goto Definition" } },
 		["gr"] = { function() require('telescope.builtin').lsp_references() end, { desc = "Goto References" } },
@@ -62,7 +61,7 @@ M.Lsp = {
 	}
 }
 
-M.Neotree = {
+M.neotree = {
 	n = {
 		["<leader>e"] = { "<cmd> Neotree toggle <cr>", { desc = 'Toggle Explorer' } },
 		["<leader>o"] = {
@@ -77,7 +76,7 @@ M.Neotree = {
 	}
 }
 
-M.Term = {
+M.toggleterm = {
 	n = {
 		["<leader>gg"] = {
 			function()

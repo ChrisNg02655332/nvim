@@ -84,6 +84,7 @@ return {
 	{
 		-- Adds git related signs to the gutter, as well as utilities for managing changes
 		'lewis6991/gitsigns.nvim',
+		event = "VeryLazy",
 		opts = {
 			-- See `:help gitsigns.txt`
 			signs = {
@@ -93,31 +94,11 @@ return {
 				topdelete = { text = '‾' },
 				changedelete = { text = '~' },
 			},
-			on_attach = function(bufnr)
-				vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
-
-				-- don't override the built-in and fugitive keymaps
-				local gs = package.loaded.gitsigns
-				vim.keymap.set({ 'n', 'v' }, ']c', function()
-					if vim.wo.diff then
-						return ']c'
-					end
-					vim.schedule(function()
-						gs.next_hunk()
-					end)
-					return '<Ignore>'
-				end, { expr = true, buffer = bufnr, desc = 'Jump to next hunk' })
-				vim.keymap.set({ 'n', 'v' }, '[c', function()
-					if vim.wo.diff then
-						return '[c'
-					end
-					vim.schedule(function()
-						gs.prev_hunk()
-					end)
-					return '<Ignore>'
-				end, { expr = true, buffer = bufnr, desc = 'Jump to previous hunk' })
-			end,
 		},
+		config = function(_, opts)
+			require("gitsigns").setup(opts)
+			utils.load_mappings("gitsigns")
+		end
 	},
 
 	{
@@ -129,16 +110,13 @@ return {
 			-- If you want to automatically add `(` after selecting a function or method
 			local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 			local cmp = require('cmp')
-			cmp.event:on(
-				'confirm_done',
-				cmp_autopairs.on_confirm_done()
-			)
+			cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 		end,
 	},
 
 	{
 		"famiu/bufdelete.nvim",
-		init = function() utils.load_mappings("BDelete") end
+		init = function() utils.load_mappings("bdelete") end
 	},
 
 	{
@@ -152,7 +130,7 @@ return {
 			{ 'gb',  mode = 'x',          desc = 'Comment toggle blockwise (visual)' },
 		},
 		init = function()
-			utils.load_mappings("Comment")
+			utils.load_mappings("comment")
 		end
 	},
 
@@ -204,7 +182,7 @@ return {
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
 		},
-		init = function() utils.load_mappings("Neotree") end,
+		init = function() utils.load_mappings("neotree") end,
 		opts = require("plugins.configs.neotree"),
 		config = function(_, opts)
 			vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
@@ -239,33 +217,18 @@ return {
 				highlights = { border = "Normal", background = "Normal" },
 			},
 		},
-		init = utils.load_mappings("Term")
+		init = function()
+			utils.load_mappings("toggleterm")
+		end
 	},
 
 	{
-		"kevinhwang91/nvim-ufo",
+		'kevinhwang91/nvim-ufo',
 		event = "VeryLazy",
 		dependencies = {
-			"kevinhwang91/promise-async",
-			{
-				"luukvbaal/statuscol.nvim",
-				config = function()
-					local builtin = require("statuscol.builtin")
-					require("statuscol").setup(
-						{
-							relculright = true,
-							segments = {
-								{ text = { builtin.foldfunc },      click = "v:lua.ScFa" },
-								{ text = { "%s" },                  click = "v:lua.ScSa" },
-								{ text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" }
-							}
-						}
-					)
-				end
-			}
+			"kevinhwang91/promise-async"
 		},
 		init = function()
-			-- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 			vim.o.foldcolumn = "0" -- '0' is not bad
 			vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 			vim.o.foldlevelstart = 99

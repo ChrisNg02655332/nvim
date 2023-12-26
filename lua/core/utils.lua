@@ -6,7 +6,6 @@ if status_ok then
 	user_mappings = loaded_module
 end
 
-
 local M           = {}
 
 M.get_icon        = function(kind, padding)
@@ -71,8 +70,18 @@ M.close_qf        = function()
 end
 
 M.extend_tbl      = function(default, opts)
-	opts = opts or {}
-	return default and vim.tbl_deep_extend("force", default, opts) or opts
+	-- opts = opts or {}
+	-- for k, v in pairs(opts) do default[k] = v end
+	-- return default
+
+	for k, v in pairs(opts) do
+		if (type(v) == "table") and (type(default[k] or false) == "table") then
+			M.extend_tbl(default[k], opts[k])
+		else
+			default[k] = v
+		end
+	end
+	return default
 end
 
 return M

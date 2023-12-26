@@ -1,8 +1,9 @@
 local utils = require "core.utils"
+
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
-  utils.load_mappings("Lsp")
+  utils.load_mappings("lspconfig")
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
@@ -10,7 +11,7 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
-local _servers = {
+local default_servers = {
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -19,7 +20,7 @@ local _servers = {
   },
 }
 
-local servers = utils.extend_tbl(_servers, antbase.lsp.servers)
+local servers = utils.extend_tbl(default_servers, antbase.lspconfig.servers)
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -47,40 +48,21 @@ local default_handlers = {
   end,
 }
 
-local handlers = utils.extend_tbl(default_handlers, antbase.lsp.setup_handlers)
-
+local handlers = utils.extend_tbl(default_handlers, antbase.lspconfig.setup_handlers)
 mason_lspconfig.setup_handlers(handlers)
 
--- use this func to call setup lspconfig that not support mason-lspconfig
-if type(antbase.lsp.unsupported) == "function" then
-  antbase.lsp.unsupported()
-end
-
--- autoformat
-
--- Switch for controlling whether you want autoformatting.
---  Use :KickstartFormatToggle to toggle autoformatting on or off
-vim.api.nvim_create_user_command('AntbaseFormatToggle', function()
-  antbase.lsp.formatting.format_on_save = not antbase.lsp.formatting.format_on_save
-  print('Setting autoformatting to: ' .. tostring(antbase.lsp.formatting.format_on_save))
-end, {})
-
--- Create an augroup that is used for managing our formatting autocmds.
---      We need one augroup per client to make sure that multiple clients
---      can attach to the same buffer without interfering with each other.
-local _augroups = {}
+-- Whenever an LSP attaches to a buffer, we will run this function.
+local augroups = {}
 local get_augroup = function(client)
-  if not _augroups[client.id] then
+  if not augroups[client.id] then
     local group_name = 'antbase-lsp-format-' .. client.name
     local id = vim.api.nvim_create_augroup(group_name, { clear = true })
-    _augroups[client.id] = id
+    augroups[client.id] = id
   end
 
-  return _augroups[client.id]
+  return augroups[client.id]
 end
 
--- Whenever an LSP attaches to a buffer, we will run this function.
---
 -- See `:help LspAttach` for more information about this autocmd event.
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('antbase-lsp-attach-format', { clear = true }),
@@ -95,8 +77,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
       return
     end
 
-    if type(antbase.lsp.formatting.filter) == "function" then
-      return antbase.lsp.formatting.filter(client, bufnr)
+    if type(antbase.lspconfig.formatting.filter) == "function" then
+      if antbase.lspconfig.formatting.filter(client, bufnr) == true then
+        return
+      end
     end
 
     -- Create an autocmd that will run *before* we save the buffer.
@@ -105,7 +89,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       group = get_augroup(client),
       buffer = bufnr,
       callback = function()
-        if not antbase.lsp.formatting.format_on_save then
+        if not antbase.lspconfig.formatting.format_on_save then
           return
         end
 

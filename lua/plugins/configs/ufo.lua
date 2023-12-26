@@ -47,8 +47,5 @@ return {
 			jumpTop = "[",
 			jumpBot = "]",
 		},
-	},
-	provider_selector = function()
-		return { "treesitter", "indent" }
-	end
+	}
 }
