@@ -5,6 +5,7 @@ vim.g.maplocalleader = " "
 vim.o.hlsearch = false
 
 -- Make line numbers default
+vim.wo.relativenumber = true
 vim.wo.number = true
 vim.o.cursorline = true
 
