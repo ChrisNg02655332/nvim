@@ -14,8 +14,13 @@ M.general = {
 
 		["<C-s>"] = { "<cmd> w <cr>", { desc = "Save Buffer" } },
 
-		["<C-k>"] = { "<cmd> move -2 <cr>", { desc = "Move line up" } },
-		["<C-j>"] = { "<cmd> move +1 <cr>", { desc = "Move line down" } },
+		["K"] = { "<cmd> move -2 <cr>", { desc = "Move line up" } },
+		["J"] = { "<cmd> move +1 <cr>", { desc = "Move line down" } },
+
+		["<C-h>"] = { "<C-w>h", { desc = "Window left" } },
+		["<C-l>"] = { "<C-w>l", { desc = "Window right" } },
+		["<C-j>"] = { "<C-w>j", { desc = "Window down" } },
+		["<C-k>"] = { "<C-w>k", { desc = "Window up" } },
 
 	},
 }
@@ -55,7 +60,7 @@ M.lspconfig = {
 		["<leader>D"] = { vim.lsp.buf.type_definition, { desc = "Type Definition" } },
 		["<leader>ds"] = { function() require('telescope.builtin').lsp_document_symbols() end, { desc = "Document Symbols" } },
 		["<leader>ws"] = { function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, { desc = "Workspace Symbols" } },
-		["K"] = { vim.lsp.buf.hover, { desc = "Hover Documentation" } },
+		["<leader>ld"] = { vim.lsp.buf.hover, { desc = "Hover Documentation" } },
 		["[d"] = { vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" } },
 		["]d"] = { vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" } },
 	}

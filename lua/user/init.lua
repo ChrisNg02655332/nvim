@@ -11,28 +11,22 @@ return {
 
 		'jose-elias-alvarez/typescript.nvim',
 
-		{
-			"elixir-tools/elixir-tools.nvim",
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-			},
-			version = "*",
-			event = { "BufReadPre", "BufNewFile" },
-			config = function()
-				local elixir = require("elixir")
-				local elixirls = require("elixir.elixirls")
 
-				elixir.setup({
-					nextls = { enable = true },
-					credo = {},
-					elixirls = {
-						enable = true,
-						settings = elixirls.settings {
-							dialyzerEnabled = false,
-							enableTestLenses = false,
-						},
-					}
-				})
+		{
+			'kristijanhusak/vim-dadbod-ui',
+			dependencies = {
+				{ 'tpope/vim-dadbod',                     lazy = true },
+				{ 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
+			},
+			cmd = {
+				'DBUI',
+				'DBUIToggle',
+				'DBUIAddConnection',
+				'DBUIFindBuffer',
+			},
+			init = function()
+				-- Your DBUI configuration
+				vim.g.db_ui_use_nerd_fonts = 1
 			end,
 		}
 	},
@@ -41,6 +35,7 @@ return {
 	},
 	lspconfig = {
 		servers = {
+			elixirls = {},
 			eslint = {},
 			jsonls = {},
 			tsserver = {},
