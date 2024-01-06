@@ -12,6 +12,7 @@ return {
 		'jose-elias-alvarez/typescript.nvim',
 
 
+		-- WARN: Need install pgql via postgres or libbq
 		{
 			'kristijanhusak/vim-dadbod-ui',
 			dependencies = {
