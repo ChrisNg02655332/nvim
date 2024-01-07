@@ -22,6 +22,9 @@ M.general = {
 		["<C-j>"] = { "<C-w>j", { desc = "Window down" } },
 		["<C-k>"] = { "<C-w>k", { desc = "Window up" } },
 
+		["<S-ScrollWheelUp>"] = { "zH", { desc = "" } },
+		["<S-ScrollWheelDown>"] = { "zL", { desc = "" } }
+
 	},
 }
 
