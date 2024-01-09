@@ -94,4 +94,15 @@ M.toggleterm = {
 	}
 }
 
+M.trouble = {
+	n = {
+		["<leader>xx"] = { function() require("trouble").toggle() end, { desc = "Toggle trouble" } },
+		["<leader>xw"] = { function() require("trouble").toggle("workspace_diagnostics") end, { desc = "Toggle workspace diagnostic" } },
+		["<leader>xd"] = { function() require("trouble").toggle("document_diagnostics") end, { desc = "Toggle document diagnostic" } },
+		["<leader>xq"] = { function() require("trouble").toggle("quickfix") end, { desc = "Toggle quickfix" } },
+		["<leader>xl"] = { function() require("trouble").toggle("loclist") end, { desc = "Toggle loclist" } },
+
+	}
+}
+
 return M

@@ -222,6 +222,15 @@ return {
 	},
 
 	{
+		"folke/trouble.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {},
+		init = function()
+			utils.load_mappings("trouble")
+		end
+	},
+
+	{
 		'kevinhwang91/nvim-ufo',
 		event = "VeryLazy",
 		dependencies = {

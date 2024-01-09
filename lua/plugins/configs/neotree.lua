@@ -1,3 +1,4 @@
+local utils = require("core.utils")
 local get_icon = require("core.utils").get_icon
 
 return {
