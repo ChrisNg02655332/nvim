@@ -114,6 +114,15 @@ return {
 	},
 
 	{
+		'goolord/alpha-nvim',
+		event = 'VimEnter',
+		config = function()
+			require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
+		end
+	},
+
+
+	{
 		"famiu/bufdelete.nvim",
 		init = function() utils.load_mappings("bdelete") end
 	},
@@ -218,15 +227,6 @@ return {
 		},
 		init = function()
 			utils.load_mappings("toggleterm")
-		end
-	},
-
-	{
-		"folke/trouble.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {},
-		init = function()
-			utils.load_mappings("trouble")
 		end
 	},
 

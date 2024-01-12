@@ -12,7 +12,7 @@ return {
 		'jose-elias-alvarez/typescript.nvim',
 
 
-		-- WARN: Need install pgql via postgres or libbq
+		-- WARN: Need install pgql via postgres or libpq
 		{
 			'kristijanhusak/vim-dadbod-ui',
 			dependencies = {
@@ -34,7 +34,7 @@ return {
 		}
 	},
 	treesitter = {
-		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
+		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex', 'rust' }
 	},
 	lspconfig = {
 		servers = {
@@ -42,6 +42,7 @@ return {
 			eslint = {},
 			jsonls = {},
 			tsserver = {},
+			rust_analyzer = {}
 		},
 		formatting = {
 			filter = function(client, _bufnr)
