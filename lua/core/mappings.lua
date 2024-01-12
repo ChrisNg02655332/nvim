@@ -64,6 +64,7 @@ M.lspconfig = {
 		["<leader>ds"] = { function() require('telescope.builtin').lsp_document_symbols() end, { desc = "Document Symbols" } },
 		["<leader>ws"] = { function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, { desc = "Workspace Symbols" } },
 		["<leader>ld"] = { vim.lsp.buf.hover, { desc = "Hover Documentation" } },
+		["<leader>ca"] = { vim.lsp.buf.code_action, { desc = "Hover code actions" } },
 		["[d"] = { vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" } },
 		["]d"] = { vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" } },
 	}
@@ -91,17 +92,6 @@ M.toggleterm = {
 				require("core.utils").toggle_term_cmd("lazygit")
 			end, { desc = "ToggleTerm LazyGit" }
 		}
-	}
-}
-
-M.trouble = {
-	n = {
-		["<leader>xx"] = { function() require("trouble").toggle() end, { desc = "Toggle trouble" } },
-		["<leader>xw"] = { function() require("trouble").toggle("workspace_diagnostics") end, { desc = "Toggle workspace diagnostic" } },
-		["<leader>xd"] = { function() require("trouble").toggle("document_diagnostics") end, { desc = "Toggle document diagnostic" } },
-		["<leader>xq"] = { function() require("trouble").toggle("quickfix") end, { desc = "Toggle quickfix" } },
-		["<leader>xl"] = { function() require("trouble").toggle("loclist") end, { desc = "Toggle loclist" } },
-
 	}
 }
 

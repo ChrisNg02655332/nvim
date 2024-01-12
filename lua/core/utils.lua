@@ -13,12 +13,17 @@ M.get_icon        = function(kind, padding)
 	return icon and icon .. string.rep(" ", padding or 0) or ""
 end
 
-M.load_mappings   = function(section)
+M.load_mappings   = function(section, opts)
 	vim.schedule(function()
 		local function set_section_map(section_values)
 			for mode, mode_values in pairs(section_values) do
 				for keybind, mapping_info in pairs(mode_values) do
-					vim.keymap.set(mode, keybind, mapping_info[1], mapping_info[2])
+					opts = mapping_info[2]
+					if opts then
+						opts = M.extend_tbl(mapping_info[2], opts)
+					end
+
+					vim.keymap.set(mode, keybind, mapping_info[1], opts)
 				end
 			end
 		end
@@ -70,10 +75,6 @@ M.close_qf        = function()
 end
 
 M.extend_tbl      = function(default, opts)
-	-- opts = opts or {}
-	-- for k, v in pairs(opts) do default[k] = v end
-	-- return default
-
 	for k, v in pairs(opts) do
 		if (type(v) == "table") and (type(default[k] or false) == "table") then
 			M.extend_tbl(default[k], opts[k])
