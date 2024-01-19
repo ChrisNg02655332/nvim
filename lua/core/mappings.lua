@@ -22,9 +22,10 @@ M.general = {
 		["<C-j>"] = { "<C-w>j", { desc = "Window down" } },
 		["<C-k>"] = { "<C-w>k", { desc = "Window up" } },
 
-		["<S-ScrollWheelUp>"] = { "zH", { desc = "" } },
-		["<S-ScrollWheelDown>"] = { "zL", { desc = "" } }
+		["<S-ScrollWheelUp>"] = { "zH", { desc = "Horizontal scroll right" } },
+		["<S-ScrollWheelDown>"] = { "zL", { desc = "Horizontal scroll left" } },
 
+		["<C-a>"] = { "ggVG", { desc = "Select all" } }
 	},
 }
 
