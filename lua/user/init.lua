@@ -34,7 +34,7 @@ return {
 		}
 	},
 	treesitter = {
-		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex', 'rust' }
+		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
 	},
 	lspconfig = {
 		servers = {
@@ -42,7 +42,6 @@ return {
 			eslint = {},
 			jsonls = {},
 			tsserver = {},
-			rust_analyzer = {}
 		},
 		formatting = {
 			filter = function(client, _bufnr)
