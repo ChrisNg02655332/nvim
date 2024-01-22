@@ -11,7 +11,6 @@ return {
 
 		'jose-elias-alvarez/typescript.nvim',
 
-
 		-- WARN: Need install pgql via postgres or libpq
 		{
 			'kristijanhusak/vim-dadbod-ui',
@@ -31,6 +30,22 @@ return {
 
 				require("core.utils").load_mappings("db_ui")
 			end,
+		},
+
+		{
+			"nvimtools/none-ls.nvim",
+			requires = { "nvim-lua/plenary.nvim" },
+			config = function()
+				local null_ls = require("null-ls")
+				null_ls.setup({
+					sources = {
+						null_ls.builtins.formatting.stylua,
+						null_ls.builtins.formatting.prettier,
+						null_ls.builtins.diagnostics.eslint,
+						null_ls.builtins.completion.spell,
+					},
+				})
+			end,
 		}
 	},
 	treesitter = {
@@ -39,7 +54,6 @@ return {
 	lspconfig = {
 		servers = {
 			elixirls = {},
-			eslint = {},
 			jsonls = {},
 			tsserver = {},
 		},
@@ -55,17 +69,6 @@ return {
 		setup_handlers = {
 			["tsserver"] = function(_, opts)
 				require("typescript").setup { server = opts }
-			end,
-
-			["eslint"] = function()
-				require("lspconfig").eslint.setup {
-					on_attach = function(_, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							buffer = bufnr,
-							command = "EslintFixAll",
-						})
-					end,
-				}
 			end,
 		}
 	}

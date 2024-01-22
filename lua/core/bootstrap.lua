@@ -2,9 +2,7 @@ _G.antbase = {
 	plugins = {},
 	treesitter = {},
 	lspconfig = {
-		formatting = {
-			format_on_save = true
-		},
+		formatting = {},
 		servers = {},
 		setup_handlers = {}
 	}
@@ -36,8 +34,5 @@ else
 end
 
 require("lazy").setup({
-	spec = {
-		{ import = "plugins" },
-		antbase.plugins
-	}
+	spec = { { import = "plugins" }, antbase.plugins }
 }, {})
