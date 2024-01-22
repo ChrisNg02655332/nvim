@@ -1,9 +1,10 @@
-local mappings = require "core.mappings"
 local user_mappings = {}
 
 local status_ok, loaded_module = pcall(require, "user.mappings")
 if status_ok then
 	user_mappings = loaded_module
+else
+	vim.notify("No user mappings found!")
 end
 
 local M           = {}
@@ -23,9 +24,25 @@ M.load_mappings   = function(section)
 			end
 		end
 
-		local merge_mappings = M.extend_tbl(mappings, user_mappings)
-		set_section_map(merge_mappings[section])
+		local mappings = M.extend_tbl(require "core.mappings", user_mappings)
+		if mappings[section] then
+			set_section_map(mappings[section])
+		else
+			vim.notify("[Error] Could not load mappings under user folder!")
+		end
 	end)
+end
+
+M.extend_tbl      = function(default, opts)
+	for k, v in pairs(opts) do
+		if (type(v) == "table") and (type(default[k] or false) == "table") then
+			M.extend_tbl(default[k], opts[k])
+		else
+			default[k] = v
+		end
+	end
+
+	return default
 end
 
 -- This func support lazy git
@@ -67,17 +84,6 @@ M.close_qf        = function()
 		vim.cmd "cclose"
 		return
 	end
-end
-
-M.extend_tbl      = function(default, opts)
-	for k, v in pairs(opts) do
-		if (type(v) == "table") and (type(default[k] or false) == "table") then
-			M.extend_tbl(default[k], opts[k])
-		else
-			default[k] = v
-		end
-	end
-	return default
 end
 
 return M

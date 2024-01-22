@@ -1,9 +1,20 @@
--- [[ Configure nvim-cmp ]]
--- See `:help cmp`
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
+
+local function border(hl_name)
+	return {
+		{ "╭", hl_name },
+		{ "─", hl_name },
+		{ "╮", hl_name },
+		{ "│", hl_name },
+		{ "╯", hl_name },
+		{ "─", hl_name },
+		{ "╰", hl_name },
+		{ "│", hl_name },
+	}
+end
 
 local function border(hl_name)
 	return {
@@ -72,6 +83,6 @@ cmp.setup {
 		{ name = 'luasnip',               priority = 750 },
 		{ name = "buffer",                priority = 500 },
 		{ name = "path",                  priority = 250 },
-		{ name = "vim-dadbod-completion", priority = 700 },
+		--{ name = "vim-dadbod-completion", priority = 700 },
 	},
 }

@@ -1,5 +1,5 @@
 local ensure_installed = { 'lua', 'vim', 'vimdoc' }
-local user_installed = antbase.treesitter.ensure_installed
+local user_installed = antbase.treesitter.ensure_installed or {}
 
 for _, v in pairs(user_installed) do
 	table.insert(ensure_installed, v)
@@ -66,5 +66,4 @@ require('nvim-treesitter.configs').setup({
 			},
 		},
 	},
-
 })

@@ -6,32 +6,46 @@ M.general = {
 		["k"] = { "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true } },
 		["j"] = { "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true } },
 
-
 		["<leader>n"] = { "<cmd> enew <cr>", { desc = "New Buffer" } },
 
 		["<tab>"] = { "<cmd> bnex <cr>", { desc = "Next Buffer" } },
 		["<S-tab>"] = { "<cmd> bprevious <cr>", { desc = "Prev Buffer" } },
-
 		["<C-s>"] = { "<cmd> w <cr>", { desc = "Save Buffer" } },
 
 		["K"] = { "<cmd> move -2 <cr>", { desc = "Move line up" } },
 		["J"] = { "<cmd> move +1 <cr>", { desc = "Move line down" } },
 
-		["<C-h>"] = { "<C-w>h", { desc = "Window left" } },
-		["<C-l>"] = { "<C-w>l", { desc = "Window right" } },
-		["<C-j>"] = { "<C-w>j", { desc = "Window down" } },
-		["<C-k>"] = { "<C-w>k", { desc = "Window up" } },
-
-		["<S-ScrollWheelUp>"] = { "zH", { desc = "Horizontal scroll right" } },
-		["<S-ScrollWheelDown>"] = { "zL", { desc = "Horizontal scroll left" } },
-
 		["<C-a>"] = { "ggVG", { desc = "Select all" } }
-	},
+	}
 }
 
 M.bdelete = {
 	n = {
-		["<leader>c"] = { function() require("bufdelete").bufdelete(0, false) end, { desc = "Close Buffer" } }
+		["<leader>x"] = { function() require("bufdelete").bufdelete(0, false) end, { desc = "Close Buffer" } }
+	}
+}
+
+M.lspconfig = {
+	n = {
+		["<leader>ca"] = { vim.lsp.buf.code_action, { desc = "Hover code actions" } }
+	}
+}
+
+M.telescope = {
+	n = {
+		["<leader>sb"] = { require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" } },
+		["<leader><space>"] = { function()
+			require('telescope.builtin').buffers({
+				-- entry_maker = require("core.utils.telescope").gen_from_buffer(),
+			})
+		end, { desc = '[ ] Find existing buffers' } },
+
+		["<leader>gf"] = { require("telescope.builtin").git_files, { desc = "Search Git Files" } },
+		["<leader>sf"] = { require("telescope.builtin").find_files, { desc = "Search Files" } },
+		["<leader>sh"] = { require("telescope.builtin").help_tags, { desc = "Search Help" } },
+		["<leader>sw"] = { require("telescope.builtin").grep_string, { desc = "Search current Word" } },
+		["<leader>sg"] = { require("telescope.builtin").diagnostics, { desc = "Search Diagnostics" } },
+		["<leader>sc"] = { "<cmd> Cheatsheet <cr>", { desc = "Search Cheatsheet" } },
 	}
 }
 
@@ -53,21 +67,6 @@ M.gitsigns = {
 	n = {
 		["<leader>gb"] = { "<cmd> Gitsigns blame_line<cr>", { desc = "Blame line" } },
 		["<leader>gh"] = { "<cmd> Gitsigns preview_hunk <cr>", { desc = "Preview hunk" } },
-	}
-}
-
-M.lspconfig = {
-	n = {
-		["gd"] = { vim.lsp.buf.definition, { desc = "Goto Definition" } },
-		["gr"] = { function() require('telescope.builtin').lsp_references() end, { desc = "Goto References" } },
-		["gI"] = { vim.lsp.buf.implementation, desc = "Goto Implementation" },
-		["<leader>D"] = { vim.lsp.buf.type_definition, { desc = "Type Definition" } },
-		["<leader>ds"] = { function() require('telescope.builtin').lsp_document_symbols() end, { desc = "Document Symbols" } },
-		["<leader>ws"] = { function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, { desc = "Workspace Symbols" } },
-		["<leader>ld"] = { vim.lsp.buf.hover, { desc = "Hover Documentation" } },
-		["<leader>ca"] = { vim.lsp.buf.code_action, { desc = "Hover code actions" } },
-		["[d"] = { vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" } },
-		["]d"] = { vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" } },
 	}
 }
 
