@@ -2,10 +2,10 @@ local utils = require("core.utils")
 
 return {
 	{
-		'goolord/alpha-nvim',
-		event = 'VimEnter',
+		"goolord/alpha-nvim",
+		event = "VimEnter",
 		config = function()
-			require 'alpha'.setup(require 'themes.alpha'.config)
+			require "alpha".setup(require 'themes.alpha'.config)
 		end
 	},
 
@@ -15,20 +15,20 @@ return {
 	},
 
 	{
-		'lukas-reineke/indent-blankline.nvim',
-		opts = { indent = { char = '┊' } },
-		main = 'ibl',
+		"lukas-reineke/indent-blankline.nvim",
+		opts = { indent = { char = "┊" } },
+		main = "ibl",
 	},
 
 	{
-		'numToStr/Comment.nvim',
+		"numToStr/Comment.nvim",
 		keys = {
-			{ 'gcc', mode = 'n',          desc = 'Comment toggle current line' },
-			{ 'gc',  mode = { 'n', 'o' }, desc = 'Comment toggle linewise' },
-			{ 'gc',  mode = 'x',          desc = 'Comment toggle linewise (visual)' },
-			{ 'gbc', mode = 'n',          desc = 'Comment toggle current block' },
-			{ 'gb',  mode = { 'n', 'o' }, desc = 'Comment toggle blockwise' },
-			{ 'gb',  mode = 'x',          desc = 'Comment toggle blockwise (visual)' },
+			{ "gcc", mode = 'n',          desc = 'Comment toggle current line' },
+			{ "gc",  mode = { 'n', 'o' }, desc = 'Comment toggle linewise' },
+			{ "gc",  mode = 'x',          desc = 'Comment toggle linewise (visual)' },
+			{ "gbc", mode = 'n',          desc = 'Comment toggle current block' },
+			{ "gb",  mode = { 'n', 'o' }, desc = 'Comment toggle blockwise' },
+			{ "gb",  mode = 'x',          desc = 'Comment toggle blockwise (visual)' },
 		},
 		init = function()
 			utils.load_mappings("comment")
@@ -36,30 +36,30 @@ return {
 	},
 
 	{
-		'nvim-lualine/lualine.nvim',
+		"nvim-lualine/lualine.nvim",
 		opts = {
 			options = {
 				theme                = require("themes.lualine"),
-				component_separators = '|',
-				section_separators   = '',
-				disabled_filetypes   = { 'toggleterm' }
+				component_separators = "|",
+				section_separators   = "",
+				disabled_filetypes   = { "toggleterm" }
 			},
 			sections = {
 				lualine_c = {
 					{
-						'filename',
+						"filename",
 						cond = function()
-							return vim.bo.filetype ~= 'neo-tree'
+							return vim.bo.filetype ~= "neo-tree"
 						end
 					}
 				},
 				lualine_x = {
 					{
-						'fileformat',
+						"fileformat",
 						symbols = {
-							unix = vim.fn.has('macunix') == 1 and '' or '', -- e712
-							dos = '', -- e70f
-							mac = '', -- e711
+							unix = vim.fn.has("macunix") == 1 and '' or '', -- e712
+							dos = "", -- e70f
+							mac = "", -- e711
 						}
 					},
 				},
@@ -69,17 +69,17 @@ return {
 
 	{
 		"windwp/nvim-autopairs",
-		dependencies = { 'hrsh7th/nvim-cmp' },
+		dependencies = { "hrsh7th/nvim-cmp" },
 		config = function()
 			require("nvim-autopairs").setup {}
-			local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-			local cmp = require('cmp')
-			cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			local cmp = require("cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 		end,
 	},
 
 	{
-		'kevinhwang91/nvim-ufo',
+		"kevinhwang91/nvim-ufo",
 		event = "VeryLazy",
 		dependencies = {
 			"kevinhwang91/promise-async"
@@ -148,59 +148,59 @@ return {
 
 	{
 		-- Autocompletion
-		'hrsh7th/nvim-cmp',
+		"hrsh7th/nvim-cmp",
 		dependencies = {
 			-- Snippet Engine & its associated nvim-cmp source
-			'L3MON4D3/LuaSnip',
-			'saadparwaiz1/cmp_luasnip',
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
 
 			-- Adds LSP completion capabilities
-			'hrsh7th/cmp-nvim-lsp',
+			"hrsh7th/cmp-nvim-lsp",
 
 			-- Adds a number of user-friendly snippets
-			'rafamadriz/friendly-snippets',
+			"rafamadriz/friendly-snippets",
 		},
 		config = function()
-			require 'plugins.configs.cmp'
+			require "plugins.configs.cmp"
 		end
 	},
 
 	{
 		-- LSP Configuration & Plugins
-		'neovim/nvim-lspconfig',
+		"neovim/nvim-lspconfig",
 		dependencies = {
 			-- Automatically install LSPs to stdpath for neovim
-			{ 'williamboman/mason.nvim', config = true },
-			'williamboman/mason-lspconfig.nvim',
+			{ "williamboman/mason.nvim", config = true },
+			"williamboman/mason-lspconfig.nvim",
 
 			-- Useful status updates for LSP
-			{ 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
+			{ "j-hui/fidget.nvim",       tag = 'legacy', opts = {} },
 
 			-- Additional lua configuration, makes nvim stuff amazing!
-			'folke/neodev.nvim',
+			"folke/neodev.nvim",
 		},
 		config = function()
-			require 'plugins.configs.mason-lspconfig'
+			require "plugins.configs.mason-lspconfig"
 		end
 	},
 
 	{
-		'nvim-telescope/telescope.nvim',
-		branch = '0.1.x',
+		"nvim-telescope/telescope.nvim",
+		branch = "0.1.x",
 		dependencies = {
-			'nvim-lua/plenary.nvim',
-			'sudormrfbin/cheatsheet.nvim',
+			"nvim-lua/plenary.nvim",
+			"sudormrfbin/cheatsheet.nvim",
 			"nvim-tree/nvim-web-devicons",
 			-- Fuzzy Finder Algorithm which requires local dependencies to be built.
 			-- Only load if `make` is available. Make sure you have the system
 			-- requirements installed.
 			{
-				'nvim-telescope/telescope-fzf-native.nvim',
+				"nvim-telescope/telescope-fzf-native.nvim",
 				-- NOTE: If you are having trouble with this installation,
 				--       refer to the README for telescope-fzf-native for more instructions.
-				build = 'make',
+				build = "make",
 				cond = function()
-					return vim.fn.executable 'make' == 1
+					return vim.fn.executable "make" == 1
 				end,
 			},
 			"chip/telescope-software-licenses.nvim",
@@ -212,28 +212,28 @@ return {
 
 	{
 		-- Highlight, edit, and navigate code
-		'nvim-treesitter/nvim-treesitter',
+		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
-			'nvim-treesitter/nvim-treesitter-textobjects',
+			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
-		build = ':TSUpdate',
+		build = ":TSUpdate",
 		config = function()
-			require 'plugins.configs.treesitter'
+			require "plugins.configs.treesitter"
 		end
 	},
 
 	{
 		-- Adds git related signs to the gutter, as well as utilities for managing changes
-		'lewis6991/gitsigns.nvim',
+		"lewis6991/gitsigns.nvim",
 		event = "VeryLazy",
 		opts = {
 			-- See `:help gitsigns.txt`
 			signs = {
-				add = { text = '+' },
-				change = { text = '~' },
-				delete = { text = '_' },
-				topdelete = { text = '‾' },
-				changedelete = { text = '~' },
+				add = { text = "+" },
+				change = { text = "~" },
+				delete = { text = "_" },
+				topdelete = { text = "‾" },
+				changedelete = { text = "~" },
 			},
 		},
 		config = function(_, opts)
@@ -242,5 +242,5 @@ return {
 		end
 	},
 
-	{ 'folke/which-key.nvim', opts = {} },
+	{ "folke/which-key.nvim", opts = {} },
 }
