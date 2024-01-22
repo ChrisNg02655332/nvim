@@ -10,7 +10,7 @@ M.general = {
 
 		["<tab>"] = { "<cmd> bnex <cr>", { desc = "Next Buffer" } },
 		["<S-tab>"] = { "<cmd> bprevious <cr>", { desc = "Prev Buffer" } },
-		["<C-s>"] = { "<cmd> w <cr>", { desc = "Save Buffer" } },
+		["<C-s>"] = { "<cmd> up <cr>", { desc = "Save Buffer" } },
 
 		["K"] = { "<cmd> move -2 <cr>", { desc = "Move line up" } },
 		["J"] = { "<cmd> move +1 <cr>", { desc = "Move line down" } },
