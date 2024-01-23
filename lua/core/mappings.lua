@@ -44,7 +44,7 @@ M.telescope = {
 		["<leader>sf"] = { require("telescope.builtin").find_files, { desc = "Search Files" } },
 		["<leader>sh"] = { require("telescope.builtin").help_tags, { desc = "Search Help" } },
 		["<leader>sw"] = { require("telescope.builtin").grep_string, { desc = "Search current Word" } },
-		["<leader>sg"] = { require("telescope.builtin").diagnostics, { desc = "Search Diagnostics" } },
+		["<leader>sd"] = { require("telescope.builtin").diagnostics, { desc = "Search Diagnostics" } },
 		["<leader>sc"] = { "<cmd> Cheatsheet <cr>", { desc = "Search Cheatsheet" } },
 	}
 }
