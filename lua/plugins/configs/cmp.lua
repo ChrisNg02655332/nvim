@@ -16,19 +16,6 @@ local function border(hl_name)
 	}
 end
 
-local function border(hl_name)
-	return {
-		{ "╭", hl_name },
-		{ "─", hl_name },
-		{ "╮", hl_name },
-		{ "│", hl_name },
-		{ "╯", hl_name },
-		{ "─", hl_name },
-		{ "╰", hl_name },
-		{ "│", hl_name },
-	}
-end
-
 cmp.setup {
 	completion = {
 		completeopt = "menu,menuone",
@@ -79,10 +66,10 @@ cmp.setup {
 		end, { 'i', 's' }),
 	},
 	sources = {
-		{ name = 'nvim_lsp',              priority = 1000 },
-		{ name = 'luasnip',               priority = 750 },
-		{ name = "buffer",                priority = 500 },
-		{ name = "path",                  priority = 250 },
+		{ name = 'nvim_lsp', priority = 1000 },
+		{ name = 'luasnip',  priority = 750 },
+		{ name = "buffer",   priority = 500 },
+		{ name = "path",     priority = 250 },
 		--{ name = "vim-dadbod-completion", priority = 700 },
 	},
 }
