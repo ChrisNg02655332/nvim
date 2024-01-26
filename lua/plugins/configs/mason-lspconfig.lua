@@ -1,15 +1,4 @@
 local utils = require("core.utils")
-utils.load_mappings("lspconfig")
-
-
--- [[ Configure LSP ]]
---  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(client, bufnr)
-	-- Create a command `:Format` local to the LSP buffer
-	vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-		vim.lsp.buf.format()
-	end, { desc = 'Format current buffer with LSP' })
-end
 
 local default_servers = {
 	lua_ls = {
@@ -41,7 +30,6 @@ local default_handler = {
 	function(server_name)
 		lspconfig[server_name].setup {
 			capabilities = capabilities,
-			on_attach = on_attach,
 			settings = servers[server_name],
 			filetypes = (servers[server_name] or {}).filetypes,
 		}

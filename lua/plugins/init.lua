@@ -163,6 +163,7 @@ return {
 		},
 		config = function()
 			require "plugins.configs.mason-lspconfig"
+			utils.load_mappings("lspconfig")
 		end
 	},
 
