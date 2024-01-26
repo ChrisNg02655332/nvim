@@ -31,22 +31,6 @@ return {
 				require("core.utils").load_mappings("db_ui")
 			end,
 		},
-
-		-- {
-		-- 	"nvimtools/none-ls.nvim",
-		-- 	requires = { "nvim-lua/plenary.nvim" },
-		-- 	config = function()
-		-- 		local null_ls = require("null-ls")
-		-- 		null_ls.setup({
-		-- 			sources = {
-		-- 				null_ls.builtins.formatting.stylua,
-		-- 				null_ls.builtins.formatting.prettier,
-		-- 				null_ls.builtins.diagnostics.eslint,
-		-- 				null_ls.builtins.completion.spell,
-		-- 			},
-		-- 		})
-		-- 	end,
-		-- }
 	},
 	treesitter = {
 		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
