@@ -42,6 +42,7 @@ M.telescope = {
 
 		["<leader>gf"] = { require("telescope.builtin").git_files, { desc = "Search Git Files" } },
 		["<leader>sf"] = { require("telescope.builtin").find_files, { desc = "Search Files" } },
+		["<leader>sg"] = { require("telescope.builtin").live_grep, { desc = "Search Grev" } },
 		["<leader>sh"] = { require("telescope.builtin").help_tags, { desc = "Search Help" } },
 		["<leader>sw"] = { require("telescope.builtin").grep_string, { desc = "Search current Word" } },
 		["<leader>sd"] = { require("telescope.builtin").diagnostics, { desc = "Search Diagnostics" } },

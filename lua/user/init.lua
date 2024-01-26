@@ -32,21 +32,21 @@ return {
 			end,
 		},
 
-		{
-			"nvimtools/none-ls.nvim",
-			requires = { "nvim-lua/plenary.nvim" },
-			config = function()
-				local null_ls = require("null-ls")
-				null_ls.setup({
-					sources = {
-						null_ls.builtins.formatting.stylua,
-						null_ls.builtins.formatting.prettier,
-						null_ls.builtins.diagnostics.eslint,
-						null_ls.builtins.completion.spell,
-					},
-				})
-			end,
-		}
+		-- {
+		-- 	"nvimtools/none-ls.nvim",
+		-- 	requires = { "nvim-lua/plenary.nvim" },
+		-- 	config = function()
+		-- 		local null_ls = require("null-ls")
+		-- 		null_ls.setup({
+		-- 			sources = {
+		-- 				null_ls.builtins.formatting.stylua,
+		-- 				null_ls.builtins.formatting.prettier,
+		-- 				null_ls.builtins.diagnostics.eslint,
+		-- 				null_ls.builtins.completion.spell,
+		-- 			},
+		-- 		})
+		-- 	end,
+		-- }
 	},
 	treesitter = {
 		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
@@ -54,6 +54,7 @@ return {
 	lspconfig = {
 		servers = {
 			elixirls = {},
+			eslint = {},
 			jsonls = {},
 			tsserver = {},
 		},
@@ -67,9 +68,19 @@ return {
 			end
 		},
 		setup_handlers = {
-			["tsserver"] = function(_, opts)
+			tsserver = function(_, opts)
 				require("typescript").setup { server = opts }
 			end,
+			eslint = function()
+				require("lspconfig").eslint.setup {
+					on_attach = function(client, bufnr)
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = bufnr,
+							command = "EslintFixAll",
+						})
+					end,
+				}
+			end
 		}
 	}
 }

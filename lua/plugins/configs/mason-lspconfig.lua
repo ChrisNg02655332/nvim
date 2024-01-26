@@ -1,10 +1,10 @@
 local utils = require("core.utils")
+utils.load_mappings("lspconfig")
+
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
-	utils.load_mappings("lspconfig")
-
 	-- Create a command `:Format` local to the LSP buffer
 	vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
 		vim.lsp.buf.format()
@@ -37,7 +37,7 @@ mason_lspconfig.setup {
 	ensure_installed = vim.tbl_keys(servers),
 }
 
-local default_handlers = {
+local default_handler = {
 	function(server_name)
 		lspconfig[server_name].setup {
 			capabilities = capabilities,
@@ -45,17 +45,18 @@ local default_handlers = {
 			settings = servers[server_name],
 			filetypes = (servers[server_name] or {}).filetypes,
 		}
-	end,
+	end
 }
 
-local handlers = utils.extend_tbl(default_handlers, antbase.lspconfig.setup_handlers)
+local handlers = utils.extend_tbl(default_handler, antbase.lspconfig.setup_handlers)
+
 mason_lspconfig.setup_handlers(handlers)
 
 -- Whenever an LSP attaches to a buffer, we will run this function.
 local augroups = {}
 local get_augroup = function(client)
 	if not augroups[client.id] then
-		local group_name = 'LspFormart-' .. client.name
+		local group_name = 'antbase-lsp-format-' .. client.name
 		local id = vim.api.nvim_create_augroup(group_name, { clear = true })
 		augroups[client.id] = id
 	end
@@ -65,7 +66,7 @@ end
 
 -- See `:help LspAttach` for more information about this autocmd event.
 vim.api.nvim_create_autocmd('LspAttach', {
-	group = vim.api.nvim_create_augroup('LspAttachFormat', { clear = true }),
+	group = vim.api.nvim_create_augroup('antbase-lsp-attach-format', { clear = true }),
 	-- This is where we attach the autoformatting for reasonable clients
 	callback = function(args)
 		local client_id = args.data.client_id
