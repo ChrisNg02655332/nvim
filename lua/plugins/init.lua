@@ -15,12 +15,6 @@ return {
 	},
 
 	{
-		"lukas-reineke/indent-blankline.nvim",
-		opts = { indent = { char = "┊" } },
-		main = "ibl",
-	},
-
-	{
 		"numToStr/Comment.nvim",
 		keys = {
 			{ "gcc", mode = 'n',          desc = 'Comment toggle current line' },
@@ -33,6 +27,14 @@ return {
 		init = function()
 			utils.load_mappings("comment")
 		end
+	},
+
+	{ 'stevearc/dressing.nvim', opts = {} },
+
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		opts = { indent = { char = "┊" } },
+		main = "ibl",
 	},
 
 	{
@@ -129,7 +131,6 @@ return {
 		end
 	},
 
-
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
@@ -143,25 +144,6 @@ return {
 		config = function(_, opts)
 			vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
 			require("neo-tree").setup(opts)
-		end
-	},
-
-	{
-		-- Autocompletion
-		"hrsh7th/nvim-cmp",
-		dependencies = {
-			-- Snippet Engine & its associated nvim-cmp source
-			"L3MON4D3/LuaSnip",
-			"saadparwaiz1/cmp_luasnip",
-
-			-- Adds LSP completion capabilities
-			"hrsh7th/cmp-nvim-lsp",
-
-			-- Adds a number of user-friendly snippets
-			"rafamadriz/friendly-snippets",
-		},
-		config = function()
-			require "plugins.configs.cmp"
 		end
 	},
 
@@ -181,6 +163,25 @@ return {
 		},
 		config = function()
 			require "plugins.configs.mason-lspconfig"
+		end
+	},
+
+	{
+		-- Autocompletion
+		"hrsh7th/nvim-cmp",
+		dependencies = {
+			-- Snippet Engine & its associated nvim-cmp source
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+
+			-- Adds LSP completion capabilities
+			"hrsh7th/cmp-nvim-lsp",
+
+			-- Adds a number of user-friendly snippets
+			"rafamadriz/friendly-snippets",
+		},
+		config = function()
+			require "plugins.configs.cmp"
 		end
 	},
 
@@ -242,5 +243,5 @@ return {
 		end
 	},
 
-	{ "folke/which-key.nvim", opts = {} },
+	{ "folke/which-key.nvim",   opts = {} },
 }
