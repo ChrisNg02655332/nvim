@@ -41,6 +41,7 @@ return {
 			eslint = {},
 			jsonls = {},
 			tsserver = {},
+			tailwindcss = {}
 		},
 		formatting = {
 			filter = function(client, _bufnr)
@@ -63,6 +64,26 @@ return {
 							command = "EslintFixAll",
 						})
 					end,
+				}
+			end,
+			tailwindcss = function()
+				require 'lspconfig'.tailwindcss.setup {
+					init_options = {
+						userLanguages = {
+							eelixir = "html-eex",
+							elixir = "html",
+						}
+
+					},
+					suggestions = true,
+					root_dir = function(fname)
+						local root_pattern = require("lspconfig").util.root_pattern(
+							"tailwind.config.js",
+							"assets/tailwind.config.js"
+						)
+						return root_pattern(fname)
+					end,
+
 				}
 			end
 		}
