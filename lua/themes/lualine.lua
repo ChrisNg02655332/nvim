@@ -27,6 +27,7 @@ return {
 		c = { fg = colors.color9, bg = colors.color2 },
 		a = { fg = colors.color10, bg = colors.color2, gui = 'bold' },
 		b = { fg = colors.color4, bg = colors.color2 },
+		x = { fg = "#ffffff" }
 	},
 	insert = {
 		a = { fg = colors.color13, bg = colors.color2, gui = 'bold' },
