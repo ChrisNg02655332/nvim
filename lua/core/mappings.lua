@@ -27,7 +27,8 @@ M.bdelete = {
 
 M.lspconfig = {
 	n = {
-		["<leader>ca"] = { vim.lsp.buf.code_action, { desc = "Hover code actions" } }
+		["<leader>ca"] = { vim.lsp.buf.code_action, { desc = "Hover code actions" } },
+		["<leader>ds"] = { require('telescope.builtin').lsp_document_symbols, { desc = "Document Symbol" } }
 	}
 }
 

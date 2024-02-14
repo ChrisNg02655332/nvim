@@ -11,7 +11,20 @@ return {
 
 		'jose-elias-alvarez/typescript.nvim',
 
-		-- WARN: Need install pgql via postgres or libpq
+		-- WARN: need to install `brew install jq`
+		{
+			"rest-nvim/rest.nvim",
+			dependencies = { { "nvim-lua/plenary.nvim" } },
+			config = function()
+				require("rest-nvim").setup({
+					result_split_in_place = true,
+					show_headers = false,
+				})
+				require("core.utils").load_mappings("rest")
+			end
+		},
+
+		-- WARN: need install `brew install libpq`
 		{
 			'kristijanhusak/vim-dadbod-ui',
 			dependencies = {
@@ -33,7 +46,7 @@ return {
 		},
 	},
 	treesitter = {
-		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
+		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex', 'http', 'json' }
 	},
 	lspconfig = {
 		servers = {
@@ -83,7 +96,6 @@ return {
 						)
 						return root_pattern(fname)
 					end,
-
 				}
 			end
 		}

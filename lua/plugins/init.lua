@@ -53,7 +53,7 @@ return {
 						cond = function()
 							return vim.bo.filetype ~= "neo-tree"
 						end
-					}
+					},
 				},
 				lualine_x = {
 					{
@@ -65,7 +65,7 @@ return {
 						}
 					},
 				},
-			}
+			},
 		},
 	},
 
