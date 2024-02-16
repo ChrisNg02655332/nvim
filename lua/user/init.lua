@@ -9,7 +9,7 @@ return {
 			end,
 		},
 
-		'jose-elias-alvarez/typescript.nvim',
+		-- 'jose-elias-alvarez/typescript.nvim',
 
 		-- WARN: need to install `brew install jq`
 		{
@@ -66,9 +66,6 @@ return {
 			end
 		},
 		setup_handlers = {
-			tsserver = function(_, opts)
-				require("typescript").setup { server = opts }
-			end,
 			eslint = function()
 				require("lspconfig").eslint.setup {
 					on_attach = function(client, bufnr)
@@ -95,13 +92,13 @@ return {
 						)
 						return root_pattern(fname)
 					end,
-					settings = {
-						tailwindCSS = {
-							experimental = {
-								classRegex = { "[a-zA-Z]*Class=\"([^']+)\"" }
-							}
-						},
-					},
+					-- settings = {
+					-- 	tailwindCSS = {
+					-- 		experimental = {
+					-- 			classRegex = { "[a-zA-Z]*Class='([^']+)'" }
+					-- 		}
+					-- 	},
+					-- },
 				}
 			end
 		}

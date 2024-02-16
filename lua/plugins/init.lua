@@ -177,6 +177,7 @@ return {
 
 			-- Adds LSP completion capabilities
 			"hrsh7th/cmp-nvim-lsp",
+			'hrsh7th/cmp-path',
 
 			-- Adds a number of user-friendly snippets
 			"rafamadriz/friendly-snippets",
