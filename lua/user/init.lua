@@ -85,8 +85,7 @@ return {
 						userLanguages = {
 							eelixir = "html-eex",
 							elixir = "html",
-						}
-
+						},
 					},
 					suggestions = true,
 					root_dir = function(fname)
@@ -96,6 +95,13 @@ return {
 						)
 						return root_pattern(fname)
 					end,
+					settings = {
+						tailwindCSS = {
+							experimental = {
+								classRegex = { "[a-zA-Z]*Class=\"([^']+)\"" }
+							}
+						},
+					},
 				}
 			end
 		}
