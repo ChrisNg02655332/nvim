@@ -15,7 +15,8 @@ M.general = {
 		["K"] = { "<cmd> move -2 <cr>", { desc = "Move line up" } },
 		["J"] = { "<cmd> move +1 <cr>", { desc = "Move line down" } },
 
-		["<C-a>"] = { "ggVG", { desc = "Select all" } }
+		["<C-a>"] = { "ggVG", { desc = "Select all" } },
+		["<PageUp>"] = { "^", { desc = "Move the cursor to the first non-blank character of a line" } }
 	}
 }
 
