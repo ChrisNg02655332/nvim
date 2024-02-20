@@ -9,9 +9,22 @@ return {
 			end,
 		},
 
-		'jose-elias-alvarez/typescript.nvim',
+		-- 'jose-elias-alvarez/typescript.nvim',
 
-		-- WARN: Need install pgql via postgres or libpq
+		-- WARN: need to install `brew install jq`
+		{
+			"rest-nvim/rest.nvim",
+			dependencies = { { "nvim-lua/plenary.nvim" } },
+			config = function()
+				require("rest-nvim").setup({
+					result_split_in_place = true,
+					show_headers = false,
+				})
+				require("core.utils").load_mappings("rest")
+			end
+		},
+
+		-- WARN: need install `brew install libpq`
 		{
 			'kristijanhusak/vim-dadbod-ui',
 			dependencies = {
@@ -33,7 +46,7 @@ return {
 		},
 	},
 	treesitter = {
-		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex' }
+		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex', 'http', 'json' }
 	},
 	lspconfig = {
 		servers = {
@@ -53,12 +66,9 @@ return {
 			end
 		},
 		setup_handlers = {
-			tsserver = function(_, opts)
-				require("typescript").setup { server = opts }
-			end,
 			eslint = function()
 				require("lspconfig").eslint.setup {
-					on_attach = function(client, bufnr)
+					on_attach = function(_client, bufnr)
 						vim.api.nvim_create_autocmd("BufWritePre", {
 							buffer = bufnr,
 							command = "EslintFixAll",
@@ -72,8 +82,7 @@ return {
 						userLanguages = {
 							eelixir = "html-eex",
 							elixir = "html",
-						}
-
+						},
 					},
 					suggestions = true,
 					root_dir = function(fname)
@@ -83,7 +92,13 @@ return {
 						)
 						return root_pattern(fname)
 					end,
-
+					-- settings = {
+					-- 	tailwindCSS = {
+					-- 		experimental = {
+					-- 			classRegex = { "[a-zA-Z]*Class='([^']+)'" }
+					-- 		}
+					-- 	},
+					-- },
 				}
 			end
 		}

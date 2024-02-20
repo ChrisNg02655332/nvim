@@ -7,6 +7,9 @@ end
 
 require('nvim-treesitter.configs').setup({
 	ensure_installed = ensure_installed,
+	autotag = {
+		enable = true,
+	},
 	auto_install = true,
 	sync_install = true,
 	modules = {},

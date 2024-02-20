@@ -6,4 +6,10 @@ M.db_ui = {
 	}
 }
 
+M.rest = {
+	n = {
+		["<leader>r"] = { "<Plug>RestNvim", { desc = "Run rest" } }
+	}
+}
+
 return M

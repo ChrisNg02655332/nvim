@@ -15,7 +15,8 @@ M.general = {
 		["K"] = { "<cmd> move -2 <cr>", { desc = "Move line up" } },
 		["J"] = { "<cmd> move +1 <cr>", { desc = "Move line down" } },
 
-		["<C-a>"] = { "ggVG", { desc = "Select all" } }
+		["<C-a>"] = { "ggVG", { desc = "Select all" } },
+		["<PageUp>"] = { "^", { desc = "Move the cursor to the first non-blank character of a line" } }
 	}
 }
 
@@ -27,7 +28,8 @@ M.bdelete = {
 
 M.lspconfig = {
 	n = {
-		["<leader>ca"] = { vim.lsp.buf.code_action, { desc = "Hover code actions" } }
+		["<leader>ca"] = { vim.lsp.buf.code_action, { desc = "Hover code actions" } },
+		["<leader>ds"] = { require('telescope.builtin').lsp_document_symbols, { desc = "Document Symbol" } }
 	}
 }
 

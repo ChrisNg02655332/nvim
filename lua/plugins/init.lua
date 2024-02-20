@@ -53,7 +53,7 @@ return {
 						cond = function()
 							return vim.bo.filetype ~= "neo-tree"
 						end
-					}
+					},
 				},
 				lualine_x = {
 					{
@@ -65,7 +65,7 @@ return {
 						}
 					},
 				},
-			}
+			},
 		},
 	},
 
@@ -177,6 +177,7 @@ return {
 
 			-- Adds LSP completion capabilities
 			"hrsh7th/cmp-nvim-lsp",
+			'hrsh7th/cmp-path',
 
 			-- Adds a number of user-friendly snippets
 			"rafamadriz/friendly-snippets",
@@ -217,6 +218,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
+			"windwp/nvim-ts-autotag",
 		},
 		build = ":TSUpdate",
 		config = function()
