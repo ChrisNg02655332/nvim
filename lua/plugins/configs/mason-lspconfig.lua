@@ -1,4 +1,5 @@
 local utils = require("core.utils")
+local navic = require("nvim-navic")
 
 local default_servers = {
 	lua_ls = {
@@ -10,6 +11,12 @@ local default_servers = {
 }
 
 local servers = utils.extend_tbl(default_servers, antbase.lspconfig.servers)
+
+local on_attach = function(client, bufnr)
+	if client.server_capabilities.documentSymbolProvider then
+		navic.attach(client, bufnr)
+	end
+end
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -29,6 +36,7 @@ mason_lspconfig.setup {
 local default_handler = {
 	function(server_name)
 		lspconfig[server_name].setup {
+			on_attach = on_attach,
 			capabilities = capabilities,
 			settings = servers[server_name],
 			filetypes = (servers[server_name] or {}).filetypes,
