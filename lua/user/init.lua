@@ -9,8 +9,6 @@ return {
 			end,
 		},
 
-		-- 'jose-elias-alvarez/typescript.nvim',
-
 		-- WARN: need to install `brew install jq`
 		{
 			"rest-nvim/rest.nvim",

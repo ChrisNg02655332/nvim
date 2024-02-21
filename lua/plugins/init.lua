@@ -66,6 +66,15 @@ return {
 					},
 				},
 			},
+			winbar = {
+				lualine_c = {
+					{
+						"navic",
+						color_correction = nil,
+						navic_opts = nil
+					}
+				}
+			}
 		},
 	},
 
@@ -244,6 +253,11 @@ return {
 			require("gitsigns").setup(opts)
 			utils.load_mappings("gitsigns")
 		end
+	},
+
+	{
+		"SmiteshP/nvim-navic",
+		requires = "neovim/nvim-lspconfig"
 	},
 
 	{ "folke/which-key.nvim",   opts = {} },
