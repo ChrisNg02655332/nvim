@@ -17,6 +17,10 @@ M.general = {
 
 		["<C-a>"] = { "ggVG", { desc = "Select all" } },
 		["<PageUp>"] = { "^", { desc = "Move the cursor to the first non-blank character of a line" } }
+	},
+
+	i = {
+		["<PageUp>"] = { "<Esc>^ | I", { desc = "Move the cursor to the first non-blank character of a line" } }
 	}
 }
 

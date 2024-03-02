@@ -112,11 +112,20 @@ return {
 		"folke/todo-comments.nvim",
 		event = "BufEnter",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		opts = {},
+		opts = {
+			keywords = {
+				FIX = {
+					alt = { "IMPORTANT" }
+				}
+			}
+		},
 		keys = {
 			{ "<leader>ss", "<cmd>TodoTelescope<cr>", desc = "Todo Telescope" },
 			{ "<leader>sq", "<cmd>TodoQuickFix<cr>",  desc = "Todo Quick Fix" },
 		},
+		config = function(_, opts)
+			require("todo-comments").setup(opts)
+		end
 	},
 
 	{
