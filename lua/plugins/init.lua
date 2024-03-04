@@ -33,8 +33,11 @@ return {
 
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		opts = { indent = { char = "┊" } },
 		main = "ibl",
+		opts = {
+			indent = { char = "┊" },
+			scope = { highlight = { "Normal" } }
+		},
 	},
 
 	{
