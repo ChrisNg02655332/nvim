@@ -98,7 +98,8 @@ M.toggleterm = {
 			function()
 				require("core.utils").toggle_term_cmd("lazygit")
 			end, { desc = "ToggleTerm LazyGit" }
-		}
+		},
+		["<C-/>"] = { "<cmd> ToggleTerm direction=float <cr>", { desc = "ToggleTerm float" } }
 	}
 }
 

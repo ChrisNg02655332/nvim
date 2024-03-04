@@ -54,6 +54,7 @@ vim.o.foldenable = true
 
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set('t', '<C-/>', "<C-\\><C-n><C-w>h", { silent = true })
 
 -------------------------------------- autocmds ------------------------------------------
 local autocmd = vim.api.nvim_create_autocmd
