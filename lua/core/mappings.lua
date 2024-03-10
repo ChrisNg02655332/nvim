@@ -20,7 +20,7 @@ M.general = {
 	},
 
 	i = {
-		["<PageUp>"] = { "<Esc>^ | I", { desc = "Move the cursor to the first non-blank character of a line" } }
+		["<PageUp>"] = { "<Esc>^ | I", { desc = "Move the cursor to the first non-blank character of a line" } },
 	}
 }
 
