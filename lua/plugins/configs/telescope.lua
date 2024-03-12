@@ -1,11 +1,16 @@
 require("telescope").setup {
-	defaults = {
-		file_ignore_patterns = { "node_modules", "dist", "build", "deps", "_build" },
-		mappings = {
-			i = {
-				["<C-u>"] = false,
-				["<C-d>"] = false,
-			},
+	-- defaults = {
+	-- 	file_ignore_patterns = { "node_modules", "dist", "build", "deps", "_build" },
+	-- 	mappings = {
+	-- 		i = {
+	-- 			["<C-u>"] = false,
+	-- 			["<C-d>"] = false,
+	-- 		},
+	-- 	},
+	-- },
+	extensions = {
+		['ui-select'] = {
+			require('telescope.themes').get_dropdown(),
 		},
 	},
 }

@@ -53,8 +53,13 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
 -- See `:help vim.keymap.set()`
+-- vim.keymap.set({'n', 'i'}, '∆', rhs)
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('t', '<C-/>', "<C-\\><C-n><C-w>h", { silent = true })
+vim.keymap.set('i', '<C-h>', '<left>', { noremap = true })
+vim.keymap.set('i', '<C-j>', '<down>', { noremap = true })
+vim.keymap.set('i', '<C-k>', '<up>', { noremap = true })
+vim.keymap.set('i', '<C-l>', '<right>', { noremap = true })
 
 -------------------------------------- autocmds ------------------------------------------
 local autocmd = vim.api.nvim_create_autocmd
