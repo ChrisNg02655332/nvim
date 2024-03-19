@@ -18,4 +18,5 @@ require("telescope").setup {
 -- Enable telescope fzf native, if installed
 pcall(require("telescope").load_extension, "fzf")
 pcall(require("telescope").load_extension, "software-licenses")
+require("telescope").load_extension("noice")
 require("core.utils").load_mappings("telescope")
