@@ -1,94 +1,46 @@
-local utils = require("core.utils")
+local utils = require 'core.utils'
 
-local default_servers = {
-	lua_ls = {
-		Lua = {
-			workspace = { checkThirdParty = false },
-			telemetry = { enable = false },
-		},
-	},
-}
-
-local servers = utils.extend_tbl(default_servers, antbase.lspconfig.servers)
-
--- local on_attach = function(client, bufnr)
--- end
-
--- Setup neovim lua configuration
-require('neodev').setup()
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- Ensure the servers above are installed
-local lspconfig = require 'lspconfig'
-local mason_lspconfig = require 'mason-lspconfig'
-
-mason_lspconfig.setup {
-	ensure_installed = vim.tbl_keys(servers),
-}
-
-local default_handler = {
-	function(server_name)
-		lspconfig[server_name].setup {
-			-- on_attach = on_attach,
-			capabilities = capabilities,
-			settings = servers[server_name],
-			filetypes = (servers[server_name] or {}).filetypes,
-		}
-	end
-}
-
-local handlers = utils.extend_tbl(default_handler, antbase.lspconfig.setup_handlers)
-
-mason_lspconfig.setup_handlers(handlers)
-
--- Whenever an LSP attaches to a buffer, we will run this function.
-local augroups = {}
-local get_augroup = function(client)
-	if not augroups[client.id] then
-		local group_name = 'antbase-lsp-format-' .. client.name
-		local id = vim.api.nvim_create_augroup(group_name, { clear = true })
-		augroups[client.id] = id
-	end
-
-	return augroups[client.id]
-end
-
--- See `:help LspAttach` for more information about this autocmd event.
 vim.api.nvim_create_autocmd('LspAttach', {
-	group = vim.api.nvim_create_augroup('antbase-lsp-attach-format', { clear = true }),
-	-- This is where we attach the autoformatting for reasonable clients
-	callback = function(args)
-		local client_id = args.data.client_id
-		local client = vim.lsp.get_client_by_id(client_id)
-		local bufnr = args.buf
+  group = vim.api.nvim_create_augroup('antbase-lsp-attach-format', { clear = true }),
+  callback = function(event)
+    utils.load_mappings 'lspconfig'
 
-		-- Only attach to clients that support document formatting
-		if not client.server_capabilities.documentFormattingProvider then
-			return
-		end
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client.server_capabilities.documentHighlightProvider then
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = event.buf,
+        callback = vim.lsp.buf.document_highlight,
+      })
 
-		if type(antbase.lspconfig.formatting.filter) == "function" then
-			if antbase.lspconfig.formatting.filter(client, bufnr) == true then
-				return
-			end
-		end
-
-		-- Create an autocmd that will run *before* we save the buffer.
-		--  Run the formatting command for the LSP that has just attached.
-		vim.api.nvim_create_autocmd('BufWritePre', {
-			group = get_augroup(client),
-			buffer = bufnr,
-			callback = function()
-				vim.lsp.buf.format {
-					async = false,
-					filter = function(c)
-						return c.id == client.id
-					end,
-				}
-			end,
-		})
-	end,
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = event.buf,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
+  end,
 })
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+local servers = antbase.lspconfig.servers
+
+require('mason').setup()
+
+local ensure_installed = vim.tbl_keys(servers)
+vim.list_extend(ensure_installed, { 'stylua' })
+
+require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+
+require('mason-lspconfig').setup {
+  handlers = {
+    function(server_name)
+      local server = servers[server_name] or {}
+      -- This handles overriding only values explicitly passed
+      -- by the server configuration above. Useful when disabling
+      -- certain features of an LSP (for example, turning off formatting for tsserver)
+      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+      require('lspconfig')[server_name].setup(server)
+    end,
+  },
+}
