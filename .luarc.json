@@ -1,6 +1,0 @@
-{
-    "diagnostics.disable": [
-        "different-requires",
-        "undefined-global"
-    ]
-}

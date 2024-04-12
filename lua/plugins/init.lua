@@ -1,19 +1,11 @@
-local utils = require 'core.utils'
+local load_mappings = require('core.utils').load_mappings
 
 return {
-  {
-    'goolord/alpha-nvim',
-    event = 'VimEnter',
-    config = function()
-      local config = require('themes.alpha').config
-      require('alpha').setup(config)
-    end,
-  },
-
+  -- core plugins
   {
     'famiu/bufdelete.nvim',
     init = function()
-      utils.load_mappings 'bdelete'
+      load_mappings 'bdelete'
     end,
   },
 
@@ -28,51 +20,26 @@ return {
       { 'gb', mode = 'x', desc = 'Comment toggle blockwise (visual)' },
     },
     init = function()
-      utils.load_mappings 'comment'
+      load_mappings 'comment'
     end,
   },
 
-  { 'stevearc/dressing.nvim', opts = {} },
-
   {
-    'lukas-reineke/indent-blankline.nvim',
-    main = 'ibl',
-    opts = {
-      indent = { char = '┊' },
-      scope = { highlight = { 'Normal' } },
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
     },
-  },
-
-  {
-    'nvim-lualine/lualine.nvim',
-    opts = {
-      options = {
-        theme = require 'themes.lualine',
-        component_separators = '|',
-        section_separators = '',
-        disabled_filetypes = { 'toggleterm' },
-      },
-      sections = {
-        lualine_c = {
-          {
-            'filename',
-            cond = function()
-              return vim.bo.filetype ~= 'neo-tree'
-            end,
-          },
-        },
-        lualine_x = {
-          {
-            'fileformat',
-            symbols = {
-              unix = vim.fn.has 'macunix' == 1 and '' or '', -- e712
-              dos = '', -- e70f
-              mac = '', -- e711
-            },
-          },
-        },
-      },
-    },
+    init = function()
+      require('core.utils').load_mappings 'neotree'
+    end,
+    opts = require 'plugins.configs.neotree',
+    config = function(_, opts)
+      vim.cmd [[ let g:neo_tree_remove_legacy_commands = 1 ]]
+      require('neo-tree').setup(opts)
+    end,
   },
 
   {
@@ -94,10 +61,11 @@ return {
     },
     config = function()
       local options = require 'plugins.configs.ufo'
-      require('ufo').setup(options)
+      local ufo = require 'ufo'
+      ufo.setup(options)
 
       vim.keymap.set('n', 'f', function()
-        local winid = require('ufo').peekFoldedLinesUnderCursor()
+        local winid = ufo.peekFoldedLinesUnderCursor()
         if not winid then
           vim.lsp.buf.hover()
         end
@@ -142,51 +110,34 @@ return {
       },
     },
     init = function()
-      utils.load_mappings 'toggleterm'
+      load_mappings 'toggleterm'
     end,
   },
 
   {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-      'MunifTanjim/nui.nvim',
+    -- Adds git related signs to the gutter, as well as utilities for managing changes
+    'lewis6991/gitsigns.nvim',
+    event = 'VeryLazy',
+    opts = {
+      -- See `:help gitsigns.txt`
+      signs = {
+        add = { text = '+' },
+        change = { text = '~' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+      },
     },
-    init = function()
-      utils.load_mappings 'neotree'
-    end,
-    opts = require 'plugins.configs.neotree',
     config = function(_, opts)
-      vim.cmd [[ let g:neo_tree_remove_legacy_commands = 1 ]]
-      require('neo-tree').setup(opts)
-    end,
-  },
-
-  {
-    -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-      -- Useful status updates for LSP
-      { 'j-hui/fidget.nvim', opts = {} },
-
-      -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim',
-    },
-    config = function()
-      require 'plugins.configs.mason-lspconfig'
+      require('gitsigns').setup(opts)
+      load_mappings 'gitsigns'
     end,
   },
 
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       'L3MON4D3/LuaSnip',
@@ -195,9 +146,6 @@ return {
       -- Adds LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
-
-      -- Adds a number of user-friendly snippets
-      'rafamadriz/friendly-snippets',
     },
     config = function()
       require 'plugins.configs.cmp'
@@ -232,7 +180,6 @@ return {
   },
 
   {
-    -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
@@ -245,54 +192,75 @@ return {
   },
 
   {
-    -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    event = 'VeryLazy',
-    opts = {
-      -- See `:help gitsigns.txt`
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      -- Automatically install LSPs to stdpath for neovim
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
+
+      -- Useful status updates for LSP
+      { 'j-hui/fidget.nvim', opts = {} },
+
+      -- Additional lua configuration, makes nvim stuff amazing!
+      'folke/neodev.nvim',
     },
-    config = function(_, opts)
-      require('gitsigns').setup(opts)
-      utils.load_mappings 'gitsigns'
+    config = function()
+      require 'plugins.configs.lsp'
     end,
   },
 
+  -- ui plugins
+  { 'stevearc/dressing.nvim', opts = {} },
+
   {
-    'folke/noice.nvim',
-    event = 'VeryLazy',
-    dependencies = { 'MunifTanjim/nui.nvim' },
+    'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
     opts = {
-      cmdline = {
-        format = { cmdline = { pattern = '^:', icon = '>_', lang = 'vim' } },
+      indent = { char = '┊' },
+      scope = { highlight = { 'Normal' } },
+    },
+  },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    opts = {
+      options = {
+        component_separators = '|',
+        section_separators = '',
+        disabled_filetypes = { 'toggleterm' },
       },
-      presets = {
-        bottom_search = true, -- use a classic bottom cmdline for search
-        command_palette = true, -- position the cmdline and popupmenu together
-        long_message_to_split = true, -- long messages will be sent to a split
-        inc_rename = false, -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = false, -- add a border to hover docs and signature help
-      },
-      views = {
-        cmdline_popup = {
-          position = {
-            row = 10,
+      sections = {
+        lualine_c = {
+          {
+            'filename',
+            cond = function()
+              return vim.bo.filetype ~= 'neo-tree'
+            end,
           },
         },
-        cmdline_popupmenu = {
-          relative = 'editor',
-          position = {
-            row = 13,
+        lualine_x = {
+          {
+            'fileformat',
+            symbols = {
+              unix = vim.fn.has 'macunix' == 1 and '' or '', -- e712
+              dos = '', -- e70f
+              mac = '', -- e711
+            },
           },
         },
       },
     },
+  },
+
+  {
+    'rcarriga/nvim-notify',
+    config = function()
+      require('notify').setup {
+        background_colour = '#111111',
+      }
+      vim.notify = require 'notify'
+    end,
   },
 
   { 'folke/which-key.nvim', opts = {} },

@@ -20,6 +20,8 @@ M.general = {
 
     ['<C-a>'] = { 'ggVG', { desc = 'Select all' } },
     ['<PageUp>'] = { '^', { desc = 'Move the cursor to the first non-blank character of a line' } },
+
+    ['D'] = { vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' } },
   },
 
   i = {
@@ -38,35 +40,6 @@ M.bdelete = {
   },
 }
 
-M.lspconfig = {
-  n = {
-    ['<leader>ca'] = { vim.lsp.buf.code_action, { desc = 'Hover code actions' } },
-    ['<leader>ds'] = { require('telescope.builtin').lsp_document_symbols, { desc = 'Document Symbol' } },
-  },
-}
-
-M.telescope = {
-  n = {
-    ['<leader>sb'] = { require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' } },
-    ['<leader><space>'] = {
-      function()
-        require('telescope.builtin').buffers {
-          -- entry_maker = require("core.utils.telescope").gen_from_buffer(),
-        }
-      end,
-      { desc = '[ ] Find existing buffers' },
-    },
-
-    ['<leader>gf'] = { require('telescope.builtin').git_files, { desc = 'Search Git Files' } },
-    ['<leader>sf'] = { require('telescope.builtin').find_files, { desc = 'Search Files' } },
-    ['<leader>sg'] = { require('telescope.builtin').live_grep, { desc = 'Search Grev' } },
-    ['<leader>sh'] = { require('telescope.builtin').help_tags, { desc = 'Search Help' } },
-    ['<leader>sw'] = { require('telescope.builtin').grep_string, { desc = 'Search current Word' } },
-    ['<leader>sd'] = { require('telescope.builtin').diagnostics, { desc = 'Search Diagnostics' } },
-    ['<leader>sc'] = { '<cmd> Cheatsheet <cr>', { desc = 'Search Cheatsheet' } },
-  },
-}
-
 M.comment = {
   n = {
     ['<leader>/'] = {
@@ -82,6 +55,13 @@ M.comment = {
       "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
       { desc = 'Toggle Comment' },
     },
+  },
+}
+
+M.lspconfig = {
+  n = {
+    ['<leader>ca'] = { vim.lsp.buf.code_action, { desc = 'Hover code actions' } },
+    ['<leader>ds'] = { require('telescope.builtin').lsp_document_symbols, { desc = 'Document Symbol' } },
   },
 }
 
@@ -105,6 +85,28 @@ M.neotree = {
       end,
       { desc = 'Toggle Explorer' },
     },
+  },
+}
+
+M.telescope = {
+  n = {
+    ['<leader>sb'] = { require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' } },
+    ['<leader><space>'] = {
+      function()
+        require('telescope.builtin').buffers {
+          -- entry_maker = require("core.utils.telescope").gen_from_buffer(),
+        }
+      end,
+      { desc = '[ ] Find existing buffers' },
+    },
+
+    ['<leader>gf'] = { require('telescope.builtin').git_files, { desc = 'Search Git Files' } },
+    ['<leader>sf'] = { require('telescope.builtin').find_files, { desc = 'Search Files' } },
+    ['<leader>sg'] = { require('telescope.builtin').live_grep, { desc = 'Search Grev' } },
+    ['<leader>sh'] = { require('telescope.builtin').help_tags, { desc = 'Search Help' } },
+    ['<leader>sw'] = { require('telescope.builtin').grep_string, { desc = 'Search current Word' } },
+    ['<leader>sd'] = { require('telescope.builtin').diagnostics, { desc = 'Search Diagnostics' } },
+    ['<leader>sc'] = { '<cmd> Cheatsheet <cr>', { desc = 'Search Cheatsheet' } },
   },
 }
 

@@ -9,7 +9,6 @@ return {
       end,
     },
 
-    -- Autoformat
     {
       'stevearc/conform.nvim',
       opts = {
@@ -27,13 +26,14 @@ return {
         formatters_by_ft = {
           lua = { 'stylua' },
           javascript = { { 'prettierd', 'prettier' } },
-          typescript = { { 'prettier', 'eslint' } },
+          typescript = { { 'prettierd', 'eslint' } },
           svelte = { 'prettierd' },
         },
       },
     },
 
     -- WARN: need to install `brew install jq`
+    -- it might be display errors when luarocks check dependencies - IGNORE it
     {
       'vhyrro/luarocks.nvim',
       priority = 1000,
@@ -45,7 +45,6 @@ return {
       dependencies = { 'luarocks.nvim' },
       config = function()
         require('rest-nvim').setup()
-        require('core.utils').load_mappings 'rest'
       end,
     },
 

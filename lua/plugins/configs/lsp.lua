@@ -1,9 +1,9 @@
-local utils = require 'core.utils'
+local load_mappings = require('core.utils').load_mappings
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('antbase-lsp-attach-format', { clear = true }),
   callback = function(event)
-    utils.load_mappings 'lspconfig'
+    load_mappings 'lspconfig'
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     if client and client.server_capabilities.documentHighlightProvider then

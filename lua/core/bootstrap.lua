@@ -1,8 +1,7 @@
 _G.antbase = {
-  plugins = {},
-  treesitter = {},
-  lspconfig = {
-    formatting = {},
+	plugins = {},
+	treesitter = {},
+	lspconfig = {
     servers = {
       lua_ls = {
         settings = {
@@ -14,7 +13,6 @@ _G.antbase = {
         },
       },
     },
-    setup_handlers = {},
   },
 }
 
