@@ -1,11 +1,22 @@
 return {
 	plugins = {
+		-- {
+		-- 	"ayu-theme/ayu-vim",
+		-- 	priority = 1000,
+		-- 	config = function()
+		-- 		-- load the colorscheme here
+		-- 		vim.cmd.colorscheme("ayu")
+		-- 	end,
+		-- },
 		{
-			"ayu-theme/ayu-vim",
+			"neanias/everforest-nvim",
 			priority = 1000,
 			config = function()
-				-- load the colorscheme here
-				vim.cmd.colorscheme("ayu")
+				require("everforest").setup({
+					background = "hard",
+					transparent_background_level = 2,
+				})
+				vim.cmd.colorscheme("everforest")
 			end,
 		},
 
@@ -27,7 +38,7 @@ return {
 					lua = { "stylua" },
 					javascript = { { "prettierd", "prettier" } },
 					typescript = { { "prettierd", "eslint" } },
-					svelte = { "prettierd" },
+					svelte = { "prettierd", "prettier" },
 				},
 			},
 		},
@@ -44,7 +55,14 @@ return {
 			ft = "http",
 			dependencies = { "luarocks.nvim" },
 			config = function()
-				require("rest-nvim").setup()
+				require("rest-nvim").setup({
+					result = {
+						split = {
+							in_place = true,
+						},
+					},
+				})
+				require("core.utils").load_mappings("rest")
 			end,
 		},
 
