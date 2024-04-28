@@ -1,5 +1,14 @@
 return {
 	plugins = {
+		{
+			"sainnhe/gruvbox-material",
+			priority = 1000,
+			config = function()
+				vim.g.gruvbox_material_transparent_background = 2
+				vim.cmd.colorscheme("gruvbox-material")
+			end,
+		},
+
 		-- {
 		-- 	"ayu-theme/ayu-vim",
 		-- 	priority = 1000,
@@ -8,17 +17,6 @@ return {
 		-- 		vim.cmd.colorscheme("ayu")
 		-- 	end,
 		-- },
-		{
-			"neanias/everforest-nvim",
-			priority = 1000,
-			config = function()
-				require("everforest").setup({
-					background = "hard",
-					transparent_background_level = 2,
-				})
-				vim.cmd.colorscheme("everforest")
-			end,
-		},
 
 		{
 			"stevearc/conform.nvim",
@@ -88,7 +86,7 @@ return {
 		},
 	},
 	treesitter = {
-		ensure_installed = { "tsx", "typescript", "elixir", "graphql", "heex", "http", "json", "svelte" },
+		ensure_installed = { "tsx", "typescript", "elixir", "graphql", "heex", "http", "json" },
 	},
 	lspconfig = {
 		servers = {
