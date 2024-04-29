@@ -182,6 +182,17 @@ return {
 	},
 
 	{
+		"folke/trouble.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {
+			position = "right",
+		},
+		init = function()
+			load_mappings("trouble")
+		end,
+	},
+
+	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
