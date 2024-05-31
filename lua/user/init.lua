@@ -1,39 +1,82 @@
 return {
 	plugins = {
 		{
-			"ayu-theme/ayu-vim",
+			"sainnhe/gruvbox-material",
 			priority = 1000,
 			config = function()
-				-- load the colorscheme here
-				vim.cmd.colorscheme("ayu")
+				vim.g.gruvbox_material_transparent_background = 2
+				vim.cmd.colorscheme("gruvbox-material")
 			end,
 		},
 
+		-- {
+		-- 	"ayu-theme/ayu-vim",
+		-- 	priority = 1000,
+		-- 	config = function()
+		-- 		-- load the colorscheme here
+		-- 		vim.cmd.colorscheme("ayu")
+		-- 	end,
+		-- },
+		--
+
+		{
+			"stevearc/conform.nvim",
+			opts = {
+				notify_on_error = false,
+				format_on_save = function(bufnr)
+					-- Disable "format_on_save lsp_fallback" for languages that don't
+					-- have a well standardized coding style. You can add additional
+					-- languages here or re-enable it for the disabled ones.
+					local disable_filetypes = { c = true, cpp = true }
+					return {
+						timeout_ms = 500,
+						lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+					}
+				end,
+				formatters_by_ft = {
+					lua = { "stylua" },
+					javascript = { { "prettierd", "prettier" } },
+					typescript = { { "prettierd", "prettier", "eslint" } },
+					svelte = { "prettierd", "prettier" },
+				},
+			},
+		},
+
 		-- WARN: need to install `brew install jq`
+		-- it might be display errors when luarocks check dependencies - IGNORE it
+		{
+			"vhyrro/luarocks.nvim",
+			priority = 1000,
+			config = true,
+		},
 		{
 			"rest-nvim/rest.nvim",
-			dependencies = { { "nvim-lua/plenary.nvim" } },
+			ft = "http",
+			dependencies = { "luarocks.nvim" },
 			config = function()
 				require("rest-nvim").setup({
-					result_split_in_place = true,
-					show_headers = false,
+					result = {
+						split = {
+							in_place = true,
+						},
+					},
 				})
 				require("core.utils").load_mappings("rest")
-			end
+			end,
 		},
 
 		-- WARN: need install `brew install libpq`
 		{
-			'kristijanhusak/vim-dadbod-ui',
+			"kristijanhusak/vim-dadbod-ui",
 			dependencies = {
-				{ 'tpope/vim-dadbod',                     lazy = true },
-				{ 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
+				{ "tpope/vim-dadbod", lazy = true },
+				{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
 			},
 			cmd = {
-				'DBUI',
-				'DBUIToggle',
-				'DBUIAddConnection',
-				'DBUIFindBuffer',
+				"DBUI",
+				"DBUIToggle",
+				"DBUIAddConnection",
+				"DBUIFindBuffer",
 			},
 			init = function()
 				-- Your DBUI configuration
@@ -44,61 +87,27 @@ return {
 		},
 	},
 	treesitter = {
-		ensure_installed = { 'tsx', 'typescript', 'elixir', 'graphql', 'heex', 'http', 'json' }
+		ensure_installed = { "javascript", "tsx", "typescript", "elixir", "graphql", "heex", "http", "json", "svelte" },
 	},
 	lspconfig = {
 		servers = {
 			elixirls = {},
-			eslint = {},
 			jsonls = {},
 			tsserver = {},
-			tailwindcss = {}
-		},
-		formatting = {
-			filter = function(client, _bufnr)
-				-- Tsserver usually works poorly. Sorry you work with bad languages
-				-- You can remove this line if you know what you're doing :)
-				if client.name == 'tsserver' then
-					return true
-				end
-			end
-		},
-		setup_handlers = {
-			eslint = function()
-				require("lspconfig").eslint.setup {
-					on_attach = function(_client, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							buffer = bufnr,
-							command = "EslintFixAll",
-						})
-					end,
-				}
-			end,
-			tailwindcss = function()
-				require 'lspconfig'.tailwindcss.setup {
-					init_options = {
-						userLanguages = {
-							eelixir = "html-eex",
-							elixir = "html",
-						},
+			tailwindcss = {
+				init_options = {
+					userLanguages = {
+						eelixir = "html-eex",
+						elixir = "html",
 					},
-					suggestions = true,
-					root_dir = function(fname)
-						local root_pattern = require("lspconfig").util.root_pattern(
-							"tailwind.config.js",
-							"assets/tailwind.config.js"
-						)
-						return root_pattern(fname)
-					end,
-					-- settings = {
-					-- 	tailwindCSS = {
-					-- 		experimental = {
-					-- 			classRegex = { "[a-zA-Z]*Class='([^']+)'" }
-					-- 		}
-					-- 	},
-					-- },
-				}
-			end
-		}
-	}
+				},
+				suggestions = true,
+				root_dir = function(fname)
+					local root_pattern =
+						require("lspconfig").util.root_pattern("tailwind.config.js", "assets/tailwind.config.js")
+					return root_pattern(fname)
+				end,
+			},
+		},
+	},
 }

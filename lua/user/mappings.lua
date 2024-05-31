@@ -2,14 +2,14 @@ local M = {}
 
 M.db_ui = {
 	n = {
-		["<leader>w"] = { "<cmd> DBUIToggle <cr>", { desc = "DBUI Toggle " } }
-	}
+		["<leader>w"] = { "<cmd> DBUIToggle <cr>", { desc = "DBUI Toggle " } },
+	},
 }
 
 M.rest = {
 	n = {
-		["<leader>r"] = { "<Plug>RestNvim", { desc = "Run rest" } }
-	}
+		["<leader>r"] = { "<cmd>Rest run<cr>", { desc = "Run rest" } },
+	},
 }
 
 return M

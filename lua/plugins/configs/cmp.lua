@@ -1,7 +1,7 @@
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
+local cmp = require("cmp")
+local luasnip = require("luasnip")
+require("luasnip.loaders.from_vscode").lazy_load()
+luasnip.config.setup({})
 
 local function border(hl_name)
 	return {
@@ -16,7 +16,7 @@ local function border(hl_name)
 	}
 end
 
-cmp.setup {
+cmp.setup({
 	completion = {
 		completeopt = "menu,menuone",
 	},
@@ -27,7 +27,7 @@ cmp.setup {
 			scrollbar = false,
 		}),
 		documentation = {
-			border = border "CmpDocBorder",
+			border = border("CmpDocBorder"),
 			winhighlight = "Normal:CmpDoc",
 		},
 	},
@@ -36,17 +36,17 @@ cmp.setup {
 			luasnip.lsp_expand(args.body)
 		end,
 	},
-	mapping = cmp.mapping.preset.insert {
-		['<C-n>'] = cmp.mapping.select_next_item(),
-		['<C-p>'] = cmp.mapping.select_prev_item(),
-		['<C-d>'] = cmp.mapping.scroll_docs(-4),
-		['<C-f>'] = cmp.mapping.scroll_docs(4),
-		['<C-Space>'] = cmp.mapping.complete {},
-		['<CR>'] = cmp.mapping.confirm {
+	mapping = cmp.mapping.preset.insert({
+		["<C-n>"] = cmp.mapping.select_next_item(),
+		["<C-p>"] = cmp.mapping.select_prev_item(),
+		["<C-d>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		["<C-Space>"] = cmp.mapping.complete({}),
+		["<CR>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = true,
-		},
-		['<Tab>'] = cmp.mapping(function(fallback)
+		}),
+		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
 			elseif luasnip.expand_or_locally_jumpable() then
@@ -54,8 +54,8 @@ cmp.setup {
 			else
 				fallback()
 			end
-		end, { 'i', 's' }),
-		['<S-Tab>'] = cmp.mapping(function(fallback)
+		end, { "i", "s" }),
+		["<S-Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
 			elseif luasnip.locally_jumpable(-1) then
@@ -63,13 +63,13 @@ cmp.setup {
 			else
 				fallback()
 			end
-		end, { 'i', 's' }),
-	},
+		end, { "i", "s" }),
+	}),
 	sources = {
-		{ name = 'nvim_lsp',              priority = 1000 },
-		{ name = 'luasnip',               priority = 750 },
-		{ name = "buffer",                priority = 500 },
-		{ name = "path",                  priority = 250 },
+		{ name = "nvim_lsp", priority = 1000, max_item_count = 100 },
+		{ name = "luasnip", priority = 750 },
+		{ name = "buffer", priority = 500 },
+		{ name = "path", priority = 250 },
 		{ name = "vim-dadbod-completion", priority = 700 },
 	},
-}
+})
