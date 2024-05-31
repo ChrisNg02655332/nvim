@@ -208,7 +208,7 @@ return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			-- Automatically install LSPs to stdpath for neovim
-			"williamboman/mason.nvim",
+			{ "williamboman/mason.nvim", config = true },
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -216,7 +216,7 @@ return {
 			{ "j-hui/fidget.nvim", opts = {} },
 
 			-- Additional lua configuration, makes nvim stuff amazing!
-			"folke/neodev.nvim",
+			{ "folke/neodev.nvim", opts = {} },
 		},
 		config = function()
 			require("plugins.configs.lsp")

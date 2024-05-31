@@ -1,20 +1,32 @@
-local load_mappings = require("core.utils").load_mappings
+local utils = require("core.utils")
+local load_mappings = utils.load_mappings
 
 vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("antbase-lsp-attach-format", { clear = true }),
+	group = vim.api.nvim_create_augroup("antbase-lsp-attach", { clear = true }),
 	callback = function(event)
 		load_mappings("lspconfig")
 
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
 		if client and client.server_capabilities.documentHighlightProvider then
+			local highlight_augroup = vim.api.nvim_create_augroup("antbase-lsp-highlight", { clear = false })
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 				buffer = event.buf,
+				group = highlight_augroup,
 				callback = vim.lsp.buf.document_highlight,
 			})
 
 			vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 				buffer = event.buf,
+				group = highlight_augroup,
 				callback = vim.lsp.buf.clear_references,
+			})
+
+			vim.api.nvim_create_autocmd("LspDetach", {
+				group = vim.api.nvim_create_augroup("antbase-lsp-detach", { clear = true }),
+				callback = function(event2)
+					vim.lsp.buf.clear_references()
+					vim.api.nvim_clear_autocmds({ group = "antbase-lsp-highlight", buffer = event2.buf })
+				end,
 			})
 		end
 	end,
@@ -23,7 +35,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-local servers = antbase.lspconfig.servers
+local default_servers = {
+	lua_ls = {
+		settings = {
+			Lua = {
+				completion = {
+					callSnippet = "Replace",
+				},
+			},
+		},
+	},
+}
+
+local servers = utils.extend_tbl(default_servers, antbase.lspconfig.servers)
 
 require("mason").setup()
 

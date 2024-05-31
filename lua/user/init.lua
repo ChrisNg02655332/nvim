@@ -17,6 +17,7 @@ return {
 		-- 		vim.cmd.colorscheme("ayu")
 		-- 	end,
 		-- },
+		--
 
 		{
 			"stevearc/conform.nvim",
@@ -35,7 +36,7 @@ return {
 				formatters_by_ft = {
 					lua = { "stylua" },
 					javascript = { { "prettierd", "prettier" } },
-					typescript = { { "prettierd", "eslint" } },
+					typescript = { { "prettierd", "prettier", "eslint" } },
 					svelte = { "prettierd", "prettier" },
 				},
 			},
@@ -86,7 +87,7 @@ return {
 		},
 	},
 	treesitter = {
-		ensure_installed = { "tsx", "typescript", "elixir", "graphql", "heex", "http", "json" },
+		ensure_installed = { "javascript", "tsx", "typescript", "elixir", "graphql", "heex", "http", "json", "svelte" },
 	},
 	lspconfig = {
 		servers = {
