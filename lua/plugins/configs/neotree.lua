@@ -96,7 +96,7 @@ return {
 	cwd_target = "none",
 	popup_border_style = "single",
 	window = {
-		position = "float",
+		position = "left",
 		width = 30,
 		mappings = {
 			["<space>"] = false, -- disable space until we figure out which-key disabling
