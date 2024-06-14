@@ -1,8 +1,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Set highlight on search
-vim.o.hlsearch = false
+-- Set highlight on search, but clear on pressing <Esc> in normal mode
+vim.opt.hlsearch = true
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Make line numbers default
 vim.wo.relativenumber = true
@@ -40,6 +41,10 @@ vim.wo.signcolumn = "yes"
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 
+-- Configure how new splits should be opened
+vim.o.splitright = true
+vim.o.splitbelow = true
+
 -- Set completeopt to have a better completion experience
 -- vim.o.completeopt = 'menuone,noselect'
 
@@ -54,6 +59,8 @@ vim.o.foldcolumn = "0" -- '0' is not bad
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
+
+vim.o.confirm = true
 
 -- See `:help vim.keymap.set()`
 -- vim.keymap.set({'n', 'i'}, '∆', rhs)
@@ -247,6 +254,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
+	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
+
 	-- colorscheme
 	{
 		"sainnhe/gruvbox-material",
@@ -322,16 +331,99 @@ local plugins = {
 		event = "InsertEnter",
 		dependencies = {
 			-- Snippet Engine & its associated nvim-cmp source
-			"L3MON4D3/LuaSnip",
+			{
+				"L3MON4D3/LuaSnip",
+				dependencies = {
+					{
+						"rafamadriz/friendly-snippets",
+						config = function()
+							require("luasnip.loaders.from_vscode").lazy_load()
+						end,
+					},
+				},
+			},
 			"saadparwaiz1/cmp_luasnip",
 
 			-- Adds LSP completion capabilities
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
-
-			"rafamadriz/friendly-snippets",
 		},
-		opts = {},
+		config = function()
+			local cmp = require("cmp")
+			local luasnip = require("luasnip")
+			luasnip.config.setup({})
+
+			local function border(hl_name)
+				return {
+					{ "╭", hl_name },
+					{ "─", hl_name },
+					{ "╮", hl_name },
+					{ "│", hl_name },
+					{ "╯", hl_name },
+					{ "─", hl_name },
+					{ "╰", hl_name },
+					{ "│", hl_name },
+				}
+			end
+
+			cmp.setup({
+				completion = {
+					completeopt = "menu,menuone",
+				},
+				window = {
+					completion = cmp.config.window.bordered({
+						side_padding = 1,
+						winhighlight = "Normal:Normal,FloatBorder:BorderBG,CursorLine:PmenuSel,Search:None",
+						scrollbar = false,
+					}),
+					documentation = {
+						border = border("CmpDocBorder"),
+						winhighlight = "Normal:CmpDoc",
+					},
+				},
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body)
+					end,
+				},
+				mapping = cmp.mapping.preset.insert({
+					["<C-n>"] = cmp.mapping.select_next_item(),
+					["<C-p>"] = cmp.mapping.select_prev_item(),
+					["<C-d>"] = cmp.mapping.scroll_docs(-4),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
+					["<C-Space>"] = cmp.mapping.complete({}),
+					["<CR>"] = cmp.mapping.confirm({
+						behavior = cmp.ConfirmBehavior.Replace,
+						select = true,
+					}),
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item()
+						elseif luasnip.expand_or_locally_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item()
+						elseif luasnip.locally_jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+				}),
+				sources = {
+					{ name = "nvim_lsp", priority = 1000, max_item_count = 100 },
+					{ name = "luasnip", priority = 750 },
+					{ name = "buffer", priority = 500 },
+					{ name = "path", priority = 250 },
+					{ name = "vim-dadbod-completion", priority = 700 },
+				},
+			})
+		end,
 	},
 
 	-- comment
@@ -374,8 +466,6 @@ local plugins = {
 		},
 	},
 
-	{ "stevearc/dressing.nvim", opts = {} },
-
 	-- indent-blankline
 	{
 		"lukas-reineke/indent-blankline.nvim",
@@ -396,7 +486,16 @@ local plugins = {
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			-- Useful status updates for LSP
-			{ "j-hui/fidget.nvim", opts = {} },
+			{
+				"j-hui/fidget.nvim",
+				opts = {
+					notification = {
+						window = {
+							winblend = 0,
+						},
+					},
+				},
+			},
 
 			-- Additional lua configuration, makes nvim stuff amazing!
 			{ "folke/neodev.nvim", opts = {} },
@@ -436,6 +535,12 @@ local plugins = {
 							end,
 						})
 					end
+
+					if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+						map("<leader>th", function()
+							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+						end, "[T]oggle Inlay [H]ints")
+					end
 				end,
 			})
 
@@ -443,12 +548,33 @@ local plugins = {
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			local servers = {
+				elixirls = {},
+				svelte = {},
+				jsonls = {},
+				tsserver = {},
+				tailwindcss = {
+					init_options = {
+						userLanguages = {
+							eelixir = "html-eex",
+							elixir = "html",
+						},
+					},
+					suggestions = true,
+					root_dir = function(fname)
+						local root_pattern =
+							require("lspconfig").util.root_pattern("tailwind.config.js", "assets/tailwind.config.js")
+						return root_pattern(fname)
+					end,
+				},
 				lua_ls = {
 					settings = {
 						Lua = {
 							completion = {
 								callSnippet = "Replace",
 							},
+							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+							diagnostics = { enable = false },
+							semantic = { enable = false },
 						},
 					},
 				},
@@ -456,7 +582,7 @@ local plugins = {
 
 			require("mason").setup()
 
-			local ensure_installed = vim.tbl_keys(servers)
+			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, { "stylua" })
 
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
@@ -792,6 +918,7 @@ local plugins = {
 				"lua",
 				"vim",
 				"vimdoc",
+				"luadoc",
 				"javascript",
 				"tsx",
 				"typescript",
@@ -926,4 +1053,4 @@ local plugins = {
 	{ "folke/which-key.nvim", opts = {} },
 }
 
-require("lazy").setup(plugins)
+require("lazy").setup({ spec = plugins }, {})
