@@ -462,6 +462,7 @@ local plugins = {
 				javascript = { { "prettierd", "prettier" } },
 				typescript = { { "prettierd", "prettier", "eslint" } },
 				svelte = { "prettierd", "prettier" },
+				graphql = { "prettier" },
 			},
 		},
 	},
