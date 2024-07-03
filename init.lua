@@ -111,6 +111,12 @@ local toggle_term_cmd = function(opts)
 	terms[opts.cmd][num]:toggle()
 end
 
+local format_on_save = true
+
+local toggle_format_on_save = function()
+	format_on_save = not format_on_save
+end
+
 --------------------------------------- mappings -------------------------------------------
 local mappings = {
 	general = {
@@ -135,6 +141,7 @@ local mappings = {
 			["<PageUp>"] = { "^", { desc = "Move the cursor to the first non-blank character of a line" } },
 
 			["D"] = { vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" } },
+			["<leader>b"] = { toggle_format_on_save, { desc = "Toggle format on save" } },
 		},
 
 		i = {
@@ -454,7 +461,8 @@ local plugins = {
 				local disable_filetypes = { c = true, cpp = true }
 				return {
 					timeout_ms = 500,
-					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+					-- lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+					lsp_fallback = format_on_save and not disable_filetypes[vim.bo[bufnr].filetype],
 				}
 			end,
 			formatters_by_ft = {
