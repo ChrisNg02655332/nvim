@@ -6,7 +6,7 @@ vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Make line numbers default
-vim.wo.relativenumber = true
+-- vim.wo.relativenumber = true
 vim.wo.number = true
 vim.o.cursorline = true
 
@@ -66,10 +66,10 @@ vim.o.confirm = true
 -- vim.keymap.set({'n', 'i'}, '∆', rhs)
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 vim.keymap.set("t", "<C-/>", "<C-\\><C-n><C-w>h", { silent = true })
-vim.keymap.set("i", "<C-h>", "<left>", { noremap = true })
-vim.keymap.set("i", "<C-j>", "<down>", { noremap = true })
-vim.keymap.set("i", "<C-k>", "<up>", { noremap = true })
-vim.keymap.set("i", "<C-l>", "<right>", { noremap = true })
+-- vim.keymap.set("i", "<C-h>", "<left>", { noremap = true })
+-- vim.keymap.set("i", "<C-j>", "<down>", { noremap = true })
+-- vim.keymap.set("i", "<C-k>", "<up>", { noremap = true })
+-- vim.keymap.set("i", "<C-l>", "<right>", { noremap = true })
 
 -------------------------------------- autocmds ------------------------------------------
 
@@ -187,11 +187,6 @@ local mappings = {
 			["<leader>gd"] = { "<cmd> Gitsigns diffthis <cr>", { desc = "[G]it [D]iff" } },
 		},
 	},
-	rest = {
-		n = {
-			["<leader>r"] = { "<cmd>Rest run<cr>", { desc = "Run rest" } },
-		},
-	},
 	telescope = {
 		n = {
 			["<leader>sb"] = { "<cmd>Telescope oldfiles<cr>", { desc = "[?] Find recently opened files" } },
@@ -268,58 +263,10 @@ local plugins = {
 		"sainnhe/gruvbox-material",
 		priority = 1000,
 		config = function()
+			vim.g.gruvbox_material_better_performance = 1
 			vim.g.gruvbox_material_transparent_background = 2
+			vim.g.gruvbox_material_background = "soft"
 			vim.cmd.colorscheme("gruvbox-material")
-		end,
-	},
-
-	-- alpha
-	{
-		"goolord/alpha-nvim",
-		config = function()
-			local dashboard = require("alpha.themes.dashboard")
-			local theta = require("alpha.themes.theta")
-
-			local buttons = {
-				type = "group",
-				val = {
-					{ type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
-					{ type = "padding", val = 1 },
-					dashboard.button("e", "  New file", "<cmd>ene<CR>"),
-					dashboard.button("SPC s f", "󰈞  Find file"),
-					dashboard.button("SPC s g", "󰊄  Live grep"),
-					dashboard.button("c", "  Configuration", "<cmd>open ~/.config/nvim/ <CR>"),
-					dashboard.button("u", "  Update plugins", "<cmd>Lazy sync<CR>"),
-					dashboard.button("q", "󰅚  Quit", "<cmd>qa<CR>"),
-				},
-				position = "center",
-			}
-
-			local opts = {
-				layout = {
-					{ type = "padding", val = 2 },
-					theta.header,
-					{ type = "padding", val = 2 },
-					theta.section_mru,
-					{ type = "padding", val = 2 },
-					buttons,
-				},
-				opts = {
-					margin = 5,
-					setup = function()
-						vim.api.nvim_create_autocmd("DirChanged", {
-							pattern = "*",
-							group = "alpha_temp",
-							callback = function()
-								require("alpha").redraw()
-								vim.cmd("AlphaRemap")
-							end,
-						})
-					end,
-				},
-			}
-
-			require("alpha").setup(opts)
 		end,
 	},
 
@@ -423,11 +370,11 @@ local plugins = {
 					end, { "i", "s" }),
 				}),
 				sources = {
-					{ name = "nvim_lsp", priority = 1000, max_item_count = 100 },
-					{ name = "luasnip", priority = 750 },
-					{ name = "buffer", priority = 500 },
-					{ name = "path", priority = 250 },
-					{ name = "vim-dadbod-completion", priority = 700 },
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+					{ name = "buffer" },
+					{ name = "path" },
+					{ name = "vim-dadbod-completion" },
 				},
 			})
 		end,
@@ -1016,29 +963,6 @@ local plugins = {
 		end,
 	},
 
-	-- WARN: need to install `brew install jq`
-	-- it might be display errors when luarocks check dependencies - IGNORE it
-	{
-		"vhyrro/luarocks.nvim",
-		priority = 1000,
-		config = true,
-	},
-	{
-		"rest-nvim/rest.nvim",
-		ft = "http",
-		dependencies = { "luarocks.nvim" },
-		config = function()
-			require("rest-nvim").setup({
-				result = {
-					split = {
-						in_place = true,
-					},
-				},
-			})
-			load_mappings("rest")
-		end,
-	},
-
 	-- WARN: need install `brew install libpq`
 	{
 		"kristijanhusak/vim-dadbod-ui",
@@ -1056,6 +980,14 @@ local plugins = {
 			-- Your DBUI configuration
 			vim.g.db_ui_use_nerd_fonts = 1
 			load_mappings("db_ui")
+		end,
+	},
+
+	-- vim-rest-console
+	{
+		"diepm/vim-rest-console",
+		config = function()
+			vim.ft = rest
 		end,
 	},
 
