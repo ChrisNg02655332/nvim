@@ -234,6 +234,71 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
+  -- colorscheme
+  {
+    'sainnhe/gruvbox-material',
+    priority = 1000,
+    config = function()
+      vim.g.gruvbox_material_better_performance = 1
+      vim.g.gruvbox_material_transparent_background = 2
+      vim.g.gruvbox_material_background = 'soft'
+      vim.cmd.colorscheme 'gruvbox-material'
+    end,
+  },
+
+  -- bdelete
+  {
+    'famiu/bufdelete.nvim',
+    init = function()
+      load_mappings 'bdelete'
+    end,
+  },
+
+  -- Autoformat
+  {
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
+    opts = {
+      notify_on_error = false,
+      format_on_save = function(bufnr)
+        -- Disable "format_on_save lsp_fallback" for languages that don't
+        -- have a well standardized coding style. You can add additional
+        -- languages here or re-enable it for the disabled ones.
+        local disable_filetypes = { c = true, cpp = true }
+        local lsp_format_opt
+        if disable_filetypes[vim.bo[bufnr].filetype] then
+          lsp_format_opt = 'never'
+        else
+          lsp_format_opt = 'fallback'
+        end
+        return {
+          timeout_ms = 500,
+          lsp_fallback = format_on_save and lsp_format_opt,
+        }
+      end,
+      formatters_by_ft = {
+        lua = { 'stylua' },
+      },
+    },
+  },
+
+  -- comment
+  {
+    'numToStr/Comment.nvim',
+    keys = {
+      { 'gcc', mode = 'n', desc = 'Comment toggle current line' },
+      { 'gc', mode = { 'n', 'o' }, desc = 'Comment toggle linewise' },
+      { 'gc', mode = 'x', desc = 'Comment toggle linewise (visual)' },
+      { 'gbc', mode = 'n', desc = 'Comment toggle current block' },
+      { 'gb', mode = { 'n', 'o' }, desc = 'Comment toggle blockwise' },
+      { 'gb', mode = 'x', desc = 'Comment toggle blockwise (visual)' },
+    },
+    init = function()
+      load_mappings 'comment'
+    end,
+  },
+
   -- gitsigns
   {
     'lewis6991/gitsigns.nvim',
@@ -248,52 +313,26 @@ local plugins = {
     },
   },
 
-  -- which-key
-  { 'folke/which-key.nvim', event = 'VimEnter' },
-
-  -- Telescope Fuzzy Finder (files, lsp, etc)
   {
-    'nvim-telescope/telescope.nvim',
-    event = 'VimEnter',
-    branch = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      { -- If encountering errors, see telescope-fzf-native README for installation instructions
-        'nvim-telescope/telescope-fzf-native.nvim',
+    'barrett-ruth/import-cost.nvim',
+    build = 'sh install.sh yarn',
+    config = true,
+  },
 
-        -- `build` is used to run some command when the plugin is installed/updated.
-        -- This is only run then, not every time Neovim starts up.
-        build = 'make',
-
-        -- `cond` is a condition used to determine whether this plugin should be
-        -- installed and loaded.
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-
-      -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+  -- Add indentation guides even on blank lines
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
+    opts = {
+      indent = { char = '┊' },
+      scope = { highlight = { 'Normal' } },
     },
-    config = function()
-      require('telescope').setup {
-        defaults = {
-          file_ignore_patterns = { 'node_modules', 'deps', '_build' },
-        },
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
-          },
-        },
-      }
+  },
 
-      -- Enable Telescope extensions if they are installed
-      pcall(require('telescope').load_extension, 'fzf')
-      pcall(require('telescope').load_extension, 'ui-select')
-
-      load_mappings 'telescope'
-    end,
+  -- http request
+  {
+    'mistweaverco/kulala.nvim',
+    otps = {},
   },
 
   -- LSP Plugins
@@ -430,46 +469,122 @@ local plugins = {
     end,
   },
 
-  -- Autoformat
+  -- lualine
   {
-    'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
-    cmd = { 'ConformInfo' },
-    keys = {
-      {
-        '<leader>f',
-        function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
-        end,
-        mode = '',
-        desc = '[F]ormat buffer',
+    'nvim-lualine/lualine.nvim',
+    opts = {
+      options = {
+        component_separators = '|',
+        section_separators = '',
+        disabled_filetypes = { 'toggleterm' },
+      },
+      sections = {
+        lualine_c = {
+          {
+            'filename',
+            cond = function()
+              return vim.bo.filetype ~= 'neo-tree'
+            end,
+          },
+        },
+        lualine_x = {
+          {
+            'fileformat',
+            symbols = {
+              unix = vim.fn.has 'macunix' == 1 and '' or '', -- e712
+              dos = '', -- e70f
+              mac = '', -- e711
+            },
+          },
+        },
       },
     },
+  },
+
+  -- neotree
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    version = '*',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
+    },
+    cmd = 'Neotree',
+    keys = {
+      { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    },
     opts = {
-      notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
-        local lsp_format_opt
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-          lsp_format_opt = 'never'
-        else
-          lsp_format_opt = 'fallback'
-        end
-        return {
-          timeout_ms = 500,
-          lsp_fallback = format_on_save and not disable_filetypes[vim.bo[bufnr].filetype],
-        }
-      end,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      auto_clean_after_session_restore = true,
+      close_if_last_window = true,
+      default_component_configs = {
+        indent = { padding = 0 },
+        modified = { symbol = '' },
+        git_status = {
+          symbols = {
+            added = '',
+            deleted = '',
+            modified = '',
+            renamed = '➜',
+            untracked = '★',
+            ignored = '◌',
+            unstaged = '✗',
+            staged = '✓',
+            conflict = '',
+          },
+        },
+      },
+      cwd_target = 'none',
+      popup_border_style = 'single',
+      event_handlers = {
+
+        {
+          event = 'file_open_requested',
+          handler = function()
+            require('neo-tree.command').execute { action = 'close' }
+          end,
+        },
+      },
+      commands = {
+        parent_or_close = function(state)
+          local node = state.tree:get_node()
+          if (node.type == 'directory' or node:has_children()) and node:is_expanded() then
+            state.commands.toggle_node(state)
+          else
+            require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
+          end
+        end,
+        child_or_open = function(state)
+          local node = state.tree:get_node()
+          if node.type == 'directory' or node:has_children() then
+            if not node:is_expanded() then -- if unexpanded, expand
+              state.commands.toggle_node(state)
+            else -- if expanded and has children, seleect the next child
+              require('neo-tree.ui.renderer').focus_node(state, node:get_child_ids()[1])
+            end
+          else -- if not a directory just open it
+            state.commands.open(state)
+          end
+        end,
+      },
+      window = {
+        position = 'left',
+        width = 30,
+        mappings = {
+          ['<space>'] = false,
+          h = 'parent_or_close',
+          l = 'child_or_open',
+        },
+      },
+      filesystem = {
+        follow_current_file = { enabled = true },
+        hijack_netrw_behavior = 'open_current',
+        use_libuv_file_watcher = true,
+        window = {
+          mappings = {
+            ['\\'] = 'close_window',
+          },
+        },
       },
     },
   },
@@ -580,29 +695,6 @@ local plugins = {
     end,
   },
 
-  -- colorscheme
-  {
-    'sainnhe/gruvbox-material',
-    priority = 1000,
-    config = function()
-      vim.g.gruvbox_material_better_performance = 1
-      vim.g.gruvbox_material_transparent_background = 2
-      vim.g.gruvbox_material_background = 'soft'
-      vim.cmd.colorscheme 'gruvbox-material'
-    end,
-  },
-
-  -- bdelete
-  {
-    'famiu/bufdelete.nvim',
-    init = function()
-      load_mappings 'bdelete'
-    end,
-  },
-
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-
   -- Highlight, edit, and navigate code
   {
     'nvim-treesitter/nvim-treesitter',
@@ -621,164 +713,6 @@ local plugins = {
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
-    },
-  },
-
-  -- Add indentation guides even on blank lines
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    main = 'ibl',
-    opts = {
-      indent = { char = '┊' },
-      scope = { highlight = { 'Normal' } },
-    },
-  },
-
-  -- http request
-  {
-    'mistweaverco/kulala.nvim',
-    otps = {},
-  },
-
-  -- comment
-  {
-    'numToStr/Comment.nvim',
-    keys = {
-      { 'gcc', mode = 'n', desc = 'Comment toggle current line' },
-      { 'gc', mode = { 'n', 'o' }, desc = 'Comment toggle linewise' },
-      { 'gc', mode = 'x', desc = 'Comment toggle linewise (visual)' },
-      { 'gbc', mode = 'n', desc = 'Comment toggle current block' },
-      { 'gb', mode = { 'n', 'o' }, desc = 'Comment toggle blockwise' },
-      { 'gb', mode = 'x', desc = 'Comment toggle blockwise (visual)' },
-    },
-    init = function()
-      load_mappings 'comment'
-    end,
-  },
-
-  {
-    'barrett-ruth/import-cost.nvim',
-    build = 'sh install.sh yarn',
-    config = true,
-  },
-
-  -- neotree
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    version = '*',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-      'MunifTanjim/nui.nvim',
-    },
-    cmd = 'Neotree',
-    keys = {
-      { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
-    },
-    opts = {
-      auto_clean_after_session_restore = true,
-      close_if_last_window = true,
-      default_component_configs = {
-        indent = { padding = 0 },
-        modified = { symbol = '' },
-        git_status = {
-          symbols = {
-            added = '',
-            deleted = '',
-            modified = '',
-            renamed = '➜',
-            untracked = '★',
-            ignored = '◌',
-            unstaged = '✗',
-            staged = '✓',
-            conflict = '',
-          },
-        },
-      },
-      cwd_target = 'none',
-      popup_border_style = 'single',
-      event_handlers = {
-
-        {
-          event = 'file_open_requested',
-          handler = function()
-            require('neo-tree.command').execute { action = 'close' }
-          end,
-        },
-      },
-      commands = {
-        parent_or_close = function(state)
-          local node = state.tree:get_node()
-          if (node.type == 'directory' or node:has_children()) and node:is_expanded() then
-            state.commands.toggle_node(state)
-          else
-            require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
-          end
-        end,
-        child_or_open = function(state)
-          local node = state.tree:get_node()
-          if node.type == 'directory' or node:has_children() then
-            if not node:is_expanded() then -- if unexpanded, expand
-              state.commands.toggle_node(state)
-            else -- if expanded and has children, seleect the next child
-              require('neo-tree.ui.renderer').focus_node(state, node:get_child_ids()[1])
-            end
-          else -- if not a directory just open it
-            state.commands.open(state)
-          end
-        end,
-      },
-      window = {
-        position = 'left',
-        width = 30,
-        mappings = {
-          ['<space>'] = false,
-          h = 'parent_or_close',
-          l = 'child_or_open',
-        },
-      },
-      filesystem = {
-        follow_current_file = { enabled = true },
-        hijack_netrw_behavior = 'open_current',
-        use_libuv_file_watcher = true,
-        window = {
-          mappings = {
-            ['\\'] = 'close_window',
-          },
-        },
-      },
-    },
-  },
-
-  -- lualine
-  {
-    'nvim-lualine/lualine.nvim',
-    opts = {
-      options = {
-        component_separators = '|',
-        section_separators = '',
-        disabled_filetypes = { 'toggleterm' },
-      },
-      sections = {
-        lualine_c = {
-          {
-            'filename',
-            cond = function()
-              return vim.bo.filetype ~= 'neo-tree'
-            end,
-          },
-        },
-        lualine_x = {
-          {
-            'fileformat',
-            symbols = {
-              unix = vim.fn.has 'macunix' == 1 and '' or '', -- e712
-              dos = '', -- e70f
-              mac = '', -- e711
-            },
-          },
-        },
-      },
     },
   },
 
@@ -856,6 +790,63 @@ local plugins = {
     end,
   },
 
+  -- Telescope Fuzzy Finder (files, lsp, etc)
+  {
+    'nvim-telescope/telescope.nvim',
+    event = 'VimEnter',
+    branch = '0.1.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      { -- If encountering errors, see telescope-fzf-native README for installation instructions
+        'nvim-telescope/telescope-fzf-native.nvim',
+
+        -- `build` is used to run some command when the plugin is installed/updated.
+        -- This is only run then, not every time Neovim starts up.
+        build = 'make',
+
+        -- `cond` is a condition used to determine whether this plugin should be
+        -- installed and loaded.
+        cond = function()
+          return vim.fn.executable 'make' == 1
+        end,
+      },
+      { 'nvim-telescope/telescope-ui-select.nvim' },
+
+      -- Useful for getting pretty icons, but requires a Nerd Font.
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+    },
+    config = function()
+      require('telescope').setup {
+        defaults = {
+          file_ignore_patterns = { 'node_modules', 'deps', '_build' },
+        },
+        extensions = {
+          ['ui-select'] = {
+            require('telescope.themes').get_dropdown(),
+          },
+        },
+      }
+
+      -- Enable Telescope extensions if they are installed
+      pcall(require('telescope').load_extension, 'fzf')
+      pcall(require('telescope').load_extension, 'ui-select')
+
+      load_mappings 'telescope'
+    end,
+  },
+
+  -- Highlight todo, notes, etc in comments
+  {
+    'folke/todo-comments.nvim',
+    event = 'BufEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+    keys = {
+      { '<leader>ss', '<cmd>TodoTelescope<cr>', desc = 'Todo Telescope' },
+      { '<leader>sq', '<cmd>TodoQuickFix<cr>', desc = 'Todo Quick Fix' },
+    },
+  },
+
   -- trouble
   {
     'folke/trouble.nvim',
@@ -868,35 +859,8 @@ local plugins = {
     end,
   },
 
-  -- todo-comments
-  {
-    'folke/todo-comments.nvim',
-    event = 'BufEnter',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = {
-      keywords = {
-        FIX = {
-          alt = { 'IMPORTANT' },
-        },
-      },
-    },
-    keys = {
-      { '<leader>ss', '<cmd>TodoTelescope<cr>', desc = 'Todo Telescope' },
-      { '<leader>sq', '<cmd>TodoQuickFix<cr>', desc = 'Todo Quick Fix' },
-    },
-    config = function(_, opts)
-      require('todo-comments').setup(opts)
-    end,
-  },
-
-  -- toggleterm
-  {
-    'akinsho/toggleterm.nvim',
-    init = function()
-      load_mappings 'toggleterm'
-    end,
-    opts = {},
-  },
+  -- which-key
+  { 'folke/which-key.nvim', event = 'VimEnter' },
 }
 
 require('lazy').setup({ spec = plugins }, {})
