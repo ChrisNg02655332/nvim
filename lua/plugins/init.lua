@@ -31,7 +31,7 @@ return {
 	-- formatting!
 	{
 		"stevearc/conform.nvim",
-		opts = function()
+		config = function()
 			return require("configs.conform")
 		end,
 	},

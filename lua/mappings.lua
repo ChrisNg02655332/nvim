@@ -10,6 +10,16 @@ M.general = {
 		["D"] = { vim.diagnostic.open_float, { desc = "general show diagnostic error messages" } },
 		["<Esc>"] = { "<cmd>noh<cr>", { desc = "general clear highligh" } },
 		["<PageUp>"] = { "<ESC>^i", { desc = "general move beginning of line" } },
+		["<leader>b"] = {
+			function()
+				if vim.g.disable_autoformat then
+					vim.cmd("FormatEnable")
+				else
+					vim.cmd("FormatDisable")
+				end
+			end,
+			{ desc = "general toggle format on save" },
+		},
 	},
 
 	i = {
