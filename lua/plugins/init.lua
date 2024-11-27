@@ -1,5 +1,6 @@
 return {
 	"nvim-lua/plenary.nvim",
+
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
@@ -10,23 +11,6 @@ return {
 	},
 
 	"famiu/bufdelete.nvim",
-
-	-- ai assistant
-	{
-		"olimorris/codecompanion.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-			"hrsh7th/nvim-cmp",
-			"nvim-telescope/telescope.nvim",
-			{ "echasnovski/mini.diff", version = false, opts = {} },
-			{ "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
-			{ "stevearc/dressing.nvim", opts = {} },
-		},
-		opts = function()
-			return require("configs.code")
-		end,
-	},
 
 	-- formatting!
 	{
@@ -62,6 +46,7 @@ return {
 	{
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
+		version = false,
 		dependencies = {
 			{
 				"L3MON4D3/LuaSnip",
@@ -69,14 +54,14 @@ return {
 					return "make install_jsregexp"
 				end)(),
 				dependencies = {
-					{
-						"rafamadriz/friendly-snippets",
-						config = function()
-							require("luasnip.loaders.from_vscode").lazy_load()
-						end,
-					},
-
-					-- autopairing of (){}[] etc
+					-- {
+					-- 	"rafamadriz/friendly-snippets",
+					-- 	config = function()
+					-- 		require("luasnip.loaders.from_vscode").lazy_load()
+					-- 	end,
+					-- },
+					--
+					-- -- autopairing of (){}[] etc
 					{
 						"windwp/nvim-autopairs",
 						opts = {
@@ -103,8 +88,7 @@ return {
 		end,
 	},
 
-	-- lsp plugins
-	{ "Bilal2453/luvit-meta", lazy = true },
+	-- lsp
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -171,14 +155,10 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		event = { "BufReadPost", "BufNewFile" },
-		cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
 		build = ":TSUpdate",
+		main = "nvim-treesitter.configs",
 		opts = function()
 			return require("configs.treesitter")
-		end,
-		config = function(_, opts)
-			require("nvim-treesitter.configs").setup(opts)
 		end,
 	},
 
@@ -205,6 +185,8 @@ return {
 			require("configs.ufo")
 		end,
 	},
+
+	{ "rest-nvim/rest.nvim" },
 
 	{
 		"folke/which-key.nvim",

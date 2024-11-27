@@ -1,12 +1,10 @@
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
-		-- css = { "prettierd" },
-		-- html = { "prettierd" },
+		css = { "prettierd" },
+		html = { "prettierd" },
 		typescript = { "prettierd" },
-		typescriptreact = { "prettierd" },
 		javascript = { "prettierd" },
-		javascriptreact = { "prettierd" },
 	},
 	format_on_save = function(bufnr)
 		-- Disable with a global or buffer-local variable

@@ -18,4 +18,4 @@ require("lazy").setup({
 }, lazy_config)
 
 require("options")
-require("utils").load_all_mappings()
+require("mappings")
