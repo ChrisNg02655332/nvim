@@ -5,6 +5,7 @@ return {
 		rust_analyzer = {},
 		jsonls = {},
 		ts_ls = {},
+		eslint_d = {},
 		prettierd = {},
 		solidity_ls_nomicfoundation = {},
 		cssls = {

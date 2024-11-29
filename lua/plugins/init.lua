@@ -12,6 +12,19 @@ return {
 
 	"famiu/bufdelete.nvim",
 
+	{
+		"numToStr/Comment.nvim",
+		keys = {
+			{ "gcc", mode = "n", desc = "Comment toggle current line" },
+			{ "gc", mode = { "n", "o" }, desc = "Comment toggle linewise" },
+			{ "gc", mode = "x", desc = "Comment toggle linewise (visual)" },
+			{ "gbc", mode = "n", desc = "Comment toggle current block" },
+			{ "gb", mode = { "n", "o" }, desc = "Comment toggle blockwise" },
+			{ "gb", mode = "x", desc = "Comment toggle blockwise (visual)" },
+		},
+		opts = {},
+	},
+
 	-- formatting!
 	{
 		"stevearc/conform.nvim",
@@ -54,14 +67,14 @@ return {
 					return "make install_jsregexp"
 				end)(),
 				dependencies = {
-					-- {
-					-- 	"rafamadriz/friendly-snippets",
-					-- 	config = function()
-					-- 		require("luasnip.loaders.from_vscode").lazy_load()
-					-- 	end,
-					-- },
-					--
-					-- -- autopairing of (){}[] etc
+					{
+						"rafamadriz/friendly-snippets",
+						config = function()
+							require("luasnip.loaders.from_vscode").lazy_load()
+						end,
+					},
+
+					-- autopairing of (){}[] etcinit
 					{
 						"windwp/nvim-autopairs",
 						opts = {
