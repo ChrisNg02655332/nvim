@@ -1,13 +1,42 @@
 require("conform").setup({
 	async = true,
+	formatters = {
+		prettierd = {
+			args = function(self, ctx)
+				local check_cwd = require("conform.util").root_file({
+					".prettierrc",
+					".prettierrc.json",
+					".prettierrc.yml",
+					".prettierrc.yaml",
+					".prettierrc.json5",
+					".prettierrc.js",
+					".prettierrc.cjs",
+					".prettierrc.mjs",
+					".prettierrc.toml",
+					"prettier.config.js",
+					"prettier.config.cjs",
+					"prettier.config.mjs",
+					"package.json",
+				})
+
+				local has_cwd = check_cwd(self, ctx) ~= nil
+
+				if not has_cwd then
+					return { "--stdin-filepath", "$FILENAME", "--config", "~/.prettierc" }
+				end
+
+				return { "--stdin-filepath", "$FILENAME" }
+			end,
+		},
+	},
 	formatters_by_ft = {
 		lua = { "stylua" },
 		css = { "prettierd" },
 		html = { "prettierd" },
 		typescript = { "prettierd" },
-		typescriptreact = {},
+		typescriptreact = { "prettierd" },
 		javascript = { "prettierd" },
-		javascriptreact = {},
+		javascriptreact = { "prettierd" },
 	},
 	format_on_save = function(bufnr)
 		-- Disable with a global or buffer-local variable
