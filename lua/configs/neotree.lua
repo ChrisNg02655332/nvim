@@ -51,7 +51,7 @@ return {
 		end,
 	},
 	window = {
-		position = "float",
+		position = "right",
 		width = 30,
 		mappings = {
 			["<space>"] = false,
