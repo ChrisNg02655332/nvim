@@ -52,7 +52,7 @@ return {
 	},
 	window = {
 		position = "right",
-		width = 30,
+		width = 40,
 		mappings = {
 			["<space>"] = false,
 			h = "parent_or_close",
