@@ -244,8 +244,6 @@ return {
 		end,
 	},
 
-	{ "rest-nvim/rest.nvim" },
-
 	{
 		"folke/which-key.nvim",
 		event = "VimEnter",

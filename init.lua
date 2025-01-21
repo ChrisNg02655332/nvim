@@ -19,5 +19,6 @@ local lazy_config = require("configs.lazy")
 require("lazy").setup({
 	spec = {
 		{ import = "plugins" },
+		{ import = "customs.plugins" },
 	},
 }, lazy_config)
